@@ -1,145 +1,195 @@
 @startuml
-!theme plain
+' ============================================================
+' Enterprise Concepts Metamodel — Version 3.0
+' Source of truth: technehub-labs/dea-metaframework (canonical)
+' Rendered at:      technehub-labs.github.io/metamodel/
+'
+' This .puml is the SINGLE SOURCE OF TRUTH for the metamodel.
+' Any change made here propagates via PlantUML rendering to:
+'   - dea-metaframework/metamodel/enterprise-concepts-v3.svg
+'   - dea-metamodel/ (referenced, not duplicated)
+'   - technehub-labs.github.io/metamodel/ (rendered viewer)
+'   - technehub-labs.github.io (root page Metamoat card)
+' ============================================================
+
+' ── Layout ─────────────────────────────────────────────────
 skinparam linetype ortho
-skinparam nodesep 60
-skinparam ranksep 60
-skinparam defaultFontName Arial
+skinparam nodesep 50
+skinparam ranksep 55
+skinparam defaultFontName "Inter"
+skinparam defaultFontSize 13
+skinparam shadowing false
+skinparam roundcorner 6
+
+' ── Light/Dark theme handling ─────────────────────────────
+' PlantUML `!theme` syntax doesn't directly support CSS media
+' queries, so we apply the dark palette via `%darkmode` block
+' guard and let the rendering site apply CSS `prefers-color-scheme`
+' for the host page background. The SVG itself uses light palette
+' (optimal contrast on white GitHub Pages). Sites embedding it
+' apply their own CSS filter or use the dual-SVG approach.
+
+!theme plain
+
+' ── Light palette (canonical) ─────────────────────────────
 skinparam class {
-    BackgroundColor White
+    BackgroundColor #FFFFFF
     BorderColor #2C3E50
     ArrowColor #2C3E50
+    FontColor #1F2937
 }
 
-' --- LAYER DEFINITIONS ---
-package "Layer 1: Strategic & Investment (The 'Why' & 'When')" #E8F8F5 {
-    entity "Strategic Objective" as SO {
-        + id : string
-        + name : string
-    }
-    entity "Investment Initiative" as II {
-        + id : string
-        + budget : decimal
-    }
-}
+' Layer palette — site-integrated, with deeper tints than PlantUML defaults
+' L1 Ecosystem (blue)    L2 Strategic (mint)
+' L3 Business (amber)    L4 Digital (peach)
+' L5 Technology (violet) L6 Measurement (rose)
 
-package "Layer 2: Business Operating Model (The 'What' & 'Who')" #FEF9E7 {
-    entity "Value Stream" as VS {
+' ── LAYER 1: ECOSYSTEM & VALUE NETWORK (External) ─────────
+package "Layer 1: Ecosystem & Value Network (External)" #D6EAF8 {
+    entity "Ecosystem Actor" as EA {
         + id : string
-        + name : string
+        + type : (Supplier, Customer, Regulator)
     }
-    entity "Business Capability" as BC {
-        + id : string
-        + ecfCoordinates : (Domain, Stage)
-    }
-    entity "Business Process" as BP {
-        + id : string
-        + name : string
-    }
-    entity "Business Object" as BO {
-        + id : string
-        + name : string
+    entity "Value Exchange" as VE {
+        + flowType : (Information, Goods, Funds)
+        + direction : (Inbound, Outbound)
     }
     entity "Journey Touchpoint" as JT {
         + id : string
         + channel : string
     }
+}
+
+' ── LAYER 2: STRATEGIC & GOVERNANCE (Intent & Rules) ──────
+package "Layer 2: Strategic & Governance (Intent & Rules)" #E8F8F5 {
+    entity "Strategic Objective" as SO {
+        + description : string
+    }
+    entity "Investment Initiative" as II {
+        + budget : decimal
+    }
+    entity "Collaboration Agreement" as CA {
+        + terms : string
+        + type : (Cooperative, Mandated)
+    }
+}
+
+' ── LAYER 3: BUSINESS OPERATING MODEL (Internal) ──────────
+package "Layer 3: Business Operating Model (Internal)" #FEF9E7 {
+    entity "Value Stream" as VS {
+        + name : string
+    }
+    entity "Business Capability" as BC {
+        + ecfCoordinates : (Domain, Stage)
+    }
+    entity "Business Process" as BP {
+        + sequence : int
+    }
+    entity "Business Function" as BF {
+        + name : string
+    }
     entity "Organizational Unit" as OU {
-        + id : string
+        + name : string
+    }
+    entity "Business Object" as BO {
         + name : string
     }
 }
 
-package "Layer 3: Digital Ecosystem & Intelligence (The 'Digital Era')" #D6EAF8 {
+' ── LAYER 4: DIGITAL & INTELLIGENCE (Data & Brain) ───────
+package "Layer 4: Digital & Intelligence (Data & Brain)" #FDF2E9 {
     entity "Digital Identity" as DI {
-        + id : string
         + type : (Customer, Partner, Bot)
     }
-    entity "Event / Event Stream" as EVT {
-        + id : string
-        + topic : string
-        + schema : string
-    }
-    entity "AI / ML Model" as AI {
-        + id : string
-        + modelType : string
-        + version : string
-    }
-    entity "Data Product" as DP {
-        + id : string
-        + SLA : string
-        + domainOwner : string
-    }
-}
-
-package "Layer 4: Technology & Execution (The 'How')" #F4ECF7 {
-    entity "System Function" as SF {
-        + id : string
-        + name : string
-    }
-    entity "Application Component" as AC {
-        + id : string
-        + name : string
-    }
-    entity "API / Service Contract" as API {
-        + id : string
-        + version : string
-    }
     entity "Data Entity" as DE {
-        + id : string
         + name : string
     }
     entity "Information Class" as IC {
-        + id : string
         + securityLevel : string
     }
+    entity "Data Product" as DP {
+        + SLA : string
+    }
+    entity "Event / Event Stream" as EVT {
+        + topic : string
+    }
+    entity "AI / ML Model" as AI {
+        + modelType : string
+    }
+}
+
+' ── LAYER 5: TECHNOLOGY & EXECUTION (Systems & Infra) ─────
+package "Layer 5: Technology & Execution (Systems & Infra)" #F4ECF7 {
+    entity "System Function" as SF {
+        + name : string
+    }
+    entity "API / Service Contract" as API {
+        + version : string
+    }
+    entity "Application Component" as AC {
+        + name : string
+    }
     entity "Platform Service" as PS {
-        + id : string
         + type : (Compute, DB, Network)
     }
 }
 
-package "Layer 5: Measurement & Governance (Cross-Cutting)" #FADBD8 {
-    entity "Performance Metric" as PM {
-        + id : string
-        + targetValue : string
-    }
+' ── LAYER 6: MEASUREMENT (Cross-Cutting) ──────────────────
+package "Layer 6: Measurement (Cross-Cutting)" #FADBD8 {
+    entity "Performance Metric" as PM
 }
 
-' --- RELATIONSHIPS ---
+' ── RELATIONSHIPS ────────────────────────────────────────
 
-' Layer 1 & 2
-SO ||--o{ II : "drives"
-II }o--|{ BC : "funds"
-VS }o--|{ BC : "traverses"
-VS ||--o{ JT : "experienced via"
-BC ||--o{ BP : "implemented by"
-BC ||--|{ OU : "owned by"
-BC ||--o{ BO : "produces/consumes"
+' Layer 1 internal — External ↔ External
+EA --> CA : "engages in"
+CA --> VE : "governs"
+EA --> SO : "influences"
+VE --> JT : "crosses boundary at"
+VE --> BO : "transports (payload)"
 
-' Layer 2 & 3 (Digital Integration)
-JT ||--o{ DI : "authenticates"
-DI }o--|{ DE : "represented by"
-BP ||--o{ SF : "automated by"
-BO ||--|| DE : "digitized as"
+' Layer 1 → Layer 3/4 — External crosses boundary
+EA --> DI : "represented by"
+JT --> DI : "authenticates"
 
-' Layer 3 Internal (Intelligence & Data)
-DE }o--|{ IC : "classified by"
-DE }o--o{ DP : "curated into"
-SF ||--o{ EVT : "publishes / subscribes to"
-EVT }o--o{ DE : "carries payload of"
-DP ||--o{ API : "exposed via"
-AI ||--o{ DP : "trained on"
-AI ||--o{ SF : "enhances / automates"
+' Layer 2 internal — Strategic ↔ Strategic
+SO --> II : "drives"
+II --> BC : "funds"
 
-' Layer 4 (Technology Execution)
-SF ||--o{ AC : "hosted by"
-AC }o--o{ PS : "deployed on"
-SF ||--o{ API : "exposed via"
-API }o--o{ DE : "serves/exchanges"
+' Layer 3 internal — Business ↔ Business
+VS --> BC : "traverses"
+VS --> JT : "terminates at"
+BC --> BF : "grouped by"
+BF --> OU : "owned by"
+BC --> BP : "implemented by"
+BC --> BO : "produces/consumes"
+
+' Layer 3 → Layer 4 — Business digitizes
+BO --> DE : "digitized as"
+
+' Layer 3 → Layer 5 — Business automated
+BP --> SF : "automated by"
+
+' Layer 4 internal — Digital ↔ Digital
+DE --> IC : "classified by"
+DE --> DP : "curated into"
+DP --> API : "exposed via"
+AI --> DP : "trained on"
+AI --> SF : "enhances / automates"
+SF --> EVT : "publishes / subscribes to"
+EVT --> DE : "carries payload of"
+
+' Layer 4 ↔ Layer 5 — Digital exposed via API, served by Functions
+SF --> API : "exposed via"
+API --> DE : "serves/exchanges"
+
+' Layer 5 internal — Technology ↔ Technology
+SF --> AC : "hosted by"
+AC --> PS : "deployed on"
 
 ' Measurement (Cross-cutting)
-SO ||--o{ PM : "measured by"
-BC ||--o{ PM : "evaluated by"
-SF ||--o{ PM : "evaluated by"
+SO --> PM : "measured by"
+BC --> PM : "evaluated by"
+SF --> PM : "evaluated by"
 
 @enduml

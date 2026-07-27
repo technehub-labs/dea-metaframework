@@ -1,135 +1,167 @@
 # Enterprise Concepts Metamodel
 
-The Enterprise Concepts Metamodel formalizes the framework's constructs as a
-typed entity-relationship model. It is organized into five layers, each
-answering a different question about the enterprise. The metamodel is the
-bridge between the conceptual matrix (Section 9 of `REPORT.md`) and the
-concrete artifacts (entity catalog, capability map, traceability matrix) —
-it specifies the entity types, their attributes, and the relationships
-between them.
+**Version 3.0** — Source of truth: [`technehub-labs/dea-metaframework`](https://github.com/technehub-labs/dea-metaframework) (this repo).
 
-This is the **19-entity model** shared with
-[`technehub-labs/dea-metamodel`](../dea-metamodel). Source of truth for
-entity definitions lives in that repo; this directory holds the canonical
-PlantUML source and a rendered SVG.
+## What changed from v2 → v3
+
+| Change | v2 | v3 |
+|---|---|---|
+| **Layers** | 5 (Strategic / Business / Digital / Technology / Measurement) | **6** (+ **Ecosystem & Value Network (External)** at the top) |
+| **Entities** | 19 | **23** (+ Ecosystem Actor, Value Exchange, Collaboration Agreement; Business Function re-added; Journey Touchpoint moved to L1) |
+| **Relationships** | 25 | **31** (+6 new external↔internal handoffs) |
+| **Color scheme** | Site-dark, fixed | **Light + dark mode** via embedded CSS + `prefers-color-scheme` |
+| **Theme control** | None | Auto (OS preference) + class override (`theme-light` / `theme-dark`) |
 
 ## Files
 
 | File | What it is |
 |------|-----------|
-| [`enterprise-concepts.puml`](./enterprise-concepts.puml) | PlantUML source (Appendix A of `REPORT.md`) |
-| `enterprise-concepts.svg` | Rendered SVG (generated from the PlantUML source; rendered here for convenience) |
-| `README.md` | This file |
+| [`enterprise-concepts.puml`](./enterprise-concepts.puml) | **Canonical source** — PlantUML source. Edit this, then run `python3 postprocess.py` to regenerate the SVG. |
+| [`enterprise-concepts-v3.svg`](./enterprise-concepts-v3.svg) | **Rendered SVG** with embedded CSS for light/dark mode. Self-contained — drop it anywhere. |
+| [`postprocess.py`](./postprocess.py) | Tool: takes PlantUML's raw SVG output + injects CSS for light/dark mode + site integration. |
+| [`README.md`](./README.md) | This file. |
 
-## The Five Layers
+## Entity inventory (23 entities across 6 layers)
 
-1. **Strategic & Investment** — the 'Why' & 'When'
-2. **Business Operating Model** — the 'What' & 'Who'
-3. **Digital Ecosystem & Intelligence** — the 'Digital Era'
-4. **Technology & Execution** — the 'How'
-5. **Measurement & Governance** — cross-cutting
+### Layer 1 — Ecosystem & Value Network (External) — *new*
+- **Ecosystem Actor** — `id, type: (Supplier, Customer, Regulator)`
+- **Value Exchange** — `flowType: (Information, Goods, Funds), direction: (Inbound, Outbound)`
+- **Journey Touchpoint** — `id, channel` *(moved from Layer 2)*
 
-Layer 3 (Digital Ecosystem & Intelligence) is the distinguishing layer of
-this version of the metamodel. It captures the digital-era constructs that
-have become first-class citizens of enterprise architecture: digital
-identities, event streams, AI/ML models, and data products. These entities
-sit between the business operating model and the technology execution
-layer, reflecting the reality that digital concerns are neither purely
-business nor purely technology — they are a distinct stratum.
+### Layer 2 — Strategic & Governance (Intent & Rules)
+- **Strategic Objective** — `description`
+- **Investment Initiative** — `budget: decimal`
+- **Collaboration Agreement** — `terms, type: (Cooperative, Mandated)` *new*
 
-## Entity Inventory
+### Layer 3 — Business Operating Model (Internal)
+- **Value Stream** — `name`
+- **Business Capability** — `ecfCoordinates: (Domain, Stage)` *(the ECF anchor)*
+- **Business Process** — `sequence: int`
+- **Business Function** — `name` *(re-added from v1)*
+- **Organizational Unit** — `name`
+- **Business Object** — `name`
 
-| Layer | Entity | Attributes |
-|-------|--------|-----------|
-| 1 | Strategic Objective | `id: string`, `name: string` |
-| 1 | Investment Initiative | `id: string`, `budget: decimal` |
-| 2 | Value Stream | `id: string`, `name: string` |
-| 2 | Business Capability | `id: string`, `ecfCoordinates: (Domain, Stage)` |
-| 2 | Business Process | `id: string`, `name: string` |
-| 2 | Business Object | `id: string`, `name: string` |
-| 2 | Journey Touchpoint | `id: string`, `channel: string` |
-| 2 | Organizational Unit | `id: string`, `name: string` |
-| 3 | Digital Identity | `id: string`, `type: (Customer, Partner, Bot)` |
-| 3 | Event / Event Stream | `id: string`, `topic: string`, `schema: string` |
-| 3 | AI / ML Model | `id: string`, `modelType: string`, `version: string` |
-| 3 | Data Product | `id: string`, `SLA: string`, `domainOwner: string` |
-| 4 | System Function | `id: string`, `name: string` |
-| 4 | Application Component | `id: string`, `name: string` |
-| 4 | API / Service Contract | `id: string`, `version: string` |
-| 4 | Data Entity | `id: string`, `name: string` |
-| 4 | Information Class | `id: string`, `securityLevel: string` |
-| 4 | Platform Service | `id: string`, `type: (Compute, DB, Network)` |
-| 5 | Performance Metric | `id: string`, `targetValue: string` |
+### Layer 4 — Digital & Intelligence (Data & Brain)
+- **Digital Identity** — `type: (Customer, Partner, Bot)`
+- **Data Entity** — `name`
+- **Information Class** — `securityLevel`
+- **Data Product** — `SLA`
+- **Event / Event Stream** — `topic`
+- **AI / ML Model** — `modelType`
 
-## Relationship Summary
+### Layer 5 — Technology & Execution (Systems & Infra)
+- **System Function** — `name`
+- **API / Service Contract** — `version`
+- **Application Component** — `name`
+- **Platform Service** — `type: (Compute, DB, Network)`
 
-| From | Cardinality | To | Verb |
-|------|-----------|----|------|
-| Strategic Objective | 1 — 0..* | Investment Initiative | drives |
-| Investment Initiative | 0..* — 1..* | Business Capability | funds |
-| Value Stream | 0..* — 1..* | Business Capability | traverses |
-| Value Stream | 1 — 0..* | Journey Touchpoint | experienced via |
-| Business Capability | 1 — 0..* | Business Process | implemented by |
-| Business Capability | 1 — 1..* | Organizational Unit | owned by |
-| Business Capability | 1 — 0..* | Business Object | produces/consumes |
-| Journey Touchpoint | 1 — 0..* | Digital Identity | authenticates |
-| Digital Identity | 0..* — 1..* | Data Entity | represented by |
-| Business Process | 1 — 0..* | System Function | automated by |
-| Business Object | 1 — 1 | Data Entity | digitized as |
-| Data Entity | 0..* — 1..* | Information Class | classified by |
-| Data Entity | 0..* — 0..* | Data Product | curated into |
-| System Function | 1 — 0..* | Event / Event Stream | publishes / subscribes to |
-| Event / Event Stream | 0..* — 0..* | Data Entity | carries payload of |
-| Data Product | 1 — 0..* | API / Service Contract | exposed via |
-| AI / ML Model | 1 — 0..* | Data Product | trained on |
-| AI / ML Model | 1 — 0..* | System Function | enhances / automates |
-| System Function | 1 — 0..* | Application Component | hosted by |
-| Application Component | 0..* — 0..* | Platform Service | deployed on |
-| System Function | 1 — 0..* | API / Service Contract | exposed via |
-| API / Service Contract | 0..* — 0..* | Data Entity | serves/exchanges |
-| Strategic Objective | 1 — 0..* | Performance Metric | measured by |
-| Business Capability | 1 — 0..* | Performance Metric | evaluated by |
-| System Function | 1 — 0..* | Performance Metric | evaluated by |
+### Layer 6 — Measurement (Cross-Cutting)
+- **Performance Metric**
 
-## How the Metamodel Links to ECF
+## Relationship summary (31 relationships)
 
-Every entity in the metamodel lives in a cell of the 7×7 matrix. The
-**Business Capability** entity carries an explicit `ecfCoordinates: (Domain,
-Stage)` attribute — the metamodel knows which cell it is in.
+### Internal — Layer 1
+- EA → CA : "engages in"
+- CA → VE : "governs"
+- EA → SO : "influences"
+- VE → JT : "crosses boundary at"
+- VE → BO : "transports (payload)"
 
-The five layers map onto ECF as follows:
+### Layer 1 → Layer 3/4 (External crosses boundary)
+- EA → DI : "represented by"
+- JT → DI : "authenticates"
 
-| Metamodel Layer | ECF Domain | ECF Stage |
-|-----------------|-----------|-----------|
-| Layer 1 — Strategic & Investment | Finance & Value | Conceive |
-| Layer 2 — Business Operating Model | All seven domains | All seven stages |
-| Layer 3 — Digital Ecosystem & Intelligence | Customer & Supply domains | Build → Operate |
-| Layer 4 — Technology & Execution | Supply & Resources | Build → Operate |
-| Layer 5 — Measurement & Governance | Governance & Existence | Cross-cutting (all stages) |
+### Internal — Layer 2
+- SO → II : "drives"
+- II → BC : "funds"
 
-## Rendering
+### Internal — Layer 3
+- VS → BC : "traverses"
+- VS → JT : "terminates at"
+- BC → BF : "grouped by"
+- BF → OU : "owned by"
+- BC → BP : "implemented by"
+- BC → BO : "produces/consumes"
 
-To render the PlantUML to SVG locally:
+### Layer 3 → Layer 4
+- BO → DE : "digitized as"
 
-```bash
-# Option 1 — PlantUML CLI (requires Java + plantuml.jar)
-java -jar plantuml.jar enterprise-concepts.puml
+### Layer 3 → Layer 5
+- BP → SF : "automated by"
 
-# Option 2 — PlantUML Docker image
-docker run --rm -v "$PWD:/work" plantuml/plantuml:latest \
-  -tsvg enterprise-concepts.puml
+### Internal — Layer 4
+- DE → IC : "classified by"
+- DE → DP : "curated into"
+- DP → API : "exposed via"
+- AI → DP : "trained on"
+- AI → SF : "enhances / automates"
+- SF → EVT : "publishes / subscribes to"
+- EVT → DE : "carries payload of"
 
-# Option 3 — VS Code PlantUML extension
-# Open enterprise-concepts.puml → Alt+D to preview
+### Layer 4 ↔ Layer 5
+- SF → API : "exposed via"
+- API → DE : "serves/exchanges"
+
+### Internal — Layer 5
+- SF → AC : "hosted by"
+- AC → PS : "deployed on"
+
+### Measurement (Cross-cutting — Layer 6)
+- SO → PM : "measured by"
+- BC → PM : "evaluated by"
+- SF → PM : "evaluated by"
+
+## Light/Dark theme support
+
+The SVG (`enterprise-concepts-v3.svg`) has a `<style>` block embedded that:
+
+1. **Auto-detects** the user's OS preference via `@media (prefers-color-scheme: dark)`
+2. **Defaults to light** (PlantUML pastel palette) when no preference or `prefers-color-scheme: light`
+3. **Allows explicit override** — add `theme-light` or `theme-dark` class to the `<svg>` element:
+   ```html
+   <svg class="theme-dark">…</svg>
+   ```
+4. **CSS variables** at the root enable site integration:
+   - `--svg-bg`, `--svg-text`, `--svg-border`
+   - `--layer-1-bg` through `--layer-6-bg`
+   - `--entity-bg`
+
+To restyle on a specific site, override the CSS variables in a wrapping stylesheet:
+
+```css
+.my-container svg {
+  --svg-bg: #fafafa;
+  --layer-1-bg: #e3f2fd;
+  --layer-6-bg: #fce4ec;
+}
 ```
 
-Or use the live DEA Metamodel Explorer:
-[technehub-labs.github.io/metamodel/](https://technehub-labs.github.io/metamodel/)
+## How the SVG is generated
 
-## See Also
+```bash
+# 1. Render the .puml with PlantUML (e.g. via kroki.io or local plantuml.jar)
+plantuml -tsvg enterprise-concepts.puml -o raw.svg
 
-- [`technehub-labs/dea-metamodel`](../dea-metamodel) — entity definitions,
-  JSON Schema, interactive viewer
-- [`REPORT.md`](../REPORT.md) § 16 — full prose description of the metamodel
-- [`/framework/matrix.md`](../framework/matrix.md) — the 7×7 ECF matrix this
-  metamodel instantiates
+# 2. Post-process to add light/dark CSS
+python3 postprocess.py raw.svg enterprise-concepts-v3.svg
+
+# 3. Publish enterprise-concepts-v3.svg
+```
+
+Cascade: this SVG is the **single source**. The dea-metamodel repo, the `technehub-labs.github.io/metamodel/` viewer, and the root-page Metamoat card all reference this same file. Edit here once → everywhere updates.
+
+## Live sites
+
+| Site | URL |
+|------|-----|
+| **Meta Framework repo** | https://github.com/technehub-labs/dea-metaframework |
+| **Metamodel Explorer** | https://technehub-labs.github.io/metamodel/ |
+| **Meta Framework Explorer** | https://technehub-labs.github.io/dea-metaframework/ |
+| **TechNeHub Labs root** | https://technehub-labs.github.io |
+
+## See also
+
+- [`../REPORT.md`](../REPORT.md) — Enterprise Concept Framework v2.0 (this metamodel instantiates its constructs)
+- [`../framework/matrix.md`](../framework/matrix.md) — The 7×7 ECF matrix that Business Capability's `ecfCoordinates` references
+- [`../framework/constructs.md`](../framework/constructs.md) — The 8 formal constructs the metamodel formalizes
+- [`technehub-labs/dea-metamodel`](https://github.com/technehub-labs/dea-metamodel) — the parallel repo for downstream catalog schema
