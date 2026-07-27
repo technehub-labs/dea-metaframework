@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/technehub-labs/dea-metaframework/schemas/entity.schema.json",
+  "title": "Enterprise Concept Framework — Business Object",
+  "description": "Canonical business object catalog entry. Every business object in the matrix lives in one cell of D × S (one of 7 domains × 7 stages).",
+  "type": "object",
+  "required": ["id", "name", "domain", "stage", "version"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier; convention 'ns.object.NNN' e.g. 'tel.subscriber.001'",
+      "pattern": "^[a-z]+\\.[a-z]+\\.\\d+$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the object",
+      "minLength": 1
+    },
+    "domain": {
+      "type": "string",
+      "description": "ECF domain (row of the matrix). One of 7 enumerated values.",
+      "enum": [
+        "Governance & Existence",
+        "Supply & Resources",
+        "People & Organization",
+        "Customer & Demand",
+        "Product & Offering",
+        "Operations & Delivery",
+        "Finance & Value"
+      ]
+    },
+    "stage": {
+      "type": "string",
+      "description": "ECF lifecycle stage (column of the matrix). One of 7 enumerated values.",
+      "enum": [
+        "Conceive",
+        "Design",
+        "Build / Acquire",
+        "Deploy / Activate",
+        "Operate / Deliver",
+        "Measure / Learn",
+        "Retire / Renew"
+      ]
+    },
+    "attributes": {
+      "type": "array",
+      "description": "Typed attribute list for the object",
+      "items": {
+        "type": "object",
+        "required": ["name", "type"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "type": {
+            "type": "string",
+            "enum": ["string", "integer", "decimal", "boolean", "enum", "ref", "date", "datetime"]
+          },
+          "required": { "type": "boolean", "default": false },
+          "enumValues": {
+            "type": "array",
+            "description": "Allowed values when type is 'enum'",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "owners": {
+      "type": "array",
+      "description": "Actors responsible for this object",
+      "items": {
+        "type": "object",
+        "required": ["actorId", "role"],
+        "additionalProperties": false,
+        "properties": {
+          "actorId": { "type": "string", "minLength": 1 },
+          "role": { "type": "string", "enum": ["primary", "secondary"] }
+        }
+      }
+    },
+    "relatedObjects": {
+      "type": "array",
+      "description": "Other business objects this object relates to",
+      "items": {
+        "type": "object",
+        "required": ["id", "rel"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string" },
+          "rel": {
+            "type": "string",
+            "description": "Relationship verb. Examples: 'subscribed-to', 'uses', 'produces', 'consumes', 'funded-by'."
+          }
+        }
+      }
+    },
+    "complianceTags": {
+      "type": "array",
+      "description": "Applicable compliance / regulatory tags",
+      "items": {
+        "type": "string",
+        "examples": ["KYC", "ASC-606", "GDPR", "SOX", "SOC2", "data-retention"]
+      }
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version or YYYY.MM snapshot identifier",
+      "pattern": "^(\\d+\\.\\d+\\.\\d+|\\d{4}\\.\\d{2})$"
+    }
+  },
+  "examples": [
+    {
+      "id": "tel.subscriber.001",
+      "name": "Subscriber",
+      "domain": "Customer & Demand",
+      "stage": "Deploy / Activate",
+      "attributes": [
+        { "name": "msisdn", "type": "string", "required": true },
+        { "name": "imsi",   "type": "string", "required": true },
+        { "name": "planId", "type": "ref",    "required": true },
+        { "name": "status", "type": "enum",   "required": true }
+      ],
+      "owners": [
+        { "actorId": "care-ops",          "role": "primary" },
+        { "actorId": "revenue-assurance", "role": "secondary" }
+      ],
+      "relatedObjects": [
+        { "id": "tel.plan.5g-pre", "rel": "subscribed-to" },
+        { "id": "tel.circuit.7",   "rel": "uses" }
+      ],
+      "complianceTags": ["KYC", "ASC-606", "data-retention"],
+      "version": "2026.07"
+    },
+    {
+      "id": "dig.user.001",
+      "name": "User account",
+      "domain": "Customer & Demand",
+      "stage": "Deploy / Activate",
+      "attributes": [
+        { "name": "userId",    "type": "string", "required": true },
+        { "name": "email",     "type": "string", "required": true },
+        { "name": "planTier",  "type": "enum",   "required": true }
+      ],
+      "owners": [{ "actorId": "growth-team", "role": "primary" }],
+      "complianceTags": ["GDPR"],
+      "version": "2026.07"
+    }
+  ]
+}

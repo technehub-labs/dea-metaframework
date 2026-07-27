@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: >-
+  If you use the Enterprise Concept Framework in academic or commercial
+  work, please cite it using the metadata below.
+title: "Enterprise Concept Framework"
+version: 2.0.0
+date-released: 2026-07-27
+license: MIT
+license-url: https://github.com/technehub-labs/dea-metaframework/blob/main/LICENSE
+type: software
+url: https://github.com/technehub-labs/dea-metaframework
+repository: https://github.com/technehub-labs/dea-metaframework
+repository-code: https://github.com/technehub-labs/dea-metaframework
+repository-artifact: https://technehub-labs.github.io/dea-metaframework/
+authors:
+  - family-names: Otchere
+    given-names: Emmanuel A.
+    affiliation: TechNeHub Labs
+    email: software.engineer@technehub.com
+keywords:
+  - enterprise-architecture
+  - axiom-derived-framework
+  - 7x7-matrix
+  - lifecycle
+  - digital-enterprise
+  - technehub-labs
+  - dea
+abstract: >-
+  The Enterprise Concept Framework (ECF) is a descriptive instrument:
+  every enterprise can be completely described as the product of two
+  partitions — the kind of work it does (7 domains) and the phases
+  that work passes through (7 stages). The framework is axiom-derived
+  from a single grounding axiom, lifecycle-aware (every object passes
+  through every stage), and industry-agnostic. ECF is the conceptual
+  skeleton of the TechNeHub Labs DEA ecosystem.

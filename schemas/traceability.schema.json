@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/technehub-labs/dea-metaframework/schemas/traceability.schema.json",
+  "title": "Enterprise Concept Framework — Lifecycle Traceability",
+  "description": "End-to-end traceability for a single business object: object → its current stage → the event that triggered transition → the actor who performed it → the cell address.",
+  "type": "object",
+  "required": ["objectId", "lifecycle"],
+  "additionalProperties": false,
+  "properties": {
+    "objectId": {
+      "type": "string",
+      "description": "Reference to the Business Object (id in entity.schema.json)"
+    },
+    "snapshotVersion": {
+      "type": "string",
+      "description": "Matrix snapshot this trace belongs to",
+      "pattern": "^(\\d+\\.\\d+\\.\\d+|\\d{4}\\.\\d{2})$"
+    },
+    "lifecycle": {
+      "type": "array",
+      "description": "Ordered sequence of stage transitions; the full lifecycle.",
+      "items": {
+        "type": "object",
+        "required": ["stage", "cell", "enteredAt"],
+        "additionalProperties": false,
+        "properties": {
+          "stage": {
+            "type": "string",
+            "enum": [
+              "Conceive",
+              "Design",
+              "Build / Acquire",
+              "Deploy / Activate",
+              "Operate / Deliver",
+              "Measure / Learn",
+              "Retire / Renew"
+            ]
+          },
+          "cell": {
+            "type": "string",
+            "description": "Cell address in the matrix, formatted as 'Domain × Stage' e.g. 'Customer & Demand × Operate / Deliver'"
+          },
+          "enteredAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "exitedAt": {
+            "type": "string",
+            "format": "date"
+          },
+          "triggerEvent": {
+            "type": "string",
+            "description": "Event that moved the object INTO this stage"
+          },
+          "performedBy": {
+            "type": "string",
+            "description": "Actor who moved the object INTO this stage"
+          },
+          "dependencies": {
+            "type": "array",
+            "description": "Object IDs of cells this stage's work depends on (used to compute impact closure)",
+            "items": { "type": "string" }
+          }
+        }
+      }
+    },
+    "currentCell": {
+      "type": "string",
+      "description": "Where the object is right now — should match the last entry in lifecycle[].cell"
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Computed lifecycle metrics",
+      "additionalProperties": false,
+      "properties": {
+        "lifecycleCompleteness": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "|stages traversed| / 7"
+        },
+        "impactClosure": {
+          "type": "array",
+          "description": "Transitive closure of dependencies",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "objectId": "tel.subscriber.001",
+      "snapshotVersion": "2026.07",
+      "lifecycle": [
+        { "stage": "Conceive",                "cell": "Customer & Demand × Conceive",             "enteredAt": "2026-01-15", "exitedAt": "2026-01-22", "triggerEvent": "market-research",  "performedBy": "growth-team" },
+        { "stage": "Design",                  "cell": "Customer & Demand × Design",               "enteredAt": "2026-01-22", "exitedAt": "2026-02-05", "triggerEvent": "persona-approval", "performedBy": "product-design" },
+        { "stage": "Build / Acquire",         "cell": "Customer & Demand × Build / Acquire",      "enteredAt": "2026-02-05", "exitedAt": "2026-02-10", "triggerEvent": "signup-flow-ship", "performedBy": "engineering" },
+        { "stage": "Deploy / Activate",       "cell": "Customer & Demand × Deploy / Activate",    "enteredAt": "2026-02-10",                              "triggerEvent": "first-call",       "performedBy": "network-ops" }
+      ],
+      "currentCell": "Customer & Demand × Deploy / Activate",
+      "metrics": {
+        "lifecycleCompleteness": 0.571,
+        "impactClosure": ["tel.plan.5g-pre", "tel.circuit.7", "tel.billing-account.7"]
+      }
+    }
+  ]
+}

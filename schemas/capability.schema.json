@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/technehub-labs/dea-metaframework/schemas/capability.schema.json",
+  "title": "Enterprise Concept Framework — Capability",
+  "description": "Capability map entry. Capabilities attach to cells (domain, stage) and are performed by actors who consume resources.",
+  "type": "object",
+  "required": ["id", "name", "cell", "actors"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique capability identifier, e.g. 'cap.billing.mediate'",
+      "pattern": "^cap\\.[a-z]+(\\.[a-z]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "description": "Display name of the capability",
+      "minLength": 1
+    },
+    "cell": {
+      "type": "object",
+      "description": "Cell address — (domain, stage) — the matrix cell this capability lives in",
+      "required": ["domain", "stage"],
+      "additionalProperties": false,
+      "properties": {
+        "domain": {
+          "type": "string",
+          "enum": [
+            "Governance & Existence",
+            "Supply & Resources",
+            "People & Organization",
+            "Customer & Demand",
+            "Product & Offering",
+            "Operations & Delivery",
+            "Finance & Value"
+          ]
+        },
+        "stage": {
+          "type": "string",
+          "enum": [
+            "Conceive",
+            "Design",
+            "Build / Acquire",
+            "Deploy / Activate",
+            "Operate / Deliver",
+            "Measure / Learn",
+            "Retire / Renew"
+          ]
+        }
+      }
+    },
+    "actors": {
+      "type": "array",
+      "description": "Actors (person / team / system) who perform this capability",
+      "items": {
+        "type": "object",
+        "required": ["actorId", "role"],
+        "additionalProperties": false,
+        "properties": {
+          "actorId": { "type": "string" },
+          "role": { "type": "string", "enum": ["primary", "secondary", "reviewer"] }
+        }
+      }
+    },
+    "resources": {
+      "type": "array",
+      "description": "Resources consumed by this capability",
+      "items": {
+        "type": "object",
+        "required": ["type", "name"],
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["spectrum", "compute", "database", "network", "budget", "hours", "tool", "license"]
+          },
+          "name": { "type": "string" },
+          "unit": { "type": "string" }
+        }
+      }
+    },
+    "events": {
+      "type": "array",
+      "description": "Events that trigger or result from this capability",
+      "items": {
+        "type": "object",
+        "required": ["name", "direction"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string", "description": "Event name, e.g. 'signup', 'cut-over', 'incident'" },
+          "direction": { "type": "string", "enum": ["trigger", "result"] }
+        }
+      }
+    },
+    "description": {
+      "type": "string",
+      "description": "Free-text description"
+    }
+  },
+  "examples": [
+    {
+      "id": "cap.billing.mediate",
+      "name": "Mediate billing events",
+      "cell": { "domain": "Finance & Value", "stage": "Operate / Deliver" },
+      "actors": [{ "actorId": "revenue-assurance", "role": "primary" }],
+      "resources": [
+        { "type": "compute", "name": "mediation-cluster", "unit": "vCPU-hours" }
+      ],
+      "events": [
+        { "name": "cdr-arrival", "direction": "trigger" },
+        { "name": "rated-record", "direction": "result" }
+      ],
+      "description": "Process raw CDRs into rated billing records via the mediation engine."
+    }
+  ]
+}

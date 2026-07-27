@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meta Framework Explorer — TechNeHub Labs</title>
+  <meta name="description" content="The 7×7 axiom-derived matrix for describing any enterprise. Interactive viewer with Foundation, Telecom, and Digital Services scenarios." />
+  <link rel="stylesheet" href="./assets/site.css" />
+</head>
+<body>
+
+<!-- ─── Brand Banner ─────────────────────────────────── -->
+<header class="brand-banner">
+  <div class="brand-inner">
+    <a class="brand-mark" href="./" aria-label="Meta Framework home">
+      <span class="brand-mark-dot"></span>
+      <span class="brand-mark-label">ECF</span>
+    </a>
+    <div class="brand-text">
+      <h1 class="brand-title">Meta Framework Explorer</h1>
+      <p class="brand-tagline">A 7×7 axiom-derived matrix — every enterprise described by what it does and how its work evolves.</p>
+    </div>
+  </div>
+</header>
+
+<!-- ─── Page Intro ─────────────────────────────────────── -->
+<section class="page-intro">
+  <div class="page-intro-grid">
+    <div class="intro-block">
+      <span class="intro-eyebrow">Axiom</span>
+      <h2 class="intro-heading">Where the matrix comes from</h2>
+      <p class="intro-text">A single sentence — <em>"an enterprise is any bounded entity that persists by exchanging value with its environment"</em> — generates seven domains. A universal lifecycle of seven stages partitions the work of any object over time. The framework is not imported from eTOM, ITIL, or COBIT; it is derived from the definition of an enterprise itself.</p>
+    </div>
+    <div class="intro-block">
+      <span class="intro-eyebrow">How to navigate</span>
+      <h2 class="intro-heading">Browse the matrix</h2>
+      <p class="intro-text">Pick a scenario below — Foundation, Telecom, or Digital Services — and click any cell to inspect its objects, capabilities, and handoffs. The matrix is the same shape across industries; only the cell content changes. Same skeleton, same rigor, every enterprise.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── Scenario Toggle ──────────────────────────────── -->
+<nav class="layer-bar" aria-label="Scenario selector">
+  <span class="layer-bar-label">Scenario</span>
+  <button class="layer-btn active" data-scenario="foundation">Foundation</button>
+  <button class="layer-btn" data-scenario="telecom">Telecom</button>
+  <button class="layer-btn" data-scenario="digital">Digital Services</button>
+  <span class="layer-bar-spacer"></span>
+  <a class="badge repo-link" href="https://github.com/technehub-labs/dea-metaframework" target="_blank" rel="noopener">dea-metaframework ↗</a>
+  <a class="badge repo-link" href="https://github.com/technehub-labs/dea-metamodel" target="_blank" rel="noopener">dea-metamodel ↗</a>
+</nav>
+
+<!-- ─── Section divider ──────────────────────────────── -->
+<div class="section-divider">
+  <div class="section-divider-line"></div>
+  <span class="section-divider-label">The 7 × 7 Matrix</span>
+  <div class="section-divider-line"></div>
+</div>
+
+<!-- ─── Matrix Canvas ─────────────────────────────────── -->
+<main class="canvas-wrapper">
+  <div class="matrix-container">
+    <table class="matrix" id="matrix" aria-label="7×7 ECF matrix">
+      <thead>
+        <tr>
+          <th class="matrix-corner" scope="col">
+            <span class="matrix-corner-row">Domain ↓</span>
+            <span class="matrix-corner-col">Stage →</span>
+          </th>
+          <th class="stage-head" scope="col" data-stage="1">
+            <span class="stage-num">1</span><span class="stage-name">Conceive</span>
+          </th>
+          <th class="stage-head" scope="col" data-stage="2">
+            <span class="stage-num">2</span><span class="stage-name">Design</span>
+          </th>
+          <th class="stage-head" scope="col" data-stage="3">
+            <span class="stage-num">3</span><span class="stage-name">Build</span>
+          </th>
+          <th class="stage-head" scope="col" data-stage="4">
+            <span class="stage-num">4</span><span class="stage-name">Activate</span>
+          </th>
+          <th class="stage-head" scope="col" data-stage="5">
+            <span class="stage-num">5</span><span class="stage-name">Operate</span>
+          </th>
+          <th class="stage-head" scope="col" data-stage="6">
+            <span class="stage-num">6</span><span class="stage-name">Improve</span>
+          </th>
+          <th class="stage-head" scope="col" data-stage="7">
+            <span class="stage-num">7</span><span class="stage-name">Retire</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody id="matrixBody">
+        <!-- Built by JS -->
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<!-- ─── Legend ─────────────────────────────────────────── -->
+<aside class="legend-panel" id="legendPanel" aria-label="Legend">
+  <div class="legend-header">
+    <h3>Legend</h3>
+    <button class="legend-close" id="legendClose" aria-label="Close legend">×</button>
+  </div>
+  <div class="legend-body">
+    <div class="legend-section">
+      <h4>Cell glyphs</h4>
+      <div class="legend-row"><span class="legend-glyph">●</span><span class="legend-text">Active — has objects, capabilities, actors</span></div>
+      <div class="legend-row"><span class="legend-glyph">★</span><span class="legend-text">High-risk handoff — invest attention here</span></div>
+      <div class="legend-row"><span class="legend-glyph">·</span><span class="legend-text">Empty — needs investigation</span></div>
+    </div>
+    <div class="legend-section">
+      <h4>Stage legend</h4>
+      <div class="legend-row stage-1"><span>Conceive</span></div>
+      <div class="legend-row stage-2"><span>Design</span></div>
+      <div class="legend-row stage-3"><span>Build</span></div>
+      <div class="legend-row stage-4"><span>Activate</span></div>
+      <div class="legend-row stage-5"><span>Operate</span></div>
+      <div class="legend-row stage-6"><span>Improve</span></div>
+      <div class="legend-row stage-7"><span>Retire</span></div>
+    </div>
+    <div class="legend-section">
+      <h4>Where this fits</h4>
+      <p class="legend-foot">Every cell of this matrix corresponds to a Business Capability in the <a href="https://github.com/technehub-labs/dea-metamodel" target="_blank" rel="noopener">DEA Metamodel</a>, carrying <code>ecfCoordinates: (Domain, Stage)</code>. The 7×7 is the top two levels of <code>dea-catalog-taxonomy</code>.</p>
+    </div>
+  </div>
+</aside>
+<button class="legend-toggle" id="legendToggle" aria-label="Toggle legend">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/></svg>
+  <span>Legend</span>
+</button>
+
+<!-- ─── Detail Panel (cell inspector) ─────────────────── -->
+<section class="detail-panel hidden" id="detailPanel" aria-label="Cell details">
+  <header class="detail-header">
+    <div class="detail-headline">
+      <span class="detail-coords" id="detailCoords">— × —</span>
+      <h2 class="detail-title" id="detailTitle">—</h2>
+      <span class="detail-glyph" id="detailGlyph">●</span>
+    </div>
+    <button class="detail-close" id="detailClose" aria-label="Close detail">×</button>
+  </header>
+  <div class="detail-body">
+    <p class="detail-cell-text" id="detailText">—</p>
+
+    <div class="detail-section" id="detailMeta">
+      <h3 class="detail-section-heading">Cell metadata</h3>
+      <dl class="detail-meta-list" id="detailMetaList"></dl>
+    </div>
+
+    <div class="detail-section">
+      <h3 class="detail-section-heading">Capability actors</h3>
+      <div class="detail-actor-list" id="detailActors"></div>
+    </div>
+
+    <div class="detail-section">
+      <h3 class="detail-section-heading">Linked metamodel entities</h3>
+      <div class="detail-meta-list" id="detailEntities"></div>
+    </div>
+
+    <div class="detail-section detail-actions">
+      <a class="detail-link-card" id="detailRepoLink" href="https://github.com/technehub-labs/dea-metaframework/blob/main/REPORT.md" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Framework report (REPORT.md)
+      </a>
+      <a class="detail-link-card secondary" id="detailMetamodelLink" href="https://technehub-labs.github.io/metamodel/" target="_blank" rel="noopener">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="9"/></svg>
+        Metamodel Explorer
+      </a>
+    </div>
+  </div>
+</section>
+
+<script src="./assets/site.js"></script>
+</body>
+</html>
