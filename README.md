@@ -111,8 +111,6 @@ bump for any change to the axiom, axes, or matrix construction rules.
 
 ## License
 
-MIT — see [`LICENSE`](./LICENSE).
-
-## Citation
+Apache 2.0 — see [LICENSE](./LICENSE).## Citation
 
 See [`CITATION.cff`](./CITATION.cff) for cite-as metadata.
