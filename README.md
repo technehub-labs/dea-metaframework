@@ -79,9 +79,9 @@ and Section 9 (the foundation matrix) cover the essentials in 15 minutes.
                         │        ▼                  ▼         │
                         │  ┌────────────────────────────────┐ │
                         │  │ DEA Catalogs & Tools           │ │
-                        │  │ dea-catalog-taxonomy           │ │
+                        │  │ dea-catalog-concepts           │ │
                         │  │ dea-catalog-patterns           │ │
-                        │  │ dea-catalog-standards          │ │
+                        │  │ dea-catalog-guardrails         │ │
                         │  │ dea-catalog-metrics            │ │
                         │  │ dea-catalog-…                  │ │
                         │  └────────────────────────────────┘ │
