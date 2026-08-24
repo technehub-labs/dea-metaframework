@@ -28,6 +28,8 @@ catalogs, the conceptual layer above the tooling.
 | [`framework/`](./framework) | Modular artifacts extracted from the report — axiom, matrix, case studies, formal notation, metrics. |
 | [`metamodel/`](./metamodel) | The Enterprise Concepts Metamodel (Section 16 + Appendix A) — the 19-entity ER model that formalizes the framework's constructs. |
 | [`schemas/`](./schemas) | JSON Schemas for the framework's derived artifacts — entity catalog, capability map, lifecycle traceability matrix. |
+| [`docs/terminology/`](./docs/terminology) | Terminology alignment with the OpenDEA Concepts Model — `Domain`/`Stage` are reserved ECF terms (CR-CM-000 / CR-CM-000A). |
+| [`change-requests/`](./change-requests) | Cross-references to change requests in the canonical CR repository (`dea-metamodel`). |
 | [`pages/`](./pages) | GitHub Pages source — interactive 7×7 matrix viewer + metamodel explorer. |
 
 ---
