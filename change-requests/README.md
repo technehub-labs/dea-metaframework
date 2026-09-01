@@ -9,7 +9,8 @@ cross-references point at the canonical CR repository (`dea-metamodel`).
 | CR | Title | Status | Notes |
 |----|-------|--------|-------|
 | [CR-ECF-001](./CR-ECF-001.md) | ECF Architectural Reconciliation | Merged (PR #4) | Positions ECF as an OpenDEA organizing framework/profile; establishes WSF -> OpenDEA -> ECF -> Metamodel -> Catalogs; lands `framework/architecture.md`. |
-| [CR-ECF-002](./CR-ECF-002.md) | ECF Semantic Boundary | Proposed (PR open) | Canonical definitions for Domain, Stage, Coordinate, Context; replaces container semantics with contextualization; capability identity and process topology boundaries. |
+| [CR-ECF-002](./CR-ECF-002.md) | ECF Semantic Boundary | Merged (PR #5) | Canonical definitions for Domain, Stage, Coordinate, Context; replaces container semantics with contextualization; capability identity and process topology boundaries. |
+| [CR-ECF-003](./CR-ECF-003.md) | ECF Domain Grounding | Proposed (PR open) | Formal grounding records for the seven Domains; compound-name boundary audit; orthogonality and completeness checks; renaming rule. |
 
 Parked (landed in dependency order; each lands with its own PR):
 
