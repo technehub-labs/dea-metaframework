@@ -12,7 +12,15 @@ cross-references point at the canonical CR repository (`dea-metamodel`).
 | [CR-ECF-002](./CR-ECF-002.md) | ECF Semantic Boundary | Merged (PR #5) | Canonical definitions for Domain, Stage, Coordinate, Context; replaces container semantics with contextualization; capability identity and process topology boundaries. |
 | [CR-ECF-003](./CR-ECF-003.md) | ECF Domain Grounding | Merged (PR #6) | Formal grounding records for the seven Domains; compound-name boundary audit; orthogonality and completeness checks; renaming rule. |
 | [CR-ECF-004](./CR-ECF-004.md) | ECF Lifecycle Grounding | Merged (PR #7) | Per-Stage grounding records; Stage distinct from object State, process level, and DERA phase; existing DERA mapping retained as a mapping; multi-stage participation rule. |
-| [CR-ECF-005](./CR-ECF-005.md) | ECF Coordinate Specification | Proposed (PR open) | The ECF Conformance Gate: canonical normative + machine-readable coordinate specification; canonical PascalCase Domain/Stage enums; identifier pattern; no-cell-filling rule; conformance requirements. |
+| [CR-ECF-005](./CR-ECF-005.md) | ECF Coordinate Specification | Merged (PR #8) | The ECF Conformance Gate: canonical normative + machine-readable coordinate specification; canonical PascalCase Domain/Stage enums; identifier pattern; no-cell-filling rule; conformance requirements. |
+
+## Conformance Gate series
+
+| CR | Title | Status | Notes |
+|----|-------|--------|-------|
+| [CR-ECF-CG-001](./CR-ECF-CG-001.md) | ECF Conformance Gate Definition | Proposed (this PR) | The umbrella: five conformance layers, four states, gate conditions, evidence, governance principle (the gate tests consumers; it does not modify the contract). |
+
+Downstream gate CRs (CG-002..CG-006) land in dependency order; each ships with its own PR once CG-001 is merged.
 
 Parked (landed in dependency order; each lands with its own PR):
 
