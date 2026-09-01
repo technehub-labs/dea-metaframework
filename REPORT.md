@@ -103,20 +103,67 @@ The domains are *derived* — each falls out of the axiom as a logical consequen
 
 ## 6. Formal Definitions
 
-The framework uses eight constructs:
+The ECF coordinate system is defined by three primitives:
 
-- **Business object.** A thing the enterprise cares about — a customer, a circuit, a feature flag, a grant. The atom of the matrix.
-- **Entity.** A business object with a unique identity and a persistent state.
-- **Capability.** The ability to do something with an object — provision, bill, monitor, retire.
-- **Value stream.** The end-to-end flow that carries an object across all seven stages.
-- **State.** A named phase in an object's lifecycle — proposed, designed, provisioned, active, retired.
-- **Event.** A state transition — signup, cut-over, incident, sunset.
-- **Actor.** The owner or performer of a capability — a person, team, or system.
-- **Resource.** The asset consumed by a capability — spectrum, compute, budget, hours.
+- **Domain.** One of the seven canonical enterprise concern dimensions of
+  ECF: Governance & Existence; Supply & Resources; People & Organization;
+  Customer & Demand; Product & Offering; Operations & Delivery;
+  Finance & Value.
+- **Stage.** One of the seven canonical lifecycle dimensions of ECF:
+  Conceive; Design; Build; Activate; Operate; Improve; Retire.
+- **Coordinate.** The ordered pair `(Domain, Stage)`. The ECF matrix
+  `M = D x S` is the cartesian product of the seven Domains and the seven
+  Stages; `|M| = 7 x 7 = 49`. A coordinate is identified by its ordered
+  pair; display labels are not semantic identity.
+- **Context.** The semantic interpretation of an ECF coordinate for a
+  particular modeling concern (Process Context, Capability Context,
+  Architecture Context, Assessment Context, and so on). The consuming
+  model defines the context.
+
+The framework contextualizes the following named things:
+
+- **Business object.** A thing the enterprise cares about: a customer, a
+  circuit, a feature flag, a grant.
+- **Entity.** A business object with a unique identity and a persistent
+  state.
+- **Capability.** The ability to do something with an object: provision,
+  bill, monitor, retire.
+- **Value stream.** The end-to-end flow that carries an object across the
+  seven stages.
+- **State.** A named phase in an object's lifecycle: proposed, designed,
+  provisioned, active, retired. State is a property of an object and is
+  distinct from ECF Stage.
+- **Event.** A state transition: signup, cut-over, incident, sunset.
+- **Actor.** The owner or performer of a capability: a person, team, or
+  system.
+- **Resource.** The asset consumed by a capability: spectrum, compute,
+  budget, hours.
 
 ### How Constructs Relate
 
-Each cell **C(d, s)** holds the objects in domain *d* currently in stage *s*, the capabilities that act on them, the events that move them, the actors who perform, and the resources consumed. A cell is a snapshot of one domain at one stage — a bounded, inspectable unit of the enterprise.
+An enterprise concept is contextualized by one or more ECF coordinates:
+
+```
+Enterprise Concept
+        |
+        | contextualized by
+        v
+ECF Coordinate(s) : 2^(Domain x Stage)
+```
+
+A coordinate is not a container. Whether zero, one, or many modeled
+elements are appropriate within a context is determined by the consuming
+catalog. Capability, Process, Function, Activity, and Task each retain
+their own semantic identity; the ECF coordinate provides classification
+context, not identity:
+
+```
+Capability  != Process  != Function  != Activity  != Task
+```
+
+ECF recursion (a coordinate contextualizing a further specialized model)
+is independent of Business Process decomposition (L0 -> L1 -> L2 -> L3 ->
+L4). The two mechanisms are governed separately.
 
 ---
 
@@ -148,7 +195,13 @@ Each cell **C(d, s)** holds the objects in domain *d* currently in stage *s*, th
 
 ### 7.3 Why the Split Is MECE
 
-Domains partition by *kind of work*. A capability belongs to exactly one domain because it answers exactly one "what" question. Stages partition by *phase*. An object is in exactly one stage at a time because its state is singular. Together the seven domains and seven stages cover the enterprise completely.
+Domains partition by *kind of work*. A capability is contextualized by one
+or more domains according to the consuming model's semantics. Stages
+partition by *lifecycle phase*. A process may traverse multiple stages; an
+object's state is singular, but ECF Stage is a context, not a state.
+Together the seven domains and seven stages cover the enterprise
+classification space completely; the matrix is the cartesian product of
+the two partitions, not a containment relation.
 
 ---
 
@@ -158,12 +211,11 @@ Domains partition by *kind of work*. A capability belongs to exactly one domain 
 
 1. **Map domains to rows.** Place each of the seven domains on a row, in axiomatic order: governance first, finance last.
 2. **Map stages to columns.** Place each of the seven stages on a column, left to right, in lifecycle order.
-3. **Place objects in cells.** Each business object goes in the cell at the intersection of its domain and its current stage.
-4. **One object, one primary cell.** If an object spans domains, model it as a linking object — never duplicate it across rows.
-5. **Capabilities map to earliest stage.** A capability belongs to the stage where it is first initiated, not where it runs longest.
-6. **Attach capabilities.** Within each cell, list the capabilities that act on those objects.
-7. **Mark events and actors.** Annotate each cell with the events that trigger transitions and the actors who perform.
-8. **Version the matrix.** Snapshot at each planning cycle; diff to see what moved.
+3. **Contextualize concepts by coordinates.** Each enterprise concept is contextualized by one or more `(Domain, Stage)` coordinates according to the semantics of the consuming model.
+4. **Multi-coordinate contextualization is supported where legitimate.** A single concept may participate in multiple coordinates, governed by the consuming catalog; the existence of multiple coordinates does not imply multiple identities.
+5. **Capability identity is independent of coordinate.** A capability has its own semantic identity and business meaning; the ECF coordinate is classification context, not capability identity. A capability's primary coordinate may be established as the governed principal contextual placement; "earliest initiation" is at most a catalog placement heuristic, not an ECF semantic rule.
+6. **Mark events and actors.** Annotate each context with the events that trigger transitions and the actors who perform.
+7. **Version the matrix.** Snapshot at each planning cycle; diff to see what moved.
 
 ### 8.2 Value Stream Overlay Routes
 
@@ -197,12 +249,14 @@ A telco's Finance × Design holds a "tariff model"; a non-profit's holds a "fund
 
 The matrix is a living artifact. Each planning cycle produces a snapshot. Objects move across columns as they mature; capabilities shift within cells as the enterprise learns. Diffing two snapshots reveals exactly what changed.
 
-Any cell can be decomposed into its own 7×7 sub-matrix — the cell's objects become the enterprise described by the sub-matrix. This gives infinite depth without changing the top-level logic. The framework scales because it does not grow; it recurses. A 50-person charity and a 500,000-person telco occupy the same grid — only the depth of decomposition differs.
+Any cell can be decomposed into its own 7×7 sub-matrix. This recursive applicability is governed by the consuming model, not mandated by the ECF. A coordinate may be used as the organizing context for a further specialized model; the specialization is not required and does not imply that every coordinate must be recursively decomposed.
+
+ECF recursion is independent of Business Process decomposition. A Business Process traverses the seven stages according to its own process architecture; the ECF coordinate provides the lifecycle context in which the process is considered, not the process hierarchy.
 
 ### 8.5 Anti-Patterns
 
 - **Mixing axes:** putting a stage inside the domain column. The axes must stay orthogonal.
-- **Overloading a cell:** stuffing a cell with objects from another domain to avoid creating a new row.
+- **Overloading a coordinate:** treating a coordinate as a container for every object in a domain, irrespective of context.
 - **Skipping stages:** assuming an object is "born live." Every object has a Conceive and a Build stage.
 - **Static matrix:** treating the matrix as a one-time diagram. It must version with the enterprise.
 
@@ -370,21 +424,27 @@ A canonical business object catalog entry, with typed attributes, structured own
 type Domain = 1..7;   // rows
 type Stage  = 1..7;   // columns
 
-// the matrix is the cartesian product
-M = D × S = { (d, s) | d ∈ D, s ∈ S }
+// the matrix is the cartesian product of seven Domains and seven Stages
+M = D x S = { (d, s) | d in D, s in S }
 
-// a cell holds objects + their capabilities
-type Cell_{d,s} = {
-  objects: Entity[],
-  caps: Capability[]
-}
+// |M| = 49 coordinates; each identified by its ordered pair
+type Coordinate = (Domain, Stage)
+
+// a coordinate carries context, not identity
+contextualizes : Entity x Coordinate -> Context
+
+// an entity may participate in multiple coordinates where governed
+// by the consuming catalog (multi-coordinate contextualization)
+coordinates : Entity -> 2^Coordinate
+
+// a process may traverse multiple Stages
+stages : Process -> 2^Stage
 
 // an object's lifecycle is a path
-lifecycle(o) = ⟨ s₁ → s₂ → … → s₇ ⟩
-
-// any cell recurses into a sub-matrix
-decompose : Cell → M   // C(d,s) → 7×7 sub-grid
+lifecycle(o) = < s_1 -> s_2 -> ... -> s_7 >
 ```
+
+The deprecated `Cell_{d,s}` container type and the universal `decompose : Cell -> M` recursive rule are removed from the framework. ECF coordinates are not containers, and recursive applicability is governed by the consuming model.
 
 ### Traceability Functions
 
@@ -392,8 +452,8 @@ decompose : Cell → M   // C(d,s) → 7×7 sub-grid
 // who owns an object
 owner : Entity → Actor
 
-// what state it's in (which column)
-state : Entity → Stage
+// what state it's in (object state, not ECF Stage)
+state : Entity -> State
 
 // what it depends on (other cells)
 deps  : Entity → 2^Entity
@@ -468,7 +528,7 @@ This layer captures the enterprise's intent. Strategic objectives define what th
 - Business Capability `owned by` Organizational Unit (1 — 1..*)
 - Business Capability `produces/consumes` Business Object (1 — 0..*)
 
-This layer is the heart of the metamodel. The **Business Capability** entity carries an explicit `ecfCoordinates: (Domain, Stage)` attribute — it knows which cell of the 7×7 matrix it belongs to. Value streams are the directed routes through cells (Section 8.2); business processes are the step-by-step implementations; organizational units are the owners; and journey touchpoints are where the customer experiences the value stream.
+This layer is the heart of the metamodel. The **Business Capability** entity references one or more `ecfCoordinates: (Domain, Stage)` attributes; coordinates are classification context, not capability identity. Value streams are the directed routes through ECF coordinates (Section 8.2); business processes are the step-by-step implementations; organizational units are the owners; and journey touchpoints are where the customer experiences the value stream.
 
 ### 16.3 Layer 3 — Digital Ecosystem & Intelligence (The 'Digital Era')
 
@@ -530,7 +590,7 @@ Layer 5 is cross-cutting: it is not a sequential phase but a continuous concern.
 
 ### 16.6 How the Metamodel Links to ECF
 
-Every entity in the metamodel lives in a cell of the 7×7 matrix. The **Business Capability** entity carries an explicit `ecfCoordinates: (Domain, Stage)` attribute — the metamodel knows which cell it is in.
+Entities in the metamodel are contextualized by ECF coordinates. The **Business Capability** entity references one or more `ecfCoordinates: (Domain, Stage)` attributes; coordinates are classification context, not the entity's identity. Whether a coordinate carries zero, one, or many modeled elements is determined by the consuming catalog, not by the ECF.
 
 The five layers map onto ECF as follows:
 
@@ -632,8 +692,8 @@ lifecycle(o) = |stages(o)| / 7
 A two-week sprint:
 
 ### Step 1 — Map (Days 1–4)
-Workshop with domain leads. Place every top-50 business object in a cell.
-- **Deliverable:** the first matrix snapshot.
+Workshop with domain leads. For each top-50 business concept, identify the ECF coordinate(s) that contextualize it; record the consuming catalog that owns the coordinate usage.
+- **Deliverable:** the first matrix snapshot, with coordinates marked as context references.
 
 ### Step 2 — Validate (Days 5–7)
 Walk each row and column with the operating teams. Confirm cell ownership, mark handoffs.

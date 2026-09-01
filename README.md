@@ -92,7 +92,7 @@ Start with [`REPORT.md`](./REPORT.md) — Sections 1–3 (intent, axiom, princip
 and Section 9 (the foundation matrix) cover the essentials in 15 minutes.
 
 ### Apply the framework in 5 Steps and 14 days
-- **Step 1 (Days 1–4)**: Map: place your top-50 business objects in cells.
+- **Step 1 (Days 1–4)**: Contextualize: for each top-50 business concept, identify the ECF coordinate(s) that contextualize it; record the consuming catalog that owns the coordinate usage.
 - **Step 2 (Days 5–7)**: Validate: walk each row and column with owners.
 - **Step 3 (Days 8–10)**: Metrics: compute coverage, coupling, lifecycle completeness.
 - **Step 4 (Days 11–13)**: Operate: wire into the planning cycle; snapshot each sprint.
