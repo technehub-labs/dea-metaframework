@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/technehub-labs/dea-metaframework/schemas/ecf-coordinate.schema.json",
+  "title": "ECF Coordinate",
+  "description": "An ECF Coordinate: the ordered pair (Domain, Stage). 7 x 7 = 49 coordinates; each is identified by its ordered pair, not by any display label (CR-ECF-005).",
+  "type": "object",
+  "required": ["domain", "stage"],
+  "additionalProperties": false,
+  "properties": {
+    "domain": {
+      "$ref": "https://github.com/technehub-labs/dea-metaframework/schemas/ecf-domain.schema.json",
+      "description": "Canonical ECF Domain value."
+    },
+    "stage": {
+      "$ref": "https://github.com/technehub-labs/dea-metaframework/schemas/ecf-stage.schema.json",
+      "description": "Canonical ECF Stage value."
+    },
+    "identifier": {
+      "type": "string",
+      "description": "Optional canonical identifier of the form 'ecf:<domain-identifier>.<stage-identifier>' using lowerCamelCase labels. When present, must match domain and stage.",
+      "pattern": "^ecf:[a-z][a-zA-Z0-9]*\\.[a-z][a-zA-Z0-9]*$"
+    },
+    "label": {
+      "type": "string",
+      "description": "Optional human-readable label of the form '<Domain Display> x <Stage Display>'."
+    },
+    "version": {
+      "type": "string",
+      "description": "Optional ECF specification version that defines the coordinate."
+    }
+  }
+}
