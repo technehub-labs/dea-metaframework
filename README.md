@@ -2,22 +2,28 @@
 
 **The 7×7 axiom-derived matrix for describing any enterprise.**
 
-This repo holds the **Meta Framework** of the TechNeHub Labs DEA ecosystem, 
-the conceptual skeleton beneath the
-[DEA Metamodel](../dea-metamodel) and every catalog in the
-DEA catalog orgs (`dea-catalog-*`).
+This repo holds the **Enterprise Concept Framework (ECF)**: the enterprise
+organizing framework of the TechNeHub Labs DEA ecosystem. ECF is an OpenDEA
+profile: it supplies the Domain x Stage coordinate system that contextualizes
+the concepts the [DEA Metamodel](../dea-metamodel) formally represents and the
+DEA catalogs (`dea-catalog-*`) instantiate.
 
 The framework is axiom-derived: in a single sentence, *an enterprise is any
 bounded entity that persists by exchanging value with its environment*,
-generates seven domains. 
-A universal lifecycle of seven stages partitions the work of any object over time. 
+generates seven domains.
+A universal lifecycle of seven stages partitions the work of any object over time.
 
-The matrix **M = D × S** is 49 cells, and every object, capability, event, actor, 
-and resource in the enterprise lives in one of them.
+The matrix **M = D × S** defines 49 ECF coordinates. Enterprise concepts are
+contextualized by one or more coordinates according to the semantics of the
+consuming model; a coordinate is a classification context, not an entity
+container.
 
-Together with the [DEA Metamodel](../dea-metamodel), this repo is the
-**Digital Ecosystem & Enterprise Metamoat**, the foundation above the
-catalogs, the conceptual layer above the tooling.
+ECF sits within the OpenDEA semantic architecture: the World Semantic
+Foundation (WSF) provides foundational semantics, OpenDEA specializes them for
+enterprise architecture, ECF organizes the enterprise domain/lifecycle space,
+and the metamodel plus catalogs carry formal representation and governed
+content. See
+[Position in the Semantic and OpenDEA Architecture](#position-in-the-semantic-and-opendea-architecture).
 
 ---
 
@@ -25,13 +31,57 @@ catalogs, the conceptual layer above the tooling.
 
 | Path | What it is |
 |------|-----------|
-| [`REPORT.md`](./REPORT.md) | Full walkthrough of the framework — intent, axiom, axes, rules, matrix, case studies, notation, metrics, adoption playbook. The single source of truth. |
-| [`framework/`](./framework) | Modular artifacts extracted from the report — axiom, matrix, case studies, formal notation, metrics. |
+| [`REPORT.md`](./REPORT.md) | Full walkthrough of the framework: intent, axiom, axes, rules, matrix, case studies, notation, metrics, adoption playbook. The authoritative explanatory synthesis; normative authority lives in [`framework/`](./framework) and the CR-governed change requests. |
+| [`framework/`](./framework) | Modular artifacts extracted from the report: axiom, matrix, case studies, formal notation, metrics; plus [`framework/architecture.md`](./framework/architecture.md), the normative architectural position (CR-ECF-001). |
 | [`metamodel/`](./metamodel) | The Enterprise Concepts Metamodel (Section 16 + Appendix A) — the 19-entity ER model that formalizes the framework's constructs. |
 | [`schemas/`](./schemas) | JSON Schemas for the framework's derived artifacts — entity catalog, capability map, lifecycle traceability matrix. |
 | [`docs/terminology/`](./docs/terminology) | Terminology alignment with the OpenDEA Concepts Model — `Domain`/`Stage` are reserved ECF terms (CR-CM-000 / CR-CM-000A). |
-| [`change-requests/`](./change-requests) | Cross-references to change requests in the canonical CR repository (`dea-metamodel`). |
+| [`change-requests/`](./change-requests) | Change requests governing this framework (CR-ECF series), plus cross-references to change requests in the canonical CR repository (`dea-metamodel`). |
 | [`pages/`](./pages) | GitHub Pages source — interactive 7×7 matrix viewer + metamodel explorer. |
+
+---
+
+## Position in the Semantic and OpenDEA Architecture
+
+ECF is an enterprise organizing framework within OpenDEA, grounded in the
+World Semantic Foundation (WSF). The normative statement of this position is
+[`framework/architecture.md`](./framework/architecture.md) (CR-ECF-001).
+
+```
+World Semantic Foundation (WSF)
+        foundational semantics
+                |
+                v
+OpenDEA Core Semantics
+        WSF specialized for enterprise architecture
+                |
+    +-----------+------------+-----------+
+    |           |            |           |
+ECF Profile   Business     Data       Technology
+(this repo)   Profile      Profile    Profile
+    |
+    v
+ECF Coordinates (Domain x Stage; 7 x 7 = 49)
+    |
+    |           +----------- other OpenDEA Profiles
+    v           v
+OpenDEA Metamodel
+        formal semantic representation
+                |
+                v
+Reference Catalogs
+        governed concept instances
+```
+
+Normative boundaries: `WSF != OpenDEA != ECF != DEA Metamodel != Catalog`.
+ECF organizes and contextualizes; the metamodel formally represents; catalogs
+instantiate governed concepts. Downstream consumers of the ECF contract:
+[`dea-metamodel`](https://github.com/technehub-labs/dea-metamodel) (ECF
+profile),
+[`dea-catalog-business-capabilities`](https://github.com/technehub-labs/dea-catalog-business-capabilities)
+(classification context, not capability identity), and
+[`dea-catalog-processes`](https://github.com/technehub-labs/dea-catalog-processes)
+(Process Context, not process identity).
 
 ---
 
@@ -54,42 +104,30 @@ and Section 9 (the foundation matrix) cover the essentials in 15 minutes.
 - [`schemas/traceability.schema.json`](./schemas/traceability.schema.json) — object → stage → event → actor end-to-end trace.
 
 ### Build on it
-- **DEA Metamodel** — [`technehub-labs/dea-metamodel`](../dea-metamodel) — entity
-  types and relationships formalize the framework's constructs. The
-  `Business Capability` entity carries `ecfCoordinates: (Domain, Stage)`.
-- **DEA Taxonomies** — the 7 domains × 7 stages are the top two levels of
-  `dea-catalog-taxonomy`.
-- **DEA Reference Architecture** — DERA's 4 phases group the 7 stages:
+- **DEA Metamodel**: [`technehub-labs/dea-metamodel`](../dea-metamodel); the
+  canonical semantic model. ECF is consumed there as an OpenDEA profile.
+- **Business Capability catalog**:
+  [`technehub-labs/dea-catalog-business-capabilities`](../dea-catalog-business-capabilities);
+  ECF coordinates are classification context, not capability identity.
+- **Business Process catalog**:
+  [`technehub-labs/dea-catalog-processes`](../dea-catalog-processes);
+  an ECF intersection establishes Process Context, not a Business Process.
+- **DEA Reference Architecture**: DERA's 4 phases map to the 7 stages:
   *Discover & Define* = Conceive + Design, *Design & Build* = Build + Activate,
-  *Deploy & Operate* = Operate + Improve, *Evolve & Retire* = Retire.
+  *Deploy & Operate* = Operate + Improve, *Evolve & Retire* = Retire. This is a
+  mapping, not an identity relationship.
 
 ---
 
 ## Where it fits
 
-```
-                        ┌──────────────────────────────────────┐
-                        │ The Digital Ecosystem & Enterprise   │
-                        │ Metamoat                             │
-                        │                                      │
-                        │  ┌────────────┐    ┌─────────────┐   │
-                        │  │   Meta     │    │             │   │
-                        │  │ Framework  │    │  Metamodel  │   │
-                        │  │ (this repo)│    │  (dea-      │   │
-                        │  │            │    │  metamodel) │   │
-                        │  └─────┬──────┘    └──────┬──────┘   │
-                        │        │                  │          │
-                        │        ▼                  ▼          │
-                        │  ┌────────────────────────────────┐  │
-                        │  │ DEA Catalogs & Tools           │  │
-                        │  │ dea-catalog-concepts           │  │
-                        │  │ dea-catalog-patterns           │  │
-                        │  │ dea-catalog-guardrails         │  │
-                        │  │ dea-catalog-metrics            │  │
-                        │  │ dea-catalog-…                  │  │
-                        │  └────────────────────────────────┘  │
-                        └──────────────────────────────────────┘
-```
+The ECF, the DEA Metamodel, and the DEA catalogs together form the **Digital
+Ecosystem & Enterprise Metamoat**. Their relationship is governed by the
+architectural position above: ECF is the OpenDEA profile that supplies the
+coordinate system; the metamodel is the canonical semantic model that formally
+represents OpenDEA concepts; the catalogs instantiate governed concepts and
+consume ECF coordinates as context. See
+[`framework/architecture.md`](./framework/architecture.md).
 
 ---
 
