@@ -129,3 +129,39 @@ governed by change requests (`change-requests/`).
   `framework/lifecycle-grounding.md`. (CR-ECF-004)
 - `change-requests/README.md`: CR-ECF-003 status flipped to Merged (PR #6);
   CR-ECF-004 added. (CR-ECF-004)
+
+### Added
+
+- `change-requests/CR-ECF-005.md`: ECF Coordinate Specification, landed as
+  authored. (CR-ECF-005)
+- `specification/ecf-coordinates.md`: normative coordinate specification
+  (formal definition, canonical representation, coordinate identity,
+  Domain and Stage enumerations, coordinate metadata, contextual use,
+  multiple coordinates, validation, no-cell-filling rule, conformance
+  requirements, authority, pre-existing-schema reconciliation note).
+  (CR-ECF-005)
+- `schemas/ecf-domain.schema.json`: canonical PascalCase Domain enum.
+  (CR-ECF-005)
+- `schemas/ecf-stage.schema.json`: canonical Stage enum. (CR-ECF-005)
+- `schemas/ecf-coordinate.schema.json`: coordinate object schema with
+  optional identifier and label fields; identifier must match
+  `ecf:<domain>.<stage>` pattern. (CR-ECF-005)
+- `tools/ecf_coordinates.py`: enumeration tool (49 derivable
+  coordinates), identifier builder, validator. (CR-ECF-005)
+- `tests/conformance/test_005_coordinate_spec.py`: conformance suite
+  enforcing canonical enums, the 49-derivable count, the identifier
+  pattern, the no-cell-filling rule, validator behaviour, and the
+  repository-wide payload scan. (CR-ECF-005)
+- `tests/__init__.py`, `tests/conformance/__init__.py`: test package
+  layout. (CR-ECF-005)
+- `.github/workflows/ci.yml`: CI runs the conformance suite on push and
+  pull_request. (CR-ECF-005)
+
+### Changed
+
+- README "What's in this repo": `schemas/` description distinguishes the
+  pre-existing schemas (display-label enums; reconciliation deferred to
+  CR-MM-ECF-01) from the new canonical schemas; `specification/` row
+  added. (CR-ECF-005)
+- `change-requests/README.md`: CR-ECF-004 status flipped to Merged (PR #7);
+  CR-ECF-005 added. (CR-ECF-005)

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/technehub-labs/dea-metaframework/schemas/ecf-stage.schema.json",
+  "title": "ECF Stage",
+  "description": "Canonical ECF Lifecycle Stage enumeration. One of seven lifecycle dimensions (CR-ECF-004, CR-ECF-005).",
+  "type": "string",
+  "enum": [
+    "Conceive",
+    "Design",
+    "Build",
+    "Activate",
+    "Operate",
+    "Improve",
+    "Retire"
+  ]
+}
