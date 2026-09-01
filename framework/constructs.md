@@ -1,111 +1,143 @@
 # Formal Constructs
 
-The framework uses eight constructs — the named things the matrix operates on.
+The framework's center of gravity is the ECF coordinate, not the cell. An ECF
+coordinate is a classification context; an enterprise concept is contextualized
+by one or more coordinates according to the semantics of the consuming model.
+This file defines the formal notation for the coordinate system and the
+named things the matrix contextualizes.
 
 ## Definitions
 
-- **Business object.** A thing the enterprise cares about — a customer, a
-  circuit, a feature flag, a grant. The atom of the matrix.
+- **Domain.** One of the seven canonical enterprise concern dimensions of
+  ECF: Governance & Existence; Supply & Resources; People & Organization;
+  Customer & Demand; Product & Offering; Operations & Delivery;
+  Finance & Value.
+- **Stage.** One of the seven canonical lifecycle dimensions of ECF:
+  Conceive; Design; Build; Activate; Operate; Improve; Retire.
+- **Coordinate.** The ordered pair `(Domain, Stage)`. The ECF matrix
+  `M = D x S` is the cartesian product of the seven Domains and the seven
+  Stages; `|M| = 7 x 7 = 49`. A coordinate is identified by its ordered pair;
+  display labels are not semantic identity.
+- **Context.** The semantic interpretation of an ECF coordinate for a
+  particular modeling concern (Process Context, Capability Context,
+  Architecture Context, Assessment Context, and so on). The consuming model
+  defines the context.
+- **Business object.** A thing the enterprise cares about: a customer, a
+  circuit, a feature flag, a grant.
 - **Entity.** A business object with a unique identity and a persistent
   state.
-- **Capability.** The ability to do something with an object — provision,
+- **Capability.** The ability to do something with an object: provision,
   bill, monitor, retire.
-- **Value stream.** The end-to-end flow that carries an object across all
+- **Value stream.** The end-to-end flow that carries an object across the
   seven stages.
-- **State.** A named phase in an object's lifecycle — proposed, designed,
-  provisioned, active, retired.
-- **Event.** A state transition — signup, cut-over, incident, sunset.
-- **Actor.** The owner or performer of a capability — a person, team, or
+- **State.** A named phase in an object's lifecycle: proposed, designed,
+  provisioned, active, retired. State is a property of an object; it is
+  distinct from ECF Stage, which is a lifecycle context for consideration.
+- **Event.** A state transition: signup, cut-over, incident, sunset.
+- **Actor.** The owner or performer of a capability: a person, team, or
   system.
-- **Resource.** The asset consumed by a capability — spectrum, compute,
+- **Resource.** The asset consumed by a capability: spectrum, compute,
   budget, hours.
 
 ## How Constructs Relate
 
-Each cell **C(d, s)** holds the objects in domain *d* currently in stage *s*,
-the capabilities that act on them, the events that move them, the actors
-who perform, and the resources consumed. A cell is a snapshot of one domain
-at one stage — a bounded, inspectable unit of the enterprise.
+An enterprise concept may be contextualized by one or more ECF coordinates.
+The matrix is not a container of objects; a coordinate is the context in
+which a concept is considered.
 
 ```
 type Domain = 1..7;   // rows
 type Stage  = 1..7;   // columns
 
-// the matrix is the cartesian product
-M = D × S = { (d, s) | d ∈ D, s ∈ S }
+// the matrix is the cartesian product of the seven Domains and seven Stages
+M = D x S = { (d, s) | d in D, s in S }
 
-// a cell holds objects + their capabilities
-type Cell_{d,s} = {
-  objects: Entity[],
-  caps: Capability[]
-}
+// |M| = 49 coordinates; each is identified by its ordered pair
+type Coordinate = (Domain, Stage)
+
+// a coordinate carries context, not identity
+contextualizes : Entity x Coordinate -> Context
+
+// an entity may participate in multiple coordinates where governed
+// by the consuming catalog (multi-coordinate contextualization)
+coordinates : Entity -> 2^Coordinate
+
+// a process may traverse multiple Stages
+stages       : Process -> 2^Stage
 
 // an object's lifecycle is a path
-lifecycle(o) = ⟨ s₁ → s₂ → … → s₇ ⟩
-
-// any cell recurses into a sub-matrix
-decompose : Cell → M   // C(d,s) → 7×7 sub-grid
+lifecycle(o) = < s_1 -> s_2 -> ... -> s_7 >
 ```
+
+A coordinate establishes a context. Whether zero, one, or many modeled
+elements are appropriate within that context is determined by the consuming
+catalog, not by the ECF.
 
 ## Traceability Functions
 
 ```
 // who owns an object
-owner : Entity → Actor
+owner : Entity -> Actor
 
-// what state it's in (which column)
-state : Entity → Stage
+// what state it's in (object state, not ECF Stage)
+state : Entity -> State
 
-// what it depends on (other cells)
-deps  : Entity → 2^Entity
+// what it depends on (other entities)
+deps  : Entity -> 2^Entity
 
 // impact closure: change ripples
-impact(e) = deps*(e) = ⋃ depsⁿ(e), n ≥ 0
+impact(e) = deps*(e) = UNION deps^n(e), n >= 0
 ```
 
-### Impact Propagation — Worked Example with Formal Closure
+### Impact Propagation: Worked Example with Formal Closure
 
-A change in one cell, traced:
+A change traced through entity dependencies:
 
-- **Change:** a tariff plan is retired (Product × Retire).
-- **→ deps:** every subscriber on that plan (Customer × Operate) is affected.
-- **→ deps:** every billing account linked to those subscribers (Finance ×
-  Operate) must re-rate.
+- **Change:** a tariff plan is retired (Product and Offering).
+- **-> deps:** every subscriber on that plan is affected.
+- **-> deps:** every billing account linked to those subscribers must re-rate.
 
 ```
-closure(c₁) = deps(c₁) ∪ deps(deps(c₁)) ∪ ∅
-           = {c₂, c₃} ∪ {c₄} ∪ ∅
-           = {c₂, c₃, c₄}
+closure(c_1) = deps(c_1) U deps(deps(c_1)) U {}
+           = {c_2, c_3} U {c_4} U {}
+           = {c_2, c_3, c_4}
 
-impact(c₄) = {c₁, c₂, c₃}  // reverse closure
+impact(c_4) = {c_1, c_2, c_3}  // reverse closure
 ```
 
 The `impact` function computes the transitive closure of dependencies,
-revealing the full blast radius of a single change.
+revealing the full blast radius of a single change. ECF coordinates are not
+inputs to this function: dependencies live on the entity graph, not on the
+coordinate graph.
 
 ## Mapping to DEA Metamodel
 
 | ECF Construct | DEA Metamodel Entity |
 |---------------|---------------------|
+| Domain | `TaxonomyNode` (Domain layer) |
+| Stage | `TaxonomyNode` (Stage layer) |
+| Coordinate | `ECFCoordinate` (profile binding) |
 | Business object | `BusinessService` |
 | Capability | `BusinessCapability` |
 | Pattern / Standard | `ArchitecturePattern` / `Standard` |
-| Domain / Stage | `TaxonomyNode` (the 7×7 grid = top two taxonomy levels) |
 | Actor | `SolutionComponent` owner |
 | Metric | `MeasurementMetric` |
 | Relationship | `Relationship` (typed, governed) |
 
-See [`technehub-labs/dea-metamodel`](../dea-metamodel) for the formal
+ECF Domain and Stage are reserved classification terms. Capability,
+Process, and their coordinate usages are formalized in the OpenDEA ECF
+profile within `dea-metamodel`. See
+[`technehub-labs/dea-metamodel`](../dea-metamodel) for the canonical
 entity-relationship model.
 
 ## Mapping to DERA
 
 | DERA Phase | ECF Stages |
 |-----------|------------|
-| Phase 1 — Discover & Define | Conceive + Design |
-| Phase 2 — Design & Build | Build + Activate |
-| Phase 3 — Deploy & Operate | Operate + Improve |
-| Phase 4 — Evolve & Retire | Retire |
+| Phase 1: Discover & Define | Conceive + Design |
+| Phase 2: Design & Build | Build + Activate |
+| Phase 3: Deploy & Operate | Operate + Improve |
+| Phase 4: Evolve & Retire | Retire |
 
-ECF's finer granularity (7 vs 4) is the deeper lens; DERA is the coarser
-delivery wrapper that groups adjacent stages.
+This is a mapping, not an identity relationship. DERA is the coarser delivery
+wrapper; ECF's seven stages are the finer-grained lifecycle context.

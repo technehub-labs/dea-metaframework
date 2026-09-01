@@ -40,3 +40,51 @@ governed by change requests (`change-requests/`).
   construct-to-entity tables marked as illustrative snapshots. (CR-ECF-001)
 - REPORT section 22: closing positioning aligned with the CR-ECF-001
   architectural statement. (CR-ECF-001)
+
+### Added
+
+- `change-requests/CR-ECF-002.md`: ECF Semantic Boundary, landed as authored.
+  (CR-ECF-002)
+
+### Changed
+
+- `framework/constructs.md`: rewrote Definitions and How Constructs Relate;
+  introduced canonical Domain/Stage/Coordinate/Context definitions and
+  `contextualizes : Entity x Coordinate -> Context` notation; removed the
+  `Cell_{d,s} = { objects: Entity[], caps: Capability[] }` container type and
+  `decompose : Cell -> M` rule; renamed `state : Entity -> Stage` to
+  `state : Entity -> State`; added explicit `state`/`stage` distinction.
+  (CR-ECF-002)
+- `framework/matrix.md`: reframed header from "every business object lives
+  in one cell" to "49 coordinates; a coordinate is classification context,
+  not entity container"; rewrote Construction Rules to use contextualization
+  semantics, multi-coordinate participation, and capability-identity
+  independence; renamed "Recursive Self-Similarity" to "Recursive
+  Applicability" and decoupled ECF recursion from Business Process
+  decomposition. (CR-ECF-002)
+- REPORT section 6: introduced Domain/Stage/Coordinate/Context as ECF
+  primitives before the named constructs; replaced the cell-snapshot
+  relation with `Enterprise Concept contextualized by ECF Coordinate(s)`;
+  added explicit `Capability != Process != Function != Activity != Task` and
+  the recursion/process-decomposition independence statement. (CR-ECF-002)
+- REPORT section 7.3: rewrote the MECE rationale to use contextualization
+  semantics and the state/stage distinction. (CR-ECF-002)
+- REPORT section 8.1: rewrote Construction Rules to remove "place objects in
+  cells" and "one object, one primary cell"; "earliest initiation" downgraded
+  to a catalog placement heuristic. (CR-ECF-002)
+- REPORT section 8.4 and 8.5: recursive self-similarity reframed as
+  applicability governed by the consuming model; "overloading a cell"
+  anti-pattern rewritten for coordinate semantics. (CR-ECF-002)
+- REPORT section 15: formal notation block replaced; `Cell_{d,s}` and
+  universal `decompose : Cell -> M` explicitly deprecated; `state : Entity
+  -> Stage` renamed to `state : Entity -> State`. (CR-ECF-002)
+- REPORT section 16.6: "every entity in the metamodel lives in a cell"
+  replaced with coordinate-contextualization semantics. (CR-ECF-002)
+- REPORT section 19 Step 1: "place every top-50 business object in a cell"
+  replaced with "identify the ECF coordinate(s) that contextualize each
+  business concept; record the consuming catalog that owns the coordinate
+  usage". (CR-ECF-002)
+- README Quick Start Step 1: "Map: place your top-50 business objects in
+  cells" replaced with the contextualization instruction. (CR-ECF-002)
+- `change-requests/README.md`: CR-ECF-001 status flipped to Merged (PR #4);
+  CR-ECF-002 added. (CR-ECF-002)

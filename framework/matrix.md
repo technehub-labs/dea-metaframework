@@ -1,27 +1,28 @@
 # The Canonical Foundation Matrix
 
-The 7×7 matrix **M = D × S** is the framework's center of gravity. Every
-business object lives in one cell — the intersection of its domain (row) and
-its current lifecycle stage (column). Capabilities, events, actors, and
-resources attach to cells.
+The 7x7 matrix **M = D x S** is the framework's center of gravity. It
+provides 49 ECF coordinates: the cartesian product of seven Domains and
+seven Stages. Each coordinate is a classification context in which
+enterprise concepts (objects, capabilities, processes, events, actors,
+resources) may be considered. A coordinate is not an entity container.
 
 ## The Two Axes
 
-### Domains (Rows) — Scope of Operations
+### Domains (Rows): Scope of Operations
 
 The **domains** answer the question *what does the enterprise do?*
 
 | # | Domain | One-line definition |
 |---|--------|---------------------|
-| 1 | Governance & Existence | The precondition of boundedness — what defines the entity, what rules apply, and the assurance that the other domains behave. |
-| 2 | Supply & Resources | The substrate the enterprise persists on — physical or virtual, owned or rented — and its capacity, health, and disposal. |
-| 3 | People & Organization | The humans who perform every capability — their structure, skills, performance, and movement. |
+| 1 | Governance & Existence | The precondition of boundedness: what defines the entity, what rules apply, and the assurance that the other domains behave. |
+| 2 | Supply & Resources | The substrate the enterprise persists on: physical or virtual, owned or rented: and its capacity, health, and disposal. |
+| 3 | People & Organization | The humans who perform every capability: their structure, skills, performance, and movement. |
 | 4 | Customer & Demand | The enterprise's reason to exchange: identifying, acquiring, serving, and retaining the people whose need it meets. |
-| 5 | Product & Offering | The catalog of what the enterprise offers — its design, packaging, release, and retirement. |
-| 6 | Operations & Delivery | The engine that turns an offering into a delivered outcome — planning, fulfilling, running, resolving. |
-| 7 | Finance & Value | The accounting for the environment — the flow of money and the measurement of value created, consumed, and retained. |
+| 5 | Product & Offering | The catalog of what the enterprise offers: its design, packaging, release, and retirement. |
+| 6 | Operations & Delivery | The engine that turns an offering into a delivered outcome: planning, fulfilling, running, resolving. |
+| 7 | Finance & Value | The accounting for the environment: the flow of money and the measurement of value created, consumed, and retained. |
 
-### Stages (Columns) — Value Stream Stages
+### Stages (Columns): Value Stream Stages
 
 The **stages** answer the question *how does the work evolve?*
 
@@ -35,9 +36,12 @@ The **stages** answer the question *how does the work evolve?*
 | 6 | Improve | Measure / Learn | Measuring performance, learning from incidents, scoring satisfaction. The enterprise decides what to change. |
 | 7 | Retire | Retire / Renew | Sunsetting, migrating, recovering, or renewing. The object exits its current form. |
 
-## The Foundation Matrix
+## Foundation Matrix Content
 
-The cell content at each (domain, stage) intersection:
+The cell content at each (domain, stage) intersection names the typical
+work performed when an enterprise concept is considered in that context.
+Whether zero, one, or many modeled elements are appropriate within a
+context is determined by the consuming catalog.
 
 | Domain \ Stage | Conceive | Design | Build | Activate | Operate | Improve | Retire |
 |----------------|----------|--------|-------|----------|---------|---------|--------|
@@ -51,10 +55,11 @@ The cell content at each (domain, stage) intersection:
 
 ## Patterns the Foundation Reveals
 
-1. **Diagonal flow.** Objects move left to right across rows; the matrix
-   makes the lifecycle visible as motion.
-2. **Column coupling.** Adjacent stages share events — a Build exit is an
-   Activate entry — surfacing handoff risks.
+1. **Diagonal flow.** Concepts move left to right across rows as their
+   lifecycle context shifts; the matrix makes the lifecycle visible as
+   motion.
+2. **Column coupling.** Adjacent stages share events; a Build exit is an
+   Activate entry, surfacing handoff risks.
 3. **Row completeness.** A sparse row signals a neglected domain; a sparse
    column signals a skipped stage.
 
@@ -64,23 +69,25 @@ The cell content at each (domain, stage) intersection:
    axiomatic order: governance first, finance last.
 2. **Map stages to columns.** Place each of the seven stages on a column,
    left to right, in lifecycle order.
-3. **Place objects in cells.** Each business object goes in the cell at the
-   intersection of its domain and its current stage.
-4. **One object, one primary cell.** If an object spans domains, model it as
-   a linking object — never duplicate it across rows.
-5. **Capabilities map to earliest stage.** A capability belongs to the stage
-   where it is first initiated, not where it runs longest.
-6. **Attach capabilities.** Within each cell, list the capabilities that act
-   on those objects.
-7. **Mark events and actors.** Annotate each cell with the events that
+3. **Contextualize concepts by coordinates.** Each enterprise concept is
+   contextualized by one or more `(Domain, Stage)` coordinates according to
+   the semantics of the consuming model.
+4. **Multi-coordinate contextualization is supported where legitimate.** A
+   single concept may participate in multiple coordinates (governed by the
+   consuming catalog); the existence of multiple coordinates does not imply
+   multiple identities.
+5. **Capability identity is independent of coordinate.** A capability has
+   its own semantic identity and business meaning; the ECF coordinate is
+   classification context, not capability identity.
+6. **Mark events and actors.** Annotate each context with the events that
    trigger transitions and the actors who perform.
-8. **Version the matrix.** Snapshot at each planning cycle; diff to see
+7. **Version the matrix.** Snapshot at each planning cycle; diff to see
    what moved.
 
 ## Value Stream Overlay Routes
 
 Cross-cutting concerns are modeled as *directed graphs routing through
-specific cells* — not as blanket layers draped over the whole grid. A route
+specific cells*: not as blanket layers draped over the whole grid. A route
 names the handoffs; a layer does not.
 
 **Commercialization route:**
@@ -105,8 +112,8 @@ Governance × Operate  → assure
 
 - **Mixing axes:** putting a stage inside the domain column. The axes must
   stay orthogonal.
-- **Overloading a cell:** stuffing a cell with objects from another domain
-  to avoid creating a new row.
+- **Overloading a coordinate:** treating a coordinate as a container for
+  every object in a domain, irrespective of context.
 - **Skipping stages:** assuming an object is "born live." Every object has a
   Conceive and a Build stage.
 - **Static matrix:** treating the matrix as a one-time diagram. It must
@@ -138,10 +145,14 @@ Governance × Operate  → assure
 | Measure / Learn | Collect, Analyze, Decide |
 | Retire / Renew | Migrate, Recover, Archive |
 
-## Recursive Self-Similarity
+## Recursive Applicability
 
-Any cell can be decomposed into its own 7×7 sub-matrix — the cell's objects
-become the enterprise described by the sub-matrix. This gives infinite depth
-without changing the top-level logic. The framework scales because it does
-not grow; it recurses. A 50-person charity and a 500,000-person telco
-occupy the same grid — only the depth of decomposition differs.
+An ECF coordinate may be used as the organizing context for a further
+specialized model. The specialization is not required and does not imply
+that every coordinate must be recursively decomposed.
+
+ECF recursion is independent of Business Process decomposition. The
+Business Process Architecture defines its own process topology
+(Process Context -> L0 Process Scope -> L1 Process Group -> L2 Business
+Process -> L3 Activity -> L4 Task); the ECF provides the coordinate
+context, not the process hierarchy.
