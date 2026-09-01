@@ -2,20 +2,20 @@
 
 **The 7×7 axiom-derived matrix for describing any enterprise.**
 
-This repo holds the **Meta Framework** of the TechNeHub Labs DEA ecosystem —
+This repo holds the **Meta Framework** of the TechNeHub Labs DEA ecosystem, 
 the conceptual skeleton beneath the
 [DEA Metamodel](../dea-metamodel) and every catalog in the
 DEA catalog orgs (`dea-catalog-*`).
 
-The framework is axiom-derived: a single sentence — *an enterprise is any
-bounded entity that persists by exchanging value with its environment* —
-generates seven domains. A universal lifecycle of seven stages partitions
-the work of any object over time. The matrix **M = D × S** is 49 cells, and
-every object, capability, event, actor, and resource in the enterprise lives
-in one of them.
+The framework is axiom-derived: in a single sentence, *an enterprise is any
+bounded entity that persists by exchanging value with its environment*,
+generates seven domains. 
+A universal lifecycle of seven stages partitions the work of any object over time. 
+The matrix **M = D × S** is 49 cells, and every object, capability, event, actor, 
+and resource in the enterprise lives in one of them.
 
 Together with the [DEA Metamodel](../dea-metamodel), this repo is the
-**Digital Ecosystem & Enterprise Metamoat** — the foundation above the
+**Digital Ecosystem & Enterprise Metamoat**, the foundation above the
 catalogs, the conceptual layer above the tooling.
 
 ---
