@@ -73,13 +73,15 @@ The **domains** answer the question *what does the enterprise do?* Seven domains
 
 | # | Domain | One-line definition |
 |---|--------|---------------------|
-| 1 | Governance & Existence | The precondition of boundedness — what defines the entity, what rules apply, and the assurance that the other domains behave. |
-| 2 | Supply & Resources | The substrate the enterprise persists on — physical or virtual, owned or rented — and its capacity, health, and disposal. |
-| 3 | People & Organization | The humans who perform every capability — their structure, skills, performance, and movement. |
+| 1 | Governance & Existence | The precondition of boundedness: what defines the entity, what rules apply, and the assurance that the other domains behave. |
+| 2 | Supply & Resources | The substrate the enterprise persists on: physical or virtual, owned or rented, and its capacity, health, and disposal. |
+| 3 | People & Organization | The humans who perform every capability: their structure, skills, performance, and movement. |
 | 4 | Customer & Demand | The enterprise's reason to exchange: identifying, acquiring, serving, and retaining the people whose need it meets. |
-| 5 | Product & Offering | The catalog of what the enterprise offers — its design, packaging, release, and retirement. |
-| 6 | Operations & Delivery | The engine that turns an offering into a delivered outcome — planning, fulfilling, running, resolving. |
-| 7 | Finance & Value | The accounting for the environment — the flow of money and the measurement of value created, consumed, and retained. |
+| 5 | Product & Offering | The catalog of what the enterprise offers: its design, packaging, release, and retirement. |
+| 6 | Operations & Delivery | The engine that turns an offering into a delivered outcome: planning, fulfilling, running, resolving. |
+| 7 | Finance & Value | The accounting for the environment: the flow of money and the measurement of value created, consumed, and retained. |
+
+The formal grounding records for each Domain (axiom grounding, semantic definition, included concerns, excluded concerns, adjacent Domains, boundary rules, evidence) live in [`framework/domain-grounding.md`](./framework/domain-grounding.md) (CR-ECF-003). Compound-name boundary audit and the orthogonality/completeness checks are recorded there as well.
 
 ### 5.2 Stages (Columns): Value Stream Stages
 

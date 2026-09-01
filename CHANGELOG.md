@@ -88,3 +88,23 @@ governed by change requests (`change-requests/`).
   cells" replaced with the contextualization instruction. (CR-ECF-002)
 - `change-requests/README.md`: CR-ECF-001 status flipped to Merged (PR #4);
   CR-ECF-002 added. (CR-ECF-002)
+
+### Added
+
+- `change-requests/CR-ECF-003.md`: ECF Domain Grounding, landed as authored.
+  (CR-ECF-003)
+- `framework/domain-grounding.md`: per-Domain grounding records (axiom
+  grounding, semantic definition, included concerns, excluded concerns,
+  adjacent Domains, boundary rules, evidence); compound-name boundary
+  audit (verdicts per compound); orthogonality statement; completeness
+  check against the grounding axiom; renaming rule (no rename without
+  explicit evidence and governance). (CR-ECF-003)
+
+### Changed
+
+- REPORT section 5.1: pointer to `framework/domain-grounding.md` added; the
+  seven Domain rows link to the formal grounding records. (CR-ECF-003)
+- README "What's in this repo": `framework/` description now mentions
+  `framework/domain-grounding.md`. (CR-ECF-003)
+- `change-requests/README.md`: CR-ECF-002 status flipped to Merged (PR #5);
+  CR-ECF-003 added. (CR-ECF-003)
