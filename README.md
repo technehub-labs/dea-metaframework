@@ -11,6 +11,7 @@ The framework is axiom-derived: in a single sentence, *an enterprise is any
 bounded entity that persists by exchanging value with its environment*,
 generates seven domains. 
 A universal lifecycle of seven stages partitions the work of any object over time. 
+
 The matrix **M = D × S** is 49 cells, and every object, capability, event, actor, 
 and resource in the enterprise lives in one of them.
 
@@ -43,9 +44,9 @@ and Section 9 (the foundation matrix) cover the essentials in 15 minutes.
 ### Apply the framework in 5 Steps and 14 days
 - **Step 1 (Days 1–4)**: Map: place your top-50 business objects in cells.
 - **Step 2 (Days 5–7)**: Validate: walk each row and column with owners.
-- **Step 3 (Days 8–10)**— Metrics: compute coverage, coupling, lifecycle completeness.
-- **Step 4 (Days 11–13)**— Operate: wire into the planning cycle; snapshot each sprint.
-- **Step 5 (Day 14)**— Govern: charter the matrix owner and versioning cadence.
+- **Step 3 (Days 8–10)**: Metrics: compute coverage, coupling, lifecycle completeness.
+- **Step 4 (Days 11–13)**: Operate: wire into the planning cycle; snapshot each sprint.
+- **Step 5 (Day 14)**: Govern: charter the matrix owner and versioning cadence.
 
 ### Use the schemas
 - [`schemas/entity.schema.json`](./schemas/entity.schema.json) — canonical business object entry (id, domain, stage, attributes, owners, relatedObjects, complianceTags, version).
@@ -68,25 +69,25 @@ and Section 9 (the foundation matrix) cover the essentials in 15 minutes.
 
 ```
                         ┌──────────────────────────────────────┐
-                        │ Digital Ecosystem & Enterprise      │
+                        │ The Digital Ecosystem & Enterprise   │
                         │ Metamoat                             │
                         │                                      │
-                        │  ┌────────────┐    ┌─────────────┐  │
-                        │  │   Meta     │    │             │  │
-                        │  │ Framework  │    │  Metamodel  │  │
-                        │  │ (this repo)│    │  (dea-      │  │
-                        │  │            │    │  metamodel) │  │
-                        │  └─────┬──────┘    └──────┬──────┘  │
-                        │        │                  │         │
-                        │        ▼                  ▼         │
-                        │  ┌────────────────────────────────┐ │
-                        │  │ DEA Catalogs & Tools           │ │
-                        │  │ dea-catalog-concepts           │ │
-                        │  │ dea-catalog-patterns           │ │
-                        │  │ dea-catalog-guardrails         │ │
-                        │  │ dea-catalog-metrics            │ │
-                        │  │ dea-catalog-…                  │ │
-                        │  └────────────────────────────────┘ │
+                        │  ┌────────────┐    ┌─────────────┐   │
+                        │  │   Meta     │    │             │   │
+                        │  │ Framework  │    │  Metamodel  │   │
+                        │  │ (this repo)│    │  (dea-      │   │
+                        │  │            │    │  metamodel) │   │
+                        │  └─────┬──────┘    └──────┬──────┘   │
+                        │        │                  │          │
+                        │        ▼                  ▼          │
+                        │  ┌────────────────────────────────┐  │
+                        │  │ DEA Catalogs & Tools           │  │
+                        │  │ dea-catalog-concepts           │  │
+                        │  │ dea-catalog-patterns           │  │
+                        │  │ dea-catalog-guardrails         │  │
+                        │  │ dea-catalog-metrics            │  │
+                        │  │ dea-catalog-…                  │  │
+                        │  └────────────────────────────────┘  │
                         └──────────────────────────────────────┘
 ```
 
