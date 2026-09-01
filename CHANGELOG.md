@@ -108,3 +108,24 @@ governed by change requests (`change-requests/`).
   `framework/domain-grounding.md`. (CR-ECF-003)
 - `change-requests/README.md`: CR-ECF-002 status flipped to Merged (PR #5);
   CR-ECF-003 added. (CR-ECF-003)
+
+### Added
+
+- `change-requests/CR-ECF-004.md`: ECF Lifecycle Grounding, landed as authored.
+  (CR-ECF-004)
+- `framework/lifecycle-grounding.md`: per-Stage grounding records; Stage
+  vs object-State distinction; Stage vs process-level independence;
+  Stage vs DERA-phase mapping (as a mapping, not an identity); multi-stage
+  participation rule; recursive applicability section. (CR-ECF-004)
+
+### Changed
+
+- REPORT section 5.2: pointer to `framework/lifecycle-grounding.md` added;
+  the seven Stage rows link to the formal grounding records. (CR-ECF-004)
+- REPORT section 21.4: DERA mapping paragraph labelled explicitly as a
+  mapping, not an identity relationship; pointer to lifecycle-grounding.md
+  added. (CR-ECF-004)
+- README "What's in this repo": `framework/` description now mentions
+  `framework/lifecycle-grounding.md`. (CR-ECF-004)
+- `change-requests/README.md`: CR-ECF-003 status flipped to Merged (PR #6);
+  CR-ECF-004 added. (CR-ECF-004)
