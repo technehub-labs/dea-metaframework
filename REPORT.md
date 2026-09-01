@@ -67,7 +67,7 @@ An axiom-derived matrix carries no foreign assumptions. It fits the enterprise b
 
 ## 5. The Two Axes
 
-### 5.1 Domains (Rows) — Scope of Operations
+### 5.1 Domains (Rows): Scope of Operations
 
 The **domains** answer the question *what does the enterprise do?* Seven domains, each derived from a word in the grounding axiom:
 
@@ -81,7 +81,7 @@ The **domains** answer the question *what does the enterprise do?* Seven domains
 | 6 | Operations & Delivery | The engine that turns an offering into a delivered outcome — planning, fulfilling, running, resolving. |
 | 7 | Finance & Value | The accounting for the environment — the flow of money and the measurement of value created, consumed, and retained. |
 
-### 5.2 Stages (Columns) — Value Stream Stages
+### 5.2 Stages (Columns): Value Stream Stages
 
 The **stages** answer the question *how does the work evolve?* Seven stages, partitioned by lifecycle phase:
 
@@ -189,9 +189,9 @@ Governance × Operate  → assure
 
 ### 8.3 Monetization and Profit vs Non-Profit
 
-The monetization spine — **Perform → Account → Bill** (Operations × Operate → Finance × Operate → Finance × Measure) — exists in every enterprise. What changes is the payload.
+The monetization spine: **Perform → Account → Bill** (Operations × Operate → Finance × Operate → Finance × Measure) - exists in every enterprise. What changes is the payload.
 
-A telco's Finance × Design holds a "tariff model"; a non-profit's holds a "funding model." A telco's Finance × Operate is "revenue recognition"; a non-profit's is "grant recognition." Same cells, different content. Profit vs non-profit is a payload difference in the Finance domain, not a structural change — the framework stays identical.
+A telco's Finance × Design holds a "tariff model"; a non-profit's holds a "funding model." A telco's Finance × Operate is "revenue recognition"; a non-profit's is "grant recognition." Same cells, different content. Profit vs non-profit is a payload difference in the Finance domain, not a structural change, thus the framework stays identical.
 
 ### 8.4 Versioning and Recursive Self-Similarity
 
@@ -242,8 +242,8 @@ Any cell can be decomposed into its own 7×7 sub-matrix — the cell's objects b
 
 ### Telecom Patterns
 
-- The **Operations × Activate** cell — network attach via HLR/HSS — is the telco's highest-risk handoff; the matrix isolates it for investment.
-- The **Finance × Operate** cell — mediation and rating — runs continuously; the matrix shows it as the revenue engine, not a back-office afterthought.
+- The **Operations × Activate** cell, network attach via HLR/HSS, is the telco's highest-risk handoff; the matrix isolates it for investment.
+- The **Finance × Operate** cell, mediation and rating, runs continuously; the matrix shows it as the revenue engine, not a back-office afterthought.
 
 ---
 
@@ -261,8 +261,8 @@ Any cell can be decomposed into its own 7×7 sub-matrix — the cell's objects b
 
 ### Digital Services Patterns
 
-- The **Product × Activate** cell — feature flag rollout — is the digital company's equivalent of the telco cut-over: the moment of risk.
-- The **Supply × Improve** cell — FinOps — shows that in digital, cost is a runtime concern, not an annual one. The matrix makes this visible where an org chart would not.
+- The **Product × Activate** cell, feature flag rollout, is the digital company's equivalent of the telco cut-over: the moment of risk.
+- The **Supply × Improve** cell — FinOps — shows that in digital, cost is a runtime concern, not an annual one. The matrix makes this visible where an org chart or other frameworks would not.
 
 ---
 
@@ -692,7 +692,7 @@ The centerpiece is **DERA** — the Digital Enterprise Reference Architecture �
 
 **ECF is the conceptual skeleton; DEA is the implementation tooling.**
 
-ECF says *what any enterprise is* — 7 domains × 7 stages, derived from a single axiom. DEA says *how to architect one* — metamodel, catalogs, tooling, governance. ECF is the conceptual layer above DEA's L0 metamodel. The metamodel's entity types are instances of ECF's constructs; the catalogs are instances of ECF's cells.
+ECF says *what any enterprise is*: 7 domains × 7 stages, derived from a single axiom. DEA says *how to architect one* — metamodel, catalogs, tooling, governance. ECF is the conceptual layer above DEA's L0 metamodel. The metamodel's entity types are instances of ECF's constructs; the catalogs are instances of ECF's cells.
 
 ### 20.3 Domain → Catalog Mapping
 
@@ -758,7 +758,7 @@ Describe the enterprise. Then change it.
 
 ---
 
-## Appendix A. PlantUML Source — Enterprise Concepts Metamodel
+## Appendix A. PlantUML Source: Enterprise Concepts Metamodel
 
 The following PlantUML source defines the Enterprise Concepts Metamodel described in Section 16. It can be rendered with any PlantUML-compatible tool (plantuml.com, local PlantUML jar, VS Code PlantUML extension, etc.).
 
