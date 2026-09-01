@@ -2,7 +2,7 @@
 
 ### An Axiom-Derived, Lifecycle-Aware Matrix for Describing Any Enterprise
 
-**Version 2.0** — Synthesized with TechNeHub Labs DEA ecosystem mapping
+**Version 2.0**: Synthesized with TechNeHub Labs DEA ecosystem mapping
 
 ---
 
@@ -10,7 +10,7 @@
 
 The Enterprise Concept Framework (ECF) is a descriptive instrument. Its purpose is stated in a single sentence:
 
-> **Every enterprise — for-profit or not, in any industry — can be completely described as the product of two partitions: the kind of work it does (Domains) and the phases that work passes through (Stages).**
+> **Every enterprise, for-profit or not, in any industry, can be completely described as the product of two partitions: the kind of work it does (Domains) and the phases that work passes through (Stages).**
 
 The framework is *axiom-derived*: it is derived from a single grounding axiom, not imported from a named reference framework. It is *lifecycle-aware*: every object and capability is understood to move through phases, never standing still. And it is *industry-agnostic*: the same seven domains and seven stages hold a telecom operator and a digital-services startup without bending.
 
@@ -24,7 +24,7 @@ The framework begins with a single sentence — the definition of an enterprise:
 
 > **An enterprise is any bounded entity that persists by exchanging value with its environment.**
 
-Every word in that sentence generates a domain. The framework is not asserted — it is *derived* from the definition of an enterprise.
+Every word in that sentence generates a domain. The framework is not asserted, it is *derived* from the definition of an enterprise.
 
 ### 2.1 Axiomatic Derivation
 
