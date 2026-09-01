@@ -30,12 +30,12 @@ Every word in that sentence generates a domain. The framework is not asserted, i
 
 | Word in the axiom | Generated domain | Why |
 |-------------------|-----------------|-----|
-| "bounded entity" | → Governance & Existence | Boundedness requires a boundary — who is inside, what rules apply, what constitutes the entity itself. |
-| "persists" | → Supply & Resources | Persistence requires a substrate — the physical or virtual assets that keep the entity alive over time. |
-| "persists" | → People & Organization | Persistence requires agents — the humans who perform the work and the structure that organizes them. |
-| "exchanging value" | → Customer & Demand | Exchange requires a counterparty — the people whose need the entity meets, and the demand they generate. |
-| "exchanging value" | → Product & Offering | Exchange requires something to offer — the catalog of what the entity provides to meet demand. |
-| "exchanging value" | → Operations & Delivery | Exchange requires a mechanism — the engine that turns the offering into a delivered outcome. |
+| "bounded entity" | → Governance & Existence | Boundedness requires a boundary: who is inside, what rules apply, what constitutes the entity itself. |
+| "persists" | → Supply & Resources | Persistence requires a substrate: the physical or virtual assets that keep the entity alive over time. |
+| "persists" | → People & Organization | Persistence requires agents: the humans who perform the work and the structure that organizes them. |
+| "exchanging value" | → Customer & Demand | Exchange requires a counterparty: the people whose need the entity meets, and the demand they generate. |
+| "exchanging value" | → Product & Offering | Exchange requires something to offer: the catalog of what the entity provides to meet demand. |
+| "exchanging value" | → Operations & Delivery | Exchange requires a mechanism: the engine that turns the offering into a delivered outcome. |
 | "with its environment" | → Finance & Value | The environment requires accounting — the measurement of value created, consumed, and retained. |
 
 Each domain is a logical consequence of a word in the axiom, not an assertion. This is what makes the framework bottom-up: it is derived from the definition of an enterprise, not reverse-engineered from a specific industry's practices.
@@ -46,14 +46,14 @@ Each domain is a logical consequence of a word in the axiom, not an assertion. T
 
 The framework obeys eight rules:
 
-1. **Universality.** The framework must apply to any enterprise — a 50-person charity, a 500,000-person telco, a hospital, a government agency — without modification.
+1. **Universality.** The framework must apply to any enterprise, a 50-person charity, a 500,000-person telco, a hospital, a government agency, without modification.
 2. **MECE.** The two partitions (domains and stages) are mutually exclusive and collectively exhaustive. A capability belongs to exactly one domain; an object is in exactly one stage at a time.
 3. **Lifecycle continuity.** Every business object passes through every stage. Nothing is "born live."
 4. **Orthogonality.** The two axes are independent. Knowing an object's domain does not determine its stage, and vice versa.
 5. **Minimality.** The fewest constructs that fully describe the enterprise. Seven domains and seven stages are the minimum.
 6. **Traceability.** Every cell traces to an owner (actor), a state (stage), and a set of dependencies (other cells).
 7. **Evolvability.** The matrix is versioned. Each planning cycle produces a snapshot; diffing reveals what changed.
-8. **Bottom-up.** Derived from the axiom, not imported from eTOM, ITIL, COBIT, Zachman, or any other named framework.
+8. **Bottom-up.** Derived from the axiom, not imported from ITIL, COBIT, Zachman, or any other named framework.
 
 ---
 
