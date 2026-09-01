@@ -97,6 +97,8 @@ The **stages** answer the question *how does the work evolve?* Seven stages, par
 | 6 | Improve | Measure / Learn | Measuring performance, learning from incidents, scoring satisfaction. The enterprise decides what to change. |
 | 7 | Retire | Retire / Renew | Sunsetting, migrating, recovering, or renewing. The object exits its current form. |
 
+The formal grounding records for each Stage, the Stage vs object-State distinction, the Stage vs process-level independence, the DERA mapping (as a mapping, not an identity), and the multi-stage participation rule live in [`framework/lifecycle-grounding.md`](./framework/lifecycle-grounding.md) (CR-ECF-004).
+
 ### 5.3 Why These Axes
 
 The domains are *derived* — each falls out of the axiom as a logical consequence. The stages are *universal* — they are the lifecycle every object, capability, and asset must traverse. The two axes are orthogonal, which is what makes the matrix a grid rather than a list.
@@ -765,12 +767,14 @@ The following mapping is an illustrative snapshot. The TechNeHub Labs portfolio 
 
 ### 21.4 Stage → DERA Phase Mapping
 
+This is a mapping, not an identity relationship. ECF Stage and DERA Phase are independent semantic constructs; DERA is the coarser delivery wrapper that groups adjacent ECF Stages. The full rationale, the governing distinction (Stage != object State, Stage != process level), and the multi-stage participation rule live in [`framework/lifecycle-grounding.md`](./framework/lifecycle-grounding.md) (CR-ECF-004).
+
 | DERA Phase | ECF Stages |
 |-----------|------------|
-| Phase 1 — Discover & Define | Conceive + Design |
-| Phase 2 — Design & Build | Build + Activate |
-| Phase 3 — Deploy & Operate | Operate + Improve |
-| Phase 4 — Evolve & Retire | Retire |
+| Phase 1: Discover & Define | Conceive + Design |
+| Phase 2: Design & Build | Build + Activate |
+| Phase 3: Deploy & Operate | Operate + Improve |
+| Phase 4: Evolve & Retire | Retire |
 
 ECF's finer granularity (7 vs 4) is the deeper lens; DERA is the coarser delivery wrapper that groups adjacent stages.
 

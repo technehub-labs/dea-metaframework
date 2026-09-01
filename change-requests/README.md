@@ -10,7 +10,8 @@ cross-references point at the canonical CR repository (`dea-metamodel`).
 |----|-------|--------|-------|
 | [CR-ECF-001](./CR-ECF-001.md) | ECF Architectural Reconciliation | Merged (PR #4) | Positions ECF as an OpenDEA organizing framework/profile; establishes WSF -> OpenDEA -> ECF -> Metamodel -> Catalogs; lands `framework/architecture.md`. |
 | [CR-ECF-002](./CR-ECF-002.md) | ECF Semantic Boundary | Merged (PR #5) | Canonical definitions for Domain, Stage, Coordinate, Context; replaces container semantics with contextualization; capability identity and process topology boundaries. |
-| [CR-ECF-003](./CR-ECF-003.md) | ECF Domain Grounding | Proposed (PR open) | Formal grounding records for the seven Domains; compound-name boundary audit; orthogonality and completeness checks; renaming rule. |
+| [CR-ECF-003](./CR-ECF-003.md) | ECF Domain Grounding | Merged (PR #6) | Formal grounding records for the seven Domains; compound-name boundary audit; orthogonality and completeness checks; renaming rule. |
+| [CR-ECF-004](./CR-ECF-004.md) | ECF Lifecycle Grounding | Proposed (PR open) | Per-Stage grounding records; Stage distinct from object State, process level, and DERA phase; existing DERA mapping retained as a mapping; multi-stage participation rule. |
 
 Parked (landed in dependency order; each lands with its own PR):
 
