@@ -1,24 +1,28 @@
-# CR-CATALOG-STRUCT-01: Catalog Repository Pattern (Four-State Per-Entity Subtrees + CATALOG.yaml Index)
+# CR-CATALOG-STRUCT-01: Catalog Repository Standard (Four-State Per-Entity Subtrees + CATALOG.yaml Index)
 
 **Status**: Proposed
-**Layer**: L0 (Metaframework; cross-repo contract)
+**Layer**: L0 (Metaframework; cross-repo standard)
 **Owner**: TechNeHub Labs
 **Depends on**: none
 **Supersedes**: none
 **Related**: CR-CATALOG-STRUCT-02..07 (adoption CRs)
+**Authority**: Mandatory; enforced by CI on every catalog repo
 
 ---
 
 ## 1. Purpose
 
-Define the canonical **catalog repository pattern** applied by every TechNeHub Labs catalog repo (L1 layer). The pattern establishes:
+Establish the canonical **catalog repository standard** applied by every TechNeHub Labs catalog repo (L1 layer). The standard establishes:
 
 - A **four-state per-entity lifecycle** (research, candidate, canonical, retired) with one named directory per state.
 - A **per-entity subtree** shape so that every artifact related to one entity lives under one folder and evolves as a unit.
 - A **machine-generated `CATALOG.yaml` index** at the repo root that aggregates all entities, classifications, schemas, validators, and research registers into a single read path.
-- A **migration three-step** that catalogs use to adopt the pattern without losing historical content.
+- A **migration three-step** that catalogs use to adopt the standard without losing historical content.
+- A **CI gate** and **conformance test suite** that make adoption verifiable and non-bypassable.
+- A **new-repo gate** so future catalog repos are pre-wired from the template.
+- A **retroactive adoption schedule** so existing repos are brought into conformance on a tracked timeline.
 
-The pattern is intentionally **structural, not behavioral**: it does not change what any catalog decides; it changes how the catalog organizes, surfaces, and evolves its decisions.
+The standard is intentionally **structural, not behavioral**: it does not change what any catalog decides; it changes how the catalog organizes, surfaces, and evolves its decisions.
 
 ## 2. Scope
 
@@ -244,10 +248,13 @@ The consumer never scans the catalog's filesystem. The consumer never trusts fil
 ## 11. Acceptance criteria
 
 1. CR-CATALOG-STRUCT-01 lands in `dea-metaframework/change-requests/`.
-2. `docs/architecture/catalog-repository-pattern.md` (new doc; in dea-metaframework) describes the pattern in plain prose.
-3. The pattern is referenced from `README.md` and `docs/README.md` in dea-metaframework.
-4. Zero changes to existing catalog repos (this CR is structural definition only).
-5. STRUCT-02..07 CRs reference this CR by ID in their `Depends on` field.
+2. `docs/standards/catalog-repository-pattern.md` (new doc; in dea-metaframework) describes the standard in plain prose.
+3. `docs/standards/catalog-repository-pattern-adoption.md` (new doc) lists every catalog repo + adoption CR + status.
+4. `tests/conformance/test_catalog_structure.py` (new test; in dea-metaframework) implements CST-001..CST-015.
+5. `tools/catalog-repo-template/` (new template repo) pre-wires new catalog repos with the regenerator, the gate, and the conformance tests.
+6. The standard is referenced from `README.md` and `docs/README.md` in dea-metaframework.
+7. STRUCT-02..07 CRs reference this CR by ID in their `Depends on` field.
+8. The four existing catalog repos (`dea-catalog-processes`, `dea-catalog-business-capabilities`, `dea-catalog-digital-business-service-factory`, `dea-catalog-stakeholders`) have adoption CRs filed with status tracked in the adoption tracker.
 
 ## 12. Risks
 
@@ -272,9 +279,9 @@ The consumer never scans the catalog's filesystem. The consumer never trusts fil
 ## Files
 
 - `change-requests/CR-CATALOG-STRUCT-01.md` (this file)
-- `docs/architecture/catalog-repository-pattern.md` (new; pattern in plain prose)
-- `docs/README.md` (updated; reference to the new doc)
-- `README.md` (updated; one-paragraph summary in the Repository Pattern section)
-- `docs/architecture/README.md` (updated; entry for the new doc)
+- `docs/standards/catalog-repository-pattern.md` (new; standard in plain prose)
+- `docs/standards/catalog-repository-pattern-adoption.md` (new; adoption tracker)
+- `README.md` (updated; one-paragraph summary in the Standards section)
+- `docs/README.md` (updated; reference to the new standard)
 
-No new tool, no schema, no validator in this CR; STRUCT-06 lands those.
+No regenerator tool, conformance tests, or repo template in this CR; STRUCT-06 lands those.

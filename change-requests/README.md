@@ -22,13 +22,13 @@ cross-references point at the canonical CR repository (`dea-metamodel`).
 
 ## Catalog Structure series
 
-Cross-repo structural pattern applied by every TechNeHub Labs catalog repo (L1 layer).
+Cross-repo **mandatory standard** applied by every TechNeHub Labs catalog repo (L1 layer). Established by CR-CATALOG-STRUCT-01 and enforced by CI gates + conformance tests + the new-repo template.
 
 | CR | Title | Status | Notes |
 |----|-------|--------|-------|
-| [CR-CATALOG-STRUCT-01](./CR-CATALOG-STRUCT-01.md) | Catalog Repository Pattern (Four-State Per-Entity Subtrees + CATALOG.yaml Index) | Proposed (this PR) | Defines the four-state lifecycle (research, candidate, canonical, retired), per-entity subtree shape, machine-generated CATALOG.yaml index, and the migration three-step. Lands `docs/architecture/catalog-repository-pattern.md`. |
+| [CR-CATALOG-STRUCT-01](./CR-CATALOG-STRUCT-01.md) | Catalog Repository Standard (Four-State Per-Entity Subtrees + CATALOG.yaml Index) | Proposed (this PR) | Establishes the standard: four-state per-entity lifecycle, per-entity subtree shape, machine-generated CATALOG.yaml index, CI gate, conformance tests (CST-001..CST-015), new-repo template, retroactive adoption schedule. Lands `docs/standards/catalog-repository-pattern.md` + `docs/standards/catalog-repository-pattern-adoption.md`. |
 
-Downstream CRs (STRUCT-02..STRUCT-07) are per-repo adoptions and the cross-repo consumer; they land in dependency order after STRUCT-01 and STRUCT-06 (the regenerator tool) merge.
+Downstream CRs (STRUCT-02..STRUCT-07) are per-repo adoptions, the regenerator tool, and the cross-repo consumer. STRUCT-06 (regenerator + tests + template) MUST land before any adoption CR. STRUCT-07 (consumer) lands after STRUCT-02 + STRUCT-06.
 
 Downstream gate CRs (CG-002..CG-006) land in dependency order; each ships with its own PR once CG-001 is merged.
 

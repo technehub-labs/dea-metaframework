@@ -118,6 +118,17 @@ and Section 9 (the foundation matrix) cover the essentials in 15 minutes.
   *Deploy & Operate* = Operate + Improve, *Evolve & Retire* = Retire. This is a
   mapping, not an identity relationship.
 
+### Apply the catalog repository standard
+- **Catalog repository standard**:
+  [`docs/standards/catalog-repository-pattern.md`](./docs/standards/catalog-repository-pattern.md).
+  Mandatory structural standard applied by every catalog repo (L1 layer).
+  Defines the four-state per-entity lifecycle, the per-entity subtree shape,
+  the machine-generated `CATALOG.yaml` index, the CI gate, the conformance
+  tests, the new-repo gate, and the retroactive adoption schedule.
+- **Adoption tracker**:
+  [`docs/standards/catalog-repository-pattern-adoption.md`](./docs/standards/catalog-repository-pattern-adoption.md).
+  Status of every catalog repo against the standard.
+
 ---
 
 ## Where it fits
