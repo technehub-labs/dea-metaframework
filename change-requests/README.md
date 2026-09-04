@@ -20,6 +20,16 @@ cross-references point at the canonical CR repository (`dea-metamodel`).
 |----|-------|--------|-------|
 | [CR-ECF-CG-001](./CR-ECF-CG-001.md) | ECF Conformance Gate Definition | Proposed (this PR) | The umbrella: five conformance layers, four states, gate conditions, evidence, governance principle (the gate tests consumers; it does not modify the contract). |
 
+## Catalog Structure series
+
+Cross-repo structural pattern applied by every TechNeHub Labs catalog repo (L1 layer).
+
+| CR | Title | Status | Notes |
+|----|-------|--------|-------|
+| [CR-CATALOG-STRUCT-01](./CR-CATALOG-STRUCT-01.md) | Catalog Repository Pattern (Four-State Per-Entity Subtrees + CATALOG.yaml Index) | Proposed (this PR) | Defines the four-state lifecycle (research, candidate, canonical, retired), per-entity subtree shape, machine-generated CATALOG.yaml index, and the migration three-step. Lands `docs/architecture/catalog-repository-pattern.md`. |
+
+Downstream CRs (STRUCT-02..STRUCT-07) are per-repo adoptions and the cross-repo consumer; they land in dependency order after STRUCT-01 and STRUCT-06 (the regenerator tool) merge.
+
 Downstream gate CRs (CG-002..CG-006) land in dependency order; each ships with its own PR once CG-001 is merged.
 
 Parked (landed in dependency order; each lands with its own PR):
