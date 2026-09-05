@@ -36,8 +36,8 @@ The cross-repo consumer (CR-CATALOG-STRUCT-07) is implemented as a three-PR stac
 
 | Consumer | CR | Status | PR | Notes |
 |---|---|---|---|---|
-| `dea-metaframework/tools/cross_repo_consumer/` | CR-CATALOG-STRUCT-07a | merged | #19 | Reference consumer module + 29 pytest tests. Stdlib-only. Live CLI rollup confirms all four adopters' CATALOG.yaml parse cleanly. The follow-up PR adds the `pytest tools/cross_repo_consumer/tests/` step to the metaframework CI workflow. |
-| `dea-metamodel/viewer/` | CR-CATALOG-STRUCT-07b | not-started | n/a | Integrate the consumer into the viewer; rebuild entity-graph.json so each card surfaces catalog content (count, last_modified, lifecycle_status histogram). Lands after STRUCT-07a. |
+| `dea-metaframework/tools/cross_repo_consumer/` | CR-CATALOG-STRUCT-07a | merged | #19 | Reference consumer module + 30 pytest tests. Stdlib-only. Live CLI rollup confirms all four adopters' CATALOG.yaml parse cleanly. A follow-up PR adds the `pytest tools/cross_repo_consumer/tests/` step to the metaframework CI workflow. |
+| `dea-metamodel/viewer/` (entity-graph.json + dea-web-viewer) | CR-CATALOG-STRUCT-07b | merged | #164 + #22 | Generate-time integration: `generate_entity_graph.py` attaches a `catalog_summary` field per entity whose catalog_repo matches a known conformant adopter; entity-graph.json is rebuilt with live counts (entity_count, canonical, candidates, retired, research_files), latest_modified, metamodel_version, abbreviation. Viewer-side: `dea-web-viewer/src/components/EntityDrawer.tsx` renders a new "Catalog content" card. Build-time only; no runtime cross-origin fetches. 5 of 54 entities currently carry summaries (one per adopter). |
 | `dea-architecture-framework/` | CR-CATALOG-STRUCT-07c | not-started | n/a | Smoke test using the consumer module to verify cataloged entities match the OpenDEAM model. Lands with viewer PR or after. |
 
 ## Sequencing rule
