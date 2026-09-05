@@ -2,7 +2,7 @@
 
 **Standard**: [catalog-repository-pattern.md](./catalog-repository-pattern.md)
 **Owner**: TechNeHub Labs
-**Last updated**: 2026-09-04
+**Last updated**: 2026-09-05
 
 This document tracks adoption of the catalog repository standard (CR-CATALOG-STRUCT-01) across every TechNeHub Labs catalog repo.
 
@@ -20,7 +20,7 @@ This document tracks adoption of the catalog repository standard (CR-CATALOG-STR
 
 | Repo | Adoption CR | Status | Conformance tests | PR | Notes |
 |---|---|---|---|---|---|
-| `dea-catalog-processes` | CR-CATALOG-STRUCT-02 | not-started | pending | n/a | 2 canonical entities; 3 research files in `docs/research/`. Step 1: create subtrees for both entities. Step 2: distribute `docs/research/l1-*.yaml` into `dea:process-manage-customer-relationship/research/` and `dea:group-customer-lifecycle-management/research/`. |
+| `dea-catalog-processes` | CR-CATALOG-STRUCT-02 | conforming | passing | #21 | First adoption CR; lands the standard end-to-end. 2 canonical entities; 3 research files moved into `dea:group-customer-lifecycle-management/research/`. CI runs regenerator + gate + 6 existing validators + conformance suite (16/16 CSTs pass under `--strict`). STRUCT-07 (cross-repo consumer) now unblocked. |
 | `dea-catalog-business-capabilities` | CR-CATALOG-STRUCT-03 | not-started | pending | n/a | Largest current catalog (~30 capabilities + ~30 research files). Step 1: create subtrees for every capability. Step 2: distribute `docs/research/*` into per-entity subtrees by YAML-field classification. |
 | `dea-catalog-digital-business-service-factory` | CR-CATALOG-STRUCT-04 | not-started | pending | n/a | Has flat `CATALOG/v1-alpha/*.yaml` files. Step 1: convert each to a per-entity subtree. No top-level research dir to distribute. |
 | `dea-catalog-stakeholders` | CR-CATALOG-STRUCT-05 | not-started | pending | n/a | Scaffold repo (no entities yet). Adoption = pre-wire the standard before any entity is added. Step 1: copy regenerator + gate from template; CI workflow; conformance tests. |
