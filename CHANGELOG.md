@@ -19,6 +19,29 @@ governed by change requests (`change-requests/`).
 - README: "Position in the Semantic and OpenDEA Architecture" section with the
   normative stack and boundary statement. (CR-ECF-001)
 
+### CR-CATALOG-STRUCT-06a: CATALOG.yaml Regenerator + Gate + Schema
+
+- `tools/catalog-index-schema.json`: JSON Schema draft-07 describing the
+  `CATALOG.yaml` index file (CR-CATALOG-STRUCT-01 §6 contract).
+- `tools/regenerate_catalog.py`: machine regenerator for `CATALOG.yaml`.
+  Reads filesystem; emits the index atomically; supports `--check`,
+  `--dry-run`, `--verbose`. Deterministic, byte-stable, stdlib-only.
+- `tools/check_catalog_index.py`: gate that validates the committed
+  `CATALOG.yaml` against the schema and runs structural sanity checks.
+  `--strict` upgrades warnings to errors.
+- `tests/test_catalog_index_machinery.py`: pytest self-test suite (12 tests)
+  exercising the regenerator and gate against in-memory fixture catalogs.
+- `tests/conftest.py`: pytest fixture `tmp_root` that copies the schema into
+  each test's tmp directory.
+- `tests/__init__.py`: empty marker for the `tests` package.
+- `change-requests/CR-CATALOG-STRUCT-06a.md`: design, decisions, usage,
+  conformance contract for the engine.
+
+The engine is conformant: regenerator and gate run on any catalog repo
+that adopts the standard. Adoption CRs (STRUCT-02..05) wire the gate into
+each catalog's CI; conformance tests CST-001..CST-015 (cross-repo) land
+in STRUCT-06b.
+
 ### Changed
 
 - README: ECF reframed from "conceptual skeleton beneath the DEA Metamodel" to
