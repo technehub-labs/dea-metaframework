@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Editor
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Test
+.pytest_cache/
+
+# Generated
+CATALOG.yaml

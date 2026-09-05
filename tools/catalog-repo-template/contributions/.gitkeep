@@ -1,0 +1,3 @@
+# Contribution intake queue. Contributors add candidate YAML files here
+# (one per entity); CI validates each contribution against the catalog's
+# JSON Schemas and emits a contribution report.

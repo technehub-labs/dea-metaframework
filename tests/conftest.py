@@ -1,10 +1,9 @@
 """Pytest fixtures for the catalog index machinery self-tests.
 
-The self-tests in `tests/test_catalog_index_machinery.py` are also runnable
-as a standalone module (no pytest required), and pytest discovers them via
-its standard test collection. This file bridges both runners: pytest sees
-the `tmp_root` fixture below; the standalone runner uses
-`tests/test_catalog_index_machinery.py:make_tmp_root()`.
+The self-tests in `tests/test_catalog_index_machinery.py` and
+`tests/test_conformance_catalog_structure.py` are also runnable as
+standalone modules (no pytest required), and pytest discovers them via
+its standard test collection. This file bridges both runners.
 """
 
 from __future__ import annotations
@@ -15,14 +14,23 @@ from pathlib import Path
 
 import pytest
 
+REPO_ROOT = Path(__file__).resolve().parent.parent
+SCHEMA_SRC = REPO_ROOT / "tools" / "catalog-index-schema.json"
+TEMPLATE_SRC = REPO_ROOT / "tools" / "catalog-repo-template"
+
 
 @pytest.fixture
 def tmp_root(tmp_path: Path) -> Generator[Path, None, None]:
-    """Return a tmp directory; copy the schema into it so the regenerator
-    can find `tools/catalog-index-schema.json` at its default location."""
-    schema_src = Path(__file__).resolve().parent.parent / "tools" / "catalog-index-schema.json"
-    schema_dst = tmp_path / "tools" / "catalog-index-schema.json"
-    schema_dst.parent.mkdir(parents=True, exist_ok=True)
-    schema_dst.write_bytes(schema_src.read_bytes())
+    """Return a tmp directory with the schema and template seeded.
+
+    The regenerator expects `tools/catalog-index-schema.json` and the
+    conformance suite expects `tools/catalog-repo-template/` (relative to
+    the catalog root). Both fixtures place the seed under
+    `<tmp_root>/tools/`.
+    """
+    tools_dst = tmp_path / "tools"
+    tools_dst.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(SCHEMA_SRC, tools_dst / "catalog-index-schema.json")
+    shutil.copytree(TEMPLATE_SRC, tools_dst / "catalog-repo-template")
     yield tmp_path
     shutil.rmtree(tmp_path, ignore_errors=True)

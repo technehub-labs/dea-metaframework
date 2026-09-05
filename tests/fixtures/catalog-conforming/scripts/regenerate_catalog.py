@@ -174,26 +174,15 @@ def entity_id_from_subtree(subtree: Path) -> str:
 
 
 def read_canonical_yaml(subtree: Path, entity_id: str) -> dict[str, Any] | None:
-    """Load the canonical YAML at the subtree root; return None if absent.
-
-    If no root-level canonical exists, fall back to the most recent file
-    under `retired/` (entities that are fully retired may have moved their
-    canonical file out of the root).
-    """
+    """Load the canonical YAML at the subtree root; return None if absent."""
     canonical = subtree / f"{entity_id}.yaml"
-    if canonical.exists():
+    if not canonical.exists():
         # Fallback: first .yaml at the subtree root.
         candidates = sorted(subtree.glob("*.yaml"))
         if not candidates:
             return None
         return load_yaml(candidates[0])
-    retired = subtree / "retired"
-    if retired.is_dir():
-        retired_files = sorted(retired.glob("*.yaml"))
-        if retired_files:
-            # Use the lexicographically last (most recent version) retired file.
-            return load_yaml(retired_files[-1])
-    return None
+    return load_yaml(canonical)
 
 
 def state_research_present(subtree: Path) -> bool:
@@ -236,20 +225,15 @@ def infer_state(subtree: Path, canonical: dict[str, Any] | None) -> tuple[str, s
     if not has_research and not has_candidates and not has_retired and not canonical_path:
         return "candidate", canonical_path
 
-    # Precedence 4: canonical file present (root or retired fallback) and
-    # lifecycle_status not retired.
-    if canonical is not None:
+    # Precedence 4: canonical file present and lifecycle_status not retired.
+    if canonical_path is not None and canonical is not None:
         lifecycle = canonical.get("lifecycle_status")
-        if canonical_path is not None and lifecycle not in RETIRED_LIFECYCLE_STATUSES:
+        if lifecycle not in RETIRED_LIFECYCLE_STATUSES:
             return "canonical", canonical_path
-        if lifecycle in RETIRED_LIFECYCLE_STATUSES:
-            # Retired: prefer the root canonical path if it exists, else the
-            # last retired/ file's path (preserved as historical record).
-            if canonical_path is not None:
-                return "retired", canonical_path
-            retired_files = sorted((subtree / "retired").glob("*.yaml")) if (subtree / "retired").is_dir() else []
-            if retired_files:
-                return "retired", f"entities/v1-alpha/{entity_id}/retired/{retired_files[-1].name}"
+
+    # Precedence 3: canonical file whose lifecycle_status is retired/deprecated.
+    if canonical_path is not None and canonical is not None:
+        if canonical.get("lifecycle_status") in RETIRED_LIFECYCLE_STATUSES:
             return "retired", canonical_path
 
     # Precedence 2: candidates/ has files but no canonical.

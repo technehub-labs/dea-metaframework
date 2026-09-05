@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this catalog, please cite it using the metadata from this file."
+type: dataset
+title: "{{CATALOG_NAME}}"
+id: "{{CATALOG_ID}}"
+authors:
+  - name: "{{OWNER}}"
+repository-code: "{{REPO_URL}}"
+license: Apache-2.0

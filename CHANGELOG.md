@@ -42,6 +42,39 @@ that adopts the standard. Adoption CRs (STRUCT-02..05) wire the gate into
 each catalog's CI; conformance tests CST-001..CST-015 (cross-repo) land
 in STRUCT-06b.
 
+### CR-CATALOG-STRUCT-06b: Conformance Tests + New-Repo Template + Bootstrap Script
+
+- `tools/conformance_test_catalog_structure.py`: cross-repo conformance
+  suite implementing CST-001..CST-015 (standard §11) plus CST-016
+  (template-version diff, advisory by default).
+- `tools/bootstrap_catalog_repo.py`: hand-rolled bootstrap script (no
+  Jinja, no cookiecutter). Copies the template, substitutes placeholders,
+  writes metamodel-pointer.yaml and TEMPLATE_VERSION, optionally runs
+  `git init` and `gh repo create`.
+- `tools/catalog-repo-template/`: the new-repo bootstrap source per
+  standard §12. Ships TEMPLATE_VERSION (0.1.0), README, LICENSE, NOTICE,
+  CITATION.cff, .gitignore, .github/workflows/ci.yml, and directory
+  placeholders for entities, classifications, schemas, scripts,
+  contributions, change-requests.
+- `tests/fixtures/catalog-conforming/`: a real catalog the conformance
+  suite passes against. Includes canonical, candidate-only, and
+  fully-retired entities; the regenerator + gate + schema copies; a CI
+  workflow; and a generated CATALOG.yaml.
+- `tests/test_conformance_catalog_structure.py`: 11 self-tests covering
+  every CST in isolation plus bootstrap behavior.
+- `tests/conftest.py`: extended the `tmp_root` fixture to seed both the
+  schema and the template root.
+- `tools/regenerate_catalog.py`: bug fix in `read_canonical_yaml` to
+  fall back to `retired/<file>.yaml` when no root canonical exists; bug
+  fix in `infer_state` precedence 3/4 to use the loaded canonical's
+  lifecycle when `canonical_path` is None.
+- `change-requests/CR-CATALOG-STRUCT-06b.md`: design, decisions, usage,
+  CST map, and worked example.
+
+The enforcement loop is closed. Adoption CRs (STRUCT-02..05) are now
+unblocked. The cross-repo consumer (STRUCT-07) lands after STRUCT-02 + the
+two STRUCT-06 halves.
+
 ### Changed
 
 - README: ECF reframed from "conceptual skeleton beneath the DEA Metamodel" to

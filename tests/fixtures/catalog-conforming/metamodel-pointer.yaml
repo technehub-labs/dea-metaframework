@@ -1,0 +1,8 @@
+id: dea:catalog-test-conforming
+name: Conforming Test Catalog
+abbreviation: CTC
+version: 1.0.0
+status: active
+metamodel_version: 1.0.0
+description: Fixture catalog used by CST-001..CST-016 self-tests.
+owner: TechNeHub Labs
