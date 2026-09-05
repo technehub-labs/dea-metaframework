@@ -249,6 +249,38 @@ def test_no_regression_on_ecf_conformance_suite() -> None:
     check(rc.returncode == 0, f"ECF conformance suite regression: exit {rc.returncode}; stdout={rc.stdout}; stderr={rc.stderr}")
 
 
+def test_strip_url_credentials_strips_pat() -> None:
+    """The regenerator must strip embedded PATs from authenticated git
+    clone URLs before emitting them into CATALOG.yaml. Regression
+    coverage for CR-CATALOG-STRUCT-02 (which exposed the leak when
+    the local clone used x-access-token:*** URLs)."""
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("regen_url", REGEN)
+    assert spec is not None
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)  # type: ignore[union-attr]
+    strip = module._strip_url_credentials
+
+    check(
+        strip("https://x-access-token:ghp_VE1234567890abcdef@github.com/owner/repo.git")
+        == "https://github.com/owner/repo.git",
+        "PAT-as-username URL not stripped",
+    )
+    check(
+        strip("https://user:pass@github.com/owner/repo.git")
+        == "https://github.com/owner/repo.git",
+        "user:pass URL not stripped",
+    )
+    check(
+        strip("https://github.com/owner/repo.git") == "https://github.com/owner/repo.git",
+        "clean URL was modified",
+    )
+    check(
+        strip("git@github.com:owner/repo.git") == "git@github.com:owner/repo.git",
+        "SSH URL was modified",
+    )
+
+
 # ---------- Runner ----------
 
 def make_tmp_root() -> Path:

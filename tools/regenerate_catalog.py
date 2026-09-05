@@ -110,7 +110,14 @@ def read_pointer(catalog_root: Path) -> dict[str, Any]:
 
 
 def detect_repository_url(catalog_root: Path) -> str:
-    """Read git origin URL; return empty string on failure (CI containers without git history)."""
+    """Read git origin URL; sanitize embedded credentials; return empty string on failure.
+
+    git's remote URL may include embedded credentials when the user has
+    authenticated via `git config credential.helper` or similar (e.g.
+    `https://x-access-token:<TOKEN>@github.com/...`). Strip any
+    userinfo before returning; the credential portion must never appear
+    in CATALOG.yaml.
+    """
     try:
         result = subprocess.run(
             ["git", "config", "--get", "remote.origin.url"],
@@ -123,7 +130,27 @@ def detect_repository_url(catalog_root: Path) -> str:
         return ""
     if result.returncode != 0:
         return ""
-    return result.stdout.strip()
+    return _strip_url_credentials(result.stdout.strip())
+
+
+def _strip_url_credentials(url: str) -> str:
+    """Remove userinfo (user:pass@ or PAT-as-username@) from a URL.
+
+    GitHub's authenticated clone URL embeds the PAT as the username:
+        https://<TOKEN>@github.com/owner/repo.git
+    The credential portion must not appear in catalog output (CR-BP-12
+    §8 + STRUCT-06a security review).
+    """
+    if "@" not in url:
+        return url
+    scheme_end = url.find("://")
+    if scheme_end < 0:
+        return url
+    after_scheme = scheme_end + 3
+    at_index = url.find("@", after_scheme)
+    if at_index < 0:
+        return url
+    return url[:after_scheme] + url[at_index + 1:]
 
 
 def catalog_name_from_dir(catalog_root: Path) -> str:
