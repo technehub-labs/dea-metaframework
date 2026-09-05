@@ -1,0 +1,5 @@
+id: dea:candidate-bar
+type: Process
+name: Bar Candidate
+version: 0.1.0
+lifecycle_status: candidate

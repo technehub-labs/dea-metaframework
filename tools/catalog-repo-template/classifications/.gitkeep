@@ -1,0 +1,3 @@
+# Controlled vocabularies (classifications) live here. Each file is a
+# mapping of vocabulary name to its allowed values. Schema files in
+# `schemas/` reference these by name.

@@ -1,0 +1,3 @@
+# This directory is populated by `tools/bootstrap_catalog_repo.py` from
+# `dea-metaframework/tools/regenerate_catalog.py` and
+# `dea-metaframework/tools/check_catalog_index.py`. CI runs both on every PR.

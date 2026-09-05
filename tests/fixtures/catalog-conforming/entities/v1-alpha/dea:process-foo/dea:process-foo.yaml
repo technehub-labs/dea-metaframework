@@ -1,0 +1,11 @@
+id: dea:process-foo
+type: Process
+name: Foo
+version: 1.0.0
+lifecycle_status: active
+definition: |
+  A canonical process used by the conformance fixture catalog.
+process_intent: |
+  Demonstrate a conformant canonical entity.
+process_audience: |
+  Catalog conformance testers.

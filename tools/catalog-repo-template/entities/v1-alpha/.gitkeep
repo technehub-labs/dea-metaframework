@@ -1,0 +1,3 @@
+# entities/<id> directory; one per entity. Each subtree follows
+# entities/v1-alpha/<entity-id>/{canonical,research,candidates,retired}.
+# Catalog authors populate this; the regenerator scans it to emit CATALOG.yaml.

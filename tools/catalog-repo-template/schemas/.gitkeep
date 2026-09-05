@@ -1,0 +1,2 @@
+# JSON Schema files for the entity types hosted by this catalog.
+# Each entity type gets one schema; the regenerator and gate consume them.

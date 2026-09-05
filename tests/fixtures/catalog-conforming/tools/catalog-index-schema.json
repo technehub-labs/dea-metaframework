@@ -1,0 +1,203 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/technehub-labs/dea-metaframework/tools/catalog-index-schema.json",
+  "title": "CATALOG.yaml",
+  "description": "Cross-entity index file emitted by tools/regenerate_catalog.py (CR-CATALOG-STRUCT-06a) and consumed by every catalog repo per CR-CATALOG-STRUCT-01. Machine-generated only; hand-edits are forbidden (standard §6.3).",
+  "type": "object",
+  "required": ["catalog"],
+  "additionalProperties": false,
+  "properties": {
+    "catalog": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "abbreviation",
+        "version",
+        "status",
+        "metamodel_version",
+        "description",
+        "repository",
+        "owner",
+        "entities",
+        "cross_cutting",
+        "counts",
+        "research_registers"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^dea:catalog-[a-z0-9-]+$",
+          "description": "Stable catalog id; matches the metamodel-pointer.yaml convention."
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable catalog name (e.g. 'Business Process')."
+        },
+        "abbreviation": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Short catalog abbreviation (e.g. 'BP')."
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-z0-9.-]+)?$",
+          "description": "Catalog-level version (not entity version)."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "draft", "deprecated", "retired"],
+          "description": "Catalog-level lifecycle status."
+        },
+        "metamodel_version": {
+          "type": "string",
+          "description": "Semver or range expression; format not enforced here."
+        },
+        "description": {
+          "type": "string",
+          "description": "Free-text catalog description."
+        },
+        "repository": {
+          "type": "string",
+          "format": "uri",
+          "description": "Origin URL of the catalog repo."
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Owning organization; defaults to 'TechNeHub Labs' when metamodel-pointer.yaml is absent."
+        },
+        "entities": {
+          "type": "array",
+          "description": "One entry per entity subtree; sorted lexicographically by id.",
+          "items": { "$ref": "#/definitions/entity_entry" }
+        },
+        "cross_cutting": {
+          "type": "object",
+          "required": [
+            "classifications",
+            "schemas",
+            "validators",
+            "contributions_queue",
+            "change_requests"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "classifications": { "type": "string", "pattern": ".+/" },
+            "schemas": { "type": "string", "pattern": ".+/" },
+            "validators": { "type": "string", "pattern": ".+/" },
+            "contributions_queue": { "type": "string", "pattern": ".+/" },
+            "change_requests": { "type": "string", "pattern": ".+/" }
+          }
+        },
+        "counts": {
+          "type": "object",
+          "required": [
+            "entities",
+            "research_files",
+            "candidates",
+            "canonical",
+            "retired",
+            "open_change_requests"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "entities": { "type": "integer", "minimum": 0 },
+            "research_files": { "type": "integer", "minimum": 0 },
+            "candidates": { "type": "integer", "minimum": 0 },
+            "canonical": { "type": "integer", "minimum": 0 },
+            "retired": { "type": "integer", "minimum": 0 },
+            "open_change_requests": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "research_registers": {
+          "type": "array",
+          "description": "Convenience list: which entity owns which research directory and what files live there.",
+          "items": { "$ref": "#/definitions/research_register_entry" }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "entity_entry": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "state",
+        "path",
+        "research_count",
+        "candidate_count",
+        "canonical_count",
+        "retired_count",
+        "last_modified",
+        "version",
+        "lifecycle_status"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^dea:[a-z0-9-]+(:[a-z0-9-]+)*$",
+        "description": "Canonical entity id; colons preserved as part of the directory name. Accepts single-segment (dea:process-foo) and multi-segment (dea:pc-cd-op) ids."
+        },
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Entity type as declared in the canonical YAML (e.g. 'Process', 'ProcessGroup')."
+        },
+        "state": {
+          "type": "string",
+          "enum": ["research", "candidate", "canonical", "retired"],
+          "description": "Inferred per CR-CATALOG-STRUCT-06a §4.1 precedence rule."
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^entities/v1-alpha/.+",
+          "description": "Repo-relative path to the entity's primary file (canonical YAML when present, otherwise the first candidate file, otherwise the subtree root)."
+        },
+        "research_count": { "type": "integer", "minimum": 0 },
+        "candidate_count": { "type": "integer", "minimum": 0 },
+        "canonical_count": { "type": "integer", "minimum": 0 },
+        "retired_count": { "type": "integer", "minimum": 0 },
+        "last_modified": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
+          "description": "UTC date of the latest modification across the subtree's regular files."
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(-[a-z0-9.-]+)?$",
+          "description": "Entity version; falls back to 0.0.0 for subtrees without a canonical file."
+        },
+        "lifecycle_status": {
+          "type": "string",
+          "enum": ["candidate", "active", "deprecated", "retired", "unknown"],
+          "description": "lifecycle_status field on the canonical YAML; 'candidate' or 'unknown' for subtrees without a canonical file."
+        }
+      }
+    },
+    "research_register_entry": {
+      "type": "object",
+      "required": ["entity_id", "path", "files"],
+      "additionalProperties": false,
+      "properties": {
+        "entity_id": {
+          "type": "string",
+          "pattern": "^dea:[a-z0-9-]+(:[a-z0-9-]+)*$"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^entities/v1-alpha/.+/research/$"
+        },
+        "files": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Lexicographically sorted list of regular-file names under the research directory."
+        }
+      }
+    }
+  }
+}

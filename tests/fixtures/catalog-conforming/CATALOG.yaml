@@ -1,0 +1,70 @@
+catalog:
+  abbreviation: CTC
+  counts:
+    candidates: 1
+    canonical: 1
+    entities: 3
+    open_change_requests: 0
+    research_files: 3
+    retired: 1
+  cross_cutting:
+    change_requests: change-requests/
+    classifications: classifications/
+    contributions_queue: contributions/
+    schemas: schemas/
+    validators: scripts/
+  description: Fixture catalog used by CST-001..CST-016 self-tests.
+  entities:
+  - candidate_count: 2
+    canonical_count: 0
+    id: dea:candidate-bar
+    last_modified: '2026-09-05'
+    lifecycle_status: candidate
+    path: entities/v1-alpha/dea:candidate-bar/candidates/dea:candidate-bar.yaml
+    research_count: 0
+    retired_count: 0
+    state: candidate
+    type: unknown
+    version: 0.0.0
+  - candidate_count: 0
+    canonical_count: 1
+    id: dea:process-foo
+    last_modified: '2026-09-05'
+    lifecycle_status: active
+    path: entities/v1-alpha/dea:process-foo/dea:process-foo.yaml
+    research_count: 2
+    retired_count: 0
+    state: canonical
+    type: Process
+    version: 1.0.0
+  - candidate_count: 0
+    canonical_count: 0
+    id: dea:process-old
+    last_modified: '2026-09-05'
+    lifecycle_status: retired
+    path: entities/v1-alpha/dea:process-old/
+    research_count: 1
+    retired_count: 1
+    state: retired
+    type: Process
+    version: 1.0.0
+  id: dea:catalog-test-conforming
+  metamodel_version: 1.0.0
+  name: Conforming Test Catalog
+  owner: TechNeHub Labs
+  repository: https://github.com/technehub-labs/dea-metaframework.git
+  research_registers:
+  - entity_id: dea:candidate-bar
+    files: []
+    path: entities/v1-alpha/dea:candidate-bar/research/
+  - entity_id: dea:process-foo
+    files:
+    - README.md
+    - evidence-v0.1.yaml
+    path: entities/v1-alpha/dea:process-foo/research/
+  - entity_id: dea:process-old
+    files:
+    - README.md
+    path: entities/v1-alpha/dea:process-old/research/
+  status: active
+  version: 1.0.0
