@@ -27,6 +27,7 @@ Cross-repo **mandatory standard** applied by every TechNeHub Labs catalog repo (
 | CR | Title | Status | Notes |
 |----|-------|--------|-------|
 | [CR-CATALOG-STRUCT-01](./CR-CATALOG-STRUCT-01.md) | Catalog Repository Standard (Four-State Per-Entity Subtrees + CATALOG.yaml Index) | Proposed (this PR) | Establishes the standard: four-state per-entity lifecycle, per-entity subtree shape, machine-generated CATALOG.yaml index, CI gate, conformance tests (CST-001..CST-015), new-repo template, retroactive adoption schedule. Lands `docs/standards/catalog-repository-pattern.md` + `docs/standards/catalog-repository-pattern-adoption.md`. |
+| [CR-CATALOG-STRUCT-06a](./CR-CATALOG-STRUCT-06a.md) | CATALOG.yaml Regenerator + Gate + Schema | Proposed | The engine: JSON Schema (`tools/catalog-index-schema.json`), regenerator (`tools/regenerate_catalog.py`), gate (`tools/check_catalog_index.py`), and pytest self-test suite. Implements the standard's §6 contract. Adoption CRs (STRUCT-02..05) wire it into each catalog's CI; cross-repo conformance tests CST-001..CST-015 land in STRUCT-06b. |
 
 Downstream CRs (STRUCT-02..STRUCT-07) are per-repo adoptions, the regenerator tool, and the cross-repo consumer. STRUCT-06 (regenerator + tests + template) MUST land before any adoption CR. STRUCT-07 (consumer) lands after STRUCT-02 + STRUCT-06.
 
