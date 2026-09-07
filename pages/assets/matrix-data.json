@@ -1,0 +1,1652 @@
+{
+  "$schema": "https://technehub-labs.github.io/dea-metaframework/matrix-data.schema.json",
+  "framework": "ECF",
+  "version": "2.3.0",
+  "source": "dea-metaframework/pages/assets/matrix-data.json (extracted from site.js constants)",
+  "axes": {
+    "domains": "rows (what the enterprise does)",
+    "stages": "columns (how work evolves)"
+  },
+  "domains": [
+    {
+      "id": 1,
+      "key": "governance",
+      "name": "Governance & Existence",
+      "shortName": "Governance",
+      "color": "var(--l1)"
+    },
+    {
+      "id": 2,
+      "key": "strategy",
+      "name": "Strategy & Direction",
+      "shortName": "Strategy",
+      "color": "var(--l2)"
+    },
+    {
+      "id": 3,
+      "key": "agency",
+      "name": "Agency & Organization",
+      "shortName": "Agency",
+      "color": "var(--l3)"
+    },
+    {
+      "id": 4,
+      "key": "party",
+      "name": "Party & Relationship",
+      "shortName": "Party",
+      "color": "var(--l4)"
+    },
+    {
+      "id": 5,
+      "key": "product",
+      "name": "Product & Value",
+      "shortName": "Product",
+      "color": "var(--l5)"
+    },
+    {
+      "id": 6,
+      "key": "operations",
+      "name": "Operations & Enablement",
+      "shortName": "Operations",
+      "color": "var(--l6)"
+    },
+    {
+      "id": 7,
+      "key": "finance",
+      "name": "Finance & Accounting",
+      "shortName": "Finance",
+      "color": "var(--l7)"
+    }
+  ],
+  "stages": [
+    {
+      "id": 1,
+      "key": "conceive",
+      "name": "Conceive",
+      "fullName": "Conceive"
+    },
+    {
+      "id": 2,
+      "key": "design",
+      "name": "Design",
+      "fullName": "Design"
+    },
+    {
+      "id": 3,
+      "key": "build",
+      "name": "Build",
+      "fullName": "Build / Acquire"
+    },
+    {
+      "id": 4,
+      "key": "activate",
+      "name": "Activate",
+      "fullName": "Deploy / Activate"
+    },
+    {
+      "id": 5,
+      "key": "operate",
+      "name": "Operate",
+      "fullName": "Operate / Deliver"
+    },
+    {
+      "id": 6,
+      "key": "improve",
+      "name": "Improve",
+      "fullName": "Measure / Learn"
+    },
+    {
+      "id": 7,
+      "key": "retire",
+      "name": "Retire",
+      "fullName": "Retire / Renew"
+    }
+  ],
+  "scenarios": {
+    "foundation": {
+      "name": "Foundation",
+      "description": "Generic business object behavior — the canonical ECF cells.",
+      "cells": {
+        "governance.conceive": {
+          "text": "Policy intent — mandate, charter, guiding principles.",
+          "glyph": "●",
+          "actors": [
+            "governance-team"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "governance.design": {
+          "text": "Controls design — define the guardrails.",
+          "glyph": "●",
+          "actors": [
+            "compliance-architect"
+          ],
+          "metamodelEntities": [
+            "Standard"
+          ]
+        },
+        "governance.build": {
+          "text": "Compliance build — implement the controls.",
+          "glyph": "●",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "Standard"
+          ]
+        },
+        "governance.activate": {
+          "text": "Enforce — turn controls on, audit gating.",
+          "glyph": "●",
+          "actors": [
+            "audit",
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "Platform Service"
+          ]
+        },
+        "governance.operate": {
+          "text": "Assurance — continuous monitoring.",
+          "glyph": "●",
+          "actors": [
+            "audit",
+            "sre"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "governance.improve": {
+          "text": "Risk review — periodic re-assessment.",
+          "glyph": "●",
+          "actors": [
+            "risk-team"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "governance.retire": {
+          "text": "Policy retire — sunset obsolete mandates.",
+          "glyph": "·",
+          "actors": [
+            "governance-team"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "strategy.conceive": {
+          "text": "Purpose & ambition — mission, vision, aspiration.",
+          "glyph": "●",
+          "actors": [
+            "strategy-lead",
+            "executive"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "strategy.design": {
+          "text": "Strategic choices — positioning, scope, advantage logic.",
+          "glyph": "●",
+          "actors": [
+            "strategy-lead"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "strategy.build": {
+          "text": "Initiative portfolio — roadmap, resource allocation.",
+          "glyph": "★",
+          "actors": [
+            "strategy-lead",
+            "pmo"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        },
+        "strategy.activate": {
+          "text": "Launch direction — go-to-market alignment.",
+          "glyph": "●",
+          "actors": [
+            "strategy-lead",
+            "product"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "strategy.operate": {
+          "text": "Course correction — track vs plan, adapt.",
+          "glyph": "●",
+          "actors": [
+            "strategy-lead"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "strategy.improve": {
+          "text": "Strategic review — performance vs ambition.",
+          "glyph": "●",
+          "actors": [
+            "strategy-lead",
+            "executive"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "strategy.retire": {
+          "text": "Strategic renewal — pivot, divest, transform.",
+          "glyph": "●",
+          "actors": [
+            "executive",
+            "strategy-lead"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "agency.conceive": {
+          "text": "Workforce plan — headcount and skills forecast.",
+          "glyph": "●",
+          "actors": [
+            "workforce-planner"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.design": {
+          "text": "Org design — team topology, RACI.",
+          "glyph": "●",
+          "actors": [
+            "org-design"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.build": {
+          "text": "Hire / train — bring people on.",
+          "glyph": "●",
+          "actors": [
+            "recruiting",
+            "l&d"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.activate": {
+          "text": "Mobilize — assign to teams, onboarding.",
+          "glyph": "●",
+          "actors": [
+            "line-manager"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.operate": {
+          "text": "Perform & develop — regular work.",
+          "glyph": "●",
+          "actors": [
+            "line-manager"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "agency.improve": {
+          "text": "Engagement — pulse surveys, eNPS.",
+          "glyph": "●",
+          "actors": [
+            "agent-ops"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "agency.retire": {
+          "text": "Offboard / reassign — exit or transfer.",
+          "glyph": "●",
+          "actors": [
+            "agent-ops"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "party.conceive": {
+          "text": "Party identification — discovery, segmentation, qualification.",
+          "glyph": "●",
+          "actors": [
+            "marketing",
+            "sales"
+          ],
+          "metamodelEntities": [
+            "Value Stream"
+          ]
+        },
+        "party.design": {
+          "text": "Journey mapping — personas, friction points, channel design.",
+          "glyph": "●",
+          "actors": [
+            "product-design"
+          ],
+          "metamodelEntities": [
+            "Journey Touchpoint"
+          ]
+        },
+        "party.build": {
+          "text": "Onboarding — contracting, trust, integration.",
+          "glyph": "●",
+          "actors": [
+            "sales",
+            "legal"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "party.activate": {
+          "text": "Activation — first value moment, relationship start.",
+          "glyph": "★",
+          "actors": [
+            "sales",
+            "growth"
+          ],
+          "metamodelEntities": [
+            "Journey Touchpoint"
+          ]
+        },
+        "party.operate": {
+          "text": "Engagement & service — communication, support.",
+          "glyph": "●",
+          "actors": [
+            "care-ops"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "party.improve": {
+          "text": "Relationship development — NPS, retention, deepening.",
+          "glyph": "●",
+          "actors": [
+            "analytics",
+            "care-ops"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "party.retire": {
+          "text": "Relationship termination — offboarding, exit management.",
+          "glyph": "●",
+          "actors": [
+            "care-ops",
+            "legal"
+          ],
+          "metamodelEntities": [
+            "Business Object"
+          ]
+        },
+        "product.conceive": {
+          "text": "Market sensing — discovery, opportunity sizing.",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "research"
+          ],
+          "metamodelEntities": [
+            "Business Capability"
+          ]
+        },
+        "product.design": {
+          "text": "Catalog & specs — PRD, feature spec.",
+          "glyph": "●",
+          "actors": [
+            "product-design"
+          ],
+          "metamodelEntities": [
+            "Business Capability"
+          ]
+        },
+        "product.build": {
+          "text": "Configuration — bundle, packaging.",
+          "glyph": "●",
+          "actors": [
+            "engineering"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "product.activate": {
+          "text": "Launch — go-to-market, announcement.",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "growth"
+          ],
+          "metamodelEntities": [
+            "Journey Touchpoint"
+          ]
+        },
+        "product.operate": {
+          "text": "Catalog management — versioning, lifecycle.",
+          "glyph": "●",
+          "actors": [
+            "product-ops"
+          ],
+          "metamodelEntities": [
+            "Business Object"
+          ]
+        },
+        "product.improve": {
+          "text": "Performance — adoption, usage, satisfaction.",
+          "glyph": "●",
+          "actors": [
+            "analytics",
+            "product"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "product.retire": {
+          "text": "Sunset — deprecate, migrate users.",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "care-ops"
+          ],
+          "metamodelEntities": [
+            "Business Object"
+          ]
+        },
+        "operations.conceive": {
+          "text": "Demand planning — forecast workload.",
+          "glyph": "●",
+          "actors": [
+            "demand-planner"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "operations.design": {
+          "text": "Process design — SOPs, automation.",
+          "glyph": "●",
+          "actors": [
+            "process-architect"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "operations.build": {
+          "text": "Provisioning — environment, tooling.",
+          "glyph": "★",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "operations.activate": {
+          "text": "Cut-over — go-live, change window.",
+          "glyph": "●",
+          "actors": [
+            "change-manager",
+            "sre"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "operations.operate": {
+          "text": "Run & maintain — 24/7 operations.",
+          "glyph": "★",
+          "actors": [
+            "sre",
+            "noc"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "operations.improve": {
+          "text": "Quality & incident — post-mortems, SLO.",
+          "glyph": "●",
+          "actors": [
+            "sre",
+            "quality"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "operations.retire": {
+          "text": "Decommission — environment teardown.",
+          "glyph": "●",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "finance.conceive": {
+          "text": "Business case — investment thesis.",
+          "glyph": "●",
+          "actors": [
+            "finance",
+            "product"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        },
+        "finance.design": {
+          "text": "Pricing model — tariff, tiers.",
+          "glyph": "●",
+          "actors": [
+            "pricing-analyst"
+          ],
+          "metamodelEntities": [
+            "Business Capability"
+          ]
+        },
+        "finance.build": {
+          "text": "Funding — budget approval, allocation.",
+          "glyph": "●",
+          "actors": [
+            "finance",
+            "cfo"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        },
+        "finance.activate": {
+          "text": "Billing activation — start metering.",
+          "glyph": "●",
+          "actors": [
+            "billing-ops"
+          ],
+          "metamodelEntities": [
+            "API / Service Contract"
+          ]
+        },
+        "finance.operate": {
+          "text": "Revenue & cost — ongoing recognition.",
+          "glyph": "★",
+          "actors": [
+            "finance",
+            "revenue-assurance"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "finance.improve": {
+          "text": "Margin analysis — profitability by segment.",
+          "glyph": "●",
+          "actors": [
+            "finance",
+            "analytics"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "finance.retire": {
+          "text": "Write-off — asset impairment, refunds.",
+          "glyph": "●",
+          "actors": [
+            "finance"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        }
+      }
+    },
+    "telecom": {
+      "name": "Telecom",
+      "description": "A telecom operator — network attach, mediation, NOC, lawful intercept.",
+      "cells": {
+        "governance.conceive": {
+          "text": "Regulatory mandate (e.g. spectrum regulator).",
+          "glyph": "●",
+          "actors": [
+            "regulatory-affairs"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "governance.design": {
+          "text": "Controls design (SOX, ISO27001).",
+          "glyph": "●",
+          "actors": [
+            "compliance-architect"
+          ],
+          "metamodelEntities": [
+            "Standard"
+          ]
+        },
+        "governance.build": {
+          "text": "Compliance build — DPI, lawful intercept gateway.",
+          "glyph": "●",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "Standard"
+          ]
+        },
+        "governance.activate": {
+          "text": "Audit enforce — gating on change windows.",
+          "glyph": "●",
+          "actors": [
+            "audit"
+          ],
+          "metamodelEntities": [
+            "Platform Service"
+          ]
+        },
+        "governance.operate": {
+          "text": "Lawful intercept — 24/7 compliance.",
+          "glyph": "●",
+          "actors": [
+            "noc"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "governance.improve": {
+          "text": "Risk review — quarterly audit cycle.",
+          "glyph": "●",
+          "actors": [
+            "risk-team"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "governance.retire": {
+          "text": "Policy repeal — sunset obsolete mandates.",
+          "glyph": "·",
+          "actors": [
+            "regulatory-affairs"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "strategy.conceive": {
+          "text": "Spectrum vision — RAN roadmap, 5G spectrum planning.",
+          "glyph": "●",
+          "actors": [
+            "spectrum-planner"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "strategy.design": {
+          "text": "Core architecture (EPC/5GC).",
+          "glyph": "●",
+          "actors": [
+            "network-architect"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "strategy.build": {
+          "text": "Equipment install — RAN, core nodes.",
+          "glyph": "★",
+          "actors": [
+            "field-ops"
+          ],
+          "metamodelEntities": [
+            "Platform Service"
+          ]
+        },
+        "strategy.activate": {
+          "text": "Network integration — cut-over to live.",
+          "glyph": "★",
+          "actors": [
+            "noc",
+            "field-ops"
+          ],
+          "metamodelEntities": [
+            "Application Component"
+          ]
+        },
+        "strategy.operate": {
+          "text": "NMS monitoring — alarms, KPIs.",
+          "glyph": "●",
+          "actors": [
+            "noc"
+          ],
+          "metamodelEntities": [
+            "Platform Service"
+          ]
+        },
+        "strategy.improve": {
+          "text": "KPI utilization (erlang).",
+          "glyph": "●",
+          "actors": [
+            "capacity-planner"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "strategy.retire": {
+          "text": "Equipment retire — 3G sunset.",
+          "glyph": "●",
+          "actors": [
+            "field-ops"
+          ],
+          "metamodelEntities": [
+            "Platform Service"
+          ]
+        },
+        "agency.conceive": {
+          "text": "Field force plan — coverage model.",
+          "glyph": "●",
+          "actors": [
+            "workforce-planner"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.design": {
+          "text": "NOC/org design — escalation tree.",
+          "glyph": "●",
+          "actors": [
+            "org-design"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.build": {
+          "text": "Engineer training — vendor certs.",
+          "glyph": "●",
+          "actors": [
+            "l&d"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.activate": {
+          "text": "Crew dispatch — first-line ready.",
+          "glyph": "●",
+          "actors": [
+            "dispatch"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.operate": {
+          "text": "Performance (OKR).",
+          "glyph": "●",
+          "actors": [
+            "line-manager"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "agency.improve": {
+          "text": "Engagement — pulse surveys.",
+          "glyph": "●",
+          "actors": [
+            "agent-ops"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "agency.retire": {
+          "text": "Redeploy — move between regions.",
+          "glyph": "●",
+          "actors": [
+            "agent-ops"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "party.conceive": {
+          "text": "Subscriber need — coverage gaps, churn.",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "marketing"
+          ],
+          "metamodelEntities": [
+            "Value Stream"
+          ]
+        },
+        "party.design": {
+          "text": "Tariff plans — pricing, bundles.",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "pricing"
+          ],
+          "metamodelEntities": [
+            "Journey Touchpoint"
+          ]
+        },
+        "party.build": {
+          "text": "SIM provisioning — order capture.",
+          "glyph": "●",
+          "actors": [
+            "commerce",
+            "fulfillment"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "party.activate": {
+          "text": "Network attach (HLR/HSS) — first call.",
+          "glyph": "★",
+          "actors": [
+            "noc",
+            "commerce"
+          ],
+          "metamodelEntities": [
+            "Journey Touchpoint"
+          ]
+        },
+        "party.operate": {
+          "text": "Customer care (CRM).",
+          "glyph": "●",
+          "actors": [
+            "care-ops"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "party.improve": {
+          "text": "Churn scoring (ARPU).",
+          "glyph": "●",
+          "actors": [
+            "analytics"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "party.retire": {
+          "text": "Number port (MNP) — out to other carrier.",
+          "glyph": "●",
+          "actors": [
+            "care-ops"
+          ],
+          "metamodelEntities": [
+            "Business Object"
+          ]
+        },
+        "product.conceive": {
+          "text": "Service roadmap (5G, IoT).",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "research"
+          ],
+          "metamodelEntities": [
+            "Business Capability"
+          ]
+        },
+        "product.design": {
+          "text": "Service catalog (BSS).",
+          "glyph": "●",
+          "actors": [
+            "product-design"
+          ],
+          "metamodelEntities": [
+            "Business Capability"
+          ]
+        },
+        "product.build": {
+          "text": "Bundle configuration.",
+          "glyph": "●",
+          "actors": [
+            "engineering"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "product.activate": {
+          "text": "Commercial launch.",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "marketing"
+          ],
+          "metamodelEntities": [
+            "Journey Touchpoint"
+          ]
+        },
+        "product.operate": {
+          "text": "Catalog lifecycle (OSS).",
+          "glyph": "●",
+          "actors": [
+            "product-ops"
+          ],
+          "metamodelEntities": [
+            "Business Object"
+          ]
+        },
+        "product.improve": {
+          "text": "Service uptake — adoption tracking.",
+          "glyph": "●",
+          "actors": [
+            "analytics"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "product.retire": {
+          "text": "Plan sunset — 2G/3G voice plans.",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "care-ops"
+          ],
+          "metamodelEntities": [
+            "Business Object"
+          ]
+        },
+        "operations.conceive": {
+          "text": "Traffic forecast — busy hour, region.",
+          "glyph": "●",
+          "actors": [
+            "demand-planner"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "operations.design": {
+          "text": "Network design — capacity, topology.",
+          "glyph": "●",
+          "actors": [
+            "network-architect"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "operations.build": {
+          "text": "Circuit provisioning — EVC setup.",
+          "glyph": "★",
+          "actors": [
+            "field-ops"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "operations.activate": {
+          "text": "Site cut-over — swap equipment.",
+          "glyph": "★",
+          "actors": [
+            "noc",
+            "field-ops"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "operations.operate": {
+          "text": "NOC operations — 24/7 watch.",
+          "glyph": "★",
+          "actors": [
+            "noc"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "operations.improve": {
+          "text": "Fault management — TT, MTTR.",
+          "glyph": "●",
+          "actors": [
+            "noc",
+            "quality"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "operations.retire": {
+          "text": "Site decommission.",
+          "glyph": "●",
+          "actors": [
+            "field-ops"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "finance.conceive": {
+          "text": "Investment case — CAPEX business case.",
+          "glyph": "●",
+          "actors": [
+            "finance",
+            "product"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        },
+        "finance.design": {
+          "text": "Tariff model — regulator-approved.",
+          "glyph": "●",
+          "actors": [
+            "pricing-analyst"
+          ],
+          "metamodelEntities": [
+            "Business Capability"
+          ]
+        },
+        "finance.build": {
+          "text": "Funding approval.",
+          "glyph": "●",
+          "actors": [
+            "cfo"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        },
+        "finance.activate": {
+          "text": "Billing start — mediation online.",
+          "glyph": "●",
+          "actors": [
+            "billing-ops"
+          ],
+          "metamodelEntities": [
+            "API / Service Contract"
+          ]
+        },
+        "finance.operate": {
+          "text": "Revenue recognition (ARPU).",
+          "glyph": "★",
+          "actors": [
+            "revenue-assurance"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "finance.improve": {
+          "text": "Margin by plan (EBITDA).",
+          "glyph": "●",
+          "actors": [
+            "finance",
+            "analytics"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "finance.retire": {
+          "text": "Asset impairment.",
+          "glyph": "●",
+          "actors": [
+            "finance"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        }
+      }
+    },
+    "digital": {
+      "name": "Digital Services",
+      "description": "A digital services company — feature flags, FinOps, SRE, MRR.",
+      "cells": {
+        "governance.conceive": {
+          "text": "Privacy policy — GDPR, CCPA intent.",
+          "glyph": "●",
+          "actors": [
+            "legal",
+            "security"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "governance.design": {
+          "text": "Controls design (SOC2).",
+          "glyph": "●",
+          "actors": [
+            "compliance-architect"
+          ],
+          "metamodelEntities": [
+            "Standard"
+          ]
+        },
+        "governance.build": {
+          "text": "Compliance build — guardrails in code.",
+          "glyph": "●",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "Standard"
+          ]
+        },
+        "governance.activate": {
+          "text": "Enforce — runtime guardrails.",
+          "glyph": "●",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "Platform Service"
+          ]
+        },
+        "governance.operate": {
+          "text": "Audit log — continuous.",
+          "glyph": "●",
+          "actors": [
+            "sre",
+            "security"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "governance.improve": {
+          "text": "Risk review (pentest).",
+          "glyph": "●",
+          "actors": [
+            "security-team"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "governance.retire": {
+          "text": "Policy retire.",
+          "glyph": "·",
+          "actors": [
+            "legal"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "strategy.conceive": {
+          "text": "Scale vision — capacity for growth.",
+          "glyph": "●",
+          "actors": [
+            "capacity-planner"
+          ],
+          "metamodelEntities": [
+            "Strategic Objective"
+          ]
+        },
+        "strategy.design": {
+          "text": "Cloud architecture (AWS/GCP).",
+          "glyph": "●",
+          "actors": [
+            "enterprise-architect"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "strategy.build": {
+          "text": "Infra build (Terraform).",
+          "glyph": "★",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "Platform Service"
+          ]
+        },
+        "strategy.activate": {
+          "text": "Service mesh.",
+          "glyph": "●",
+          "actors": [
+            "platform-engineering",
+            "sre"
+          ],
+          "metamodelEntities": [
+            "Application Component"
+          ]
+        },
+        "strategy.operate": {
+          "text": "Observability — metrics, logs, traces.",
+          "glyph": "●",
+          "actors": [
+            "sre"
+          ],
+          "metamodelEntities": [
+            "Platform Service"
+          ]
+        },
+        "strategy.improve": {
+          "text": "Cost/usage (FinOps).",
+          "glyph": "★",
+          "actors": [
+            "finops",
+            "sre"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "strategy.retire": {
+          "text": "Infra retire — end-of-service decommission.",
+          "glyph": "●",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "Platform Service"
+          ]
+        },
+        "agency.conceive": {
+          "text": "Team topology — stream-aligned teams.",
+          "glyph": "●",
+          "actors": [
+            "workforce-planner"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.design": {
+          "text": "Org design (pods).",
+          "glyph": "●",
+          "actors": [
+            "org-design"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.build": {
+          "text": "Hire / onboard.",
+          "glyph": "●",
+          "actors": [
+            "recruiting",
+            "l&d"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.activate": {
+          "text": "Sprint mobilize — first sprint.",
+          "glyph": "●",
+          "actors": [
+            "line-manager"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "agency.operate": {
+          "text": "Perf review (360).",
+          "glyph": "●",
+          "actors": [
+            "line-manager"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "agency.improve": {
+          "text": "Engagement (eNPS).",
+          "glyph": "●",
+          "actors": [
+            "agent-ops"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "agency.retire": {
+          "text": "Offboard.",
+          "glyph": "●",
+          "actors": [
+            "agent-ops"
+          ],
+          "metamodelEntities": [
+            "Organizational Unit"
+          ]
+        },
+        "party.conceive": {
+          "text": "User need (JTBD).",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "research"
+          ],
+          "metamodelEntities": [
+            "Value Stream"
+          ]
+        },
+        "party.design": {
+          "text": "Persona map.",
+          "glyph": "●",
+          "actors": [
+            "product-design"
+          ],
+          "metamodelEntities": [
+            "Journey Touchpoint"
+          ]
+        },
+        "party.build": {
+          "text": "Signup flow.",
+          "glyph": "●",
+          "actors": [
+            "growth",
+            "engineering"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "party.activate": {
+          "text": "Activation event (aha).",
+          "glyph": "★",
+          "actors": [
+            "growth",
+            "product"
+          ],
+          "metamodelEntities": [
+            "Journey Touchpoint"
+          ]
+        },
+        "party.operate": {
+          "text": "In-product help.",
+          "glyph": "●",
+          "actors": [
+            "support",
+            "product"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "party.improve": {
+          "text": "Retention cohort (DAU).",
+          "glyph": "●",
+          "actors": [
+            "analytics"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "party.retire": {
+          "text": "Account deletion (GDPR).",
+          "glyph": "●",
+          "actors": [
+            "support",
+            "legal"
+          ],
+          "metamodelEntities": [
+            "Business Object"
+          ]
+        },
+        "product.conceive": {
+          "text": "Discovery — opportunity sizing.",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "research"
+          ],
+          "metamodelEntities": [
+            "Business Capability"
+          ]
+        },
+        "product.design": {
+          "text": "Feature spec (PRD).",
+          "glyph": "●",
+          "actors": [
+            "product-design"
+          ],
+          "metamodelEntities": [
+            "Business Capability"
+          ]
+        },
+        "product.build": {
+          "text": "Build sprint.",
+          "glyph": "●",
+          "actors": [
+            "engineering"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "product.activate": {
+          "text": "Feature flag launch.",
+          "glyph": "★",
+          "actors": [
+            "product",
+            "engineering"
+          ],
+          "metamodelEntities": [
+            "Journey Touchpoint"
+          ]
+        },
+        "product.operate": {
+          "text": "Roadmap management.",
+          "glyph": "●",
+          "actors": [
+            "product-ops"
+          ],
+          "metamodelEntities": [
+            "Business Object"
+          ]
+        },
+        "product.improve": {
+          "text": "Feature adoption.",
+          "glyph": "●",
+          "actors": [
+            "analytics",
+            "product"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "product.retire": {
+          "text": "Deprecation — sunset, migrate.",
+          "glyph": "●",
+          "actors": [
+            "product",
+            "engineering"
+          ],
+          "metamodelEntities": [
+            "Business Object"
+          ]
+        },
+        "operations.conceive": {
+          "text": "Demand forecast — capacity, requests.",
+          "glyph": "●",
+          "actors": [
+            "demand-planner"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "operations.design": {
+          "text": "Pipeline design (CI/CD).",
+          "glyph": "●",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "Business Process"
+          ]
+        },
+        "operations.build": {
+          "text": "Provision env (IaC).",
+          "glyph": "★",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "operations.activate": {
+          "text": "Deploy to prod (canary).",
+          "glyph": "★",
+          "actors": [
+            "sre",
+            "engineering"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "operations.operate": {
+          "text": "SRE on-call (SLO).",
+          "glyph": "★",
+          "actors": [
+            "sre"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "operations.improve": {
+          "text": "Incident review (PSE).",
+          "glyph": "●",
+          "actors": [
+            "sre",
+            "quality"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "operations.retire": {
+          "text": "Env teardown.",
+          "glyph": "●",
+          "actors": [
+            "platform-engineering"
+          ],
+          "metamodelEntities": [
+            "System Function"
+          ]
+        },
+        "finance.conceive": {
+          "text": "Unit economics (LTV).",
+          "glyph": "●",
+          "actors": [
+            "finance",
+            "product"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        },
+        "finance.design": {
+          "text": "Pricing tier (SaaS).",
+          "glyph": "●",
+          "actors": [
+            "pricing-analyst"
+          ],
+          "metamodelEntities": [
+            "Business Capability"
+          ]
+        },
+        "finance.build": {
+          "text": "Funding round.",
+          "glyph": "●",
+          "actors": [
+            "cfo",
+            "investors"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        },
+        "finance.activate": {
+          "text": "Subscription start (Stripe).",
+          "glyph": "●",
+          "actors": [
+            "billing-ops"
+          ],
+          "metamodelEntities": [
+            "API / Service Contract"
+          ]
+        },
+        "finance.operate": {
+          "text": "MRR / churn.",
+          "glyph": "★",
+          "actors": [
+            "revenue-ops",
+            "finance"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "finance.improve": {
+          "text": "Cohort margin (CAC).",
+          "glyph": "●",
+          "actors": [
+            "finance",
+            "analytics"
+          ],
+          "metamodelEntities": [
+            "Performance Metric"
+          ]
+        },
+        "finance.retire": {
+          "text": "Dunning / refund.",
+          "glyph": "●",
+          "actors": [
+            "finance",
+            "support"
+          ],
+          "metamodelEntities": [
+            "Investment Initiative"
+          ]
+        }
+      }
+    }
+  }
+}
