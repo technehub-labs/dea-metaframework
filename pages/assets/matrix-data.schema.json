@@ -1,0 +1,88 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://technehub-labs.github.io/dea-metaframework/matrix-data.schema.json",
+  "title": "ECF matrix data",
+  "description": "Canonical 7×7 Enterprise Concept Framework matrix data, extracted from the dea-metaframework source and consumed by the standalone viewer (technehub-labs.github.io/dea-metaframework/) and the portal in-portal Meta Framework Explorer.",
+  "type": "object",
+  "required": ["framework", "version", "domains", "stages", "scenarios"],
+  "properties": {
+    "framework":  { "type": "string", "const": "ECF" },
+    "version":    { "type": "string", "description": "SemVer of the ECF release that produced this artefact (e.g. 2.3.0)" },
+    "source":     { "type": "string" },
+    "axes":       { "type": "object" },
+    "domains": {
+      "type": "array",
+      "minItems": 7, "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["id", "key", "name", "shortName", "color"],
+        "properties": {
+          "id":        { "type": "integer", "minimum": 1, "maximum": 7 },
+          "key":       { "type": "string",  "pattern": "^[a-z-]+$" },
+          "name":      { "type": "string" },
+          "shortName": { "type": "string" },
+          "color":     { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 7, "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": ["id", "key", "name", "fullName"],
+        "properties": {
+          "id":       { "type": "integer", "minimum": 1, "maximum": 7 },
+          "key":      { "type": "string",  "pattern": "^[a-z]+$" },
+          "name":     { "type": "string" },
+          "fullName": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "scenarios": {
+      "type": "object",
+      "required": ["foundation"],
+      "properties": {
+        "foundation": { "$ref": "#/$defs/scenario" },
+        "telecom":    { "$ref": "#/$defs/scenario" },
+        "digital":    { "$ref": "#/$defs/scenario" }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "scenario": {
+      "type": "object",
+      "required": ["name", "description", "cells"],
+      "properties": {
+        "name":        { "type": "string" },
+        "description": { "type": "string" },
+        "cells": {
+          "type": "object",
+          "description": "Map of '{domain-key}.{stage-key}' → cell payload. Exactly 49 entries (7×7).",
+          "minProperties": 49, "maxProperties": 49,
+          "additionalProperties": {
+            "type": "object",
+            "required": ["text", "glyph"],
+            "properties": {
+              "text":  { "type": "string" },
+              "glyph": { "type": "string", "enum": ["●", "★", "·"] },
+              "actors": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "metamodelEntities": {
+                "type": "array",
+                "items": { "type": "string" }
+              }
+            },
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
