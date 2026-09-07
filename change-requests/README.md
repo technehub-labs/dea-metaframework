@@ -13,6 +13,7 @@ cross-references point at the canonical CR repository (`dea-metamodel`).
 | [CR-ECF-003](./CR-ECF-003.md) | ECF Domain Grounding | Merged (PR #6) | Formal grounding records for the seven Domains; compound-name boundary audit; orthogonality and completeness checks; renaming rule. |
 | [CR-ECF-004](./CR-ECF-004.md) | ECF Lifecycle Grounding | Merged (PR #7) | Per-Stage grounding records; Stage distinct from object State, process level, and DERA phase; existing DERA mapping retained as a mapping; multi-stage participation rule. |
 | [CR-ECF-005](./CR-ECF-005.md) | ECF Coordinate Specification | Merged (PR #8) | The ECF Conformance Gate: canonical normative + machine-readable coordinate specification; canonical PascalCase Domain/Stage enums; identifier pattern; no-cell-filling rule; conformance requirements. |
+| [CR-ECF-006](./CR-ECF-006.md) | ECF Domain Transformation (v2.3.0 restructure) | Proposed (this PR) | Five of seven Domains renamed; one Domain replaced (Supply & Resources -> Strategy & Direction). Backed by ADR-ECF-001 (five-tests rubric: Semantic Anchor, Lifecycle Completeness, Boundary Integrity, Technology Independence, Collective Exhaustiveness). Non-breaking SemVer-wise (v2.3.0, not v3.0.0): the seven-Domain cardinality is unchanged, the matrix M = D x S still defines 49 coordinates, and the no-cell-filling rule still applies. Breaking for downstream consumers that hard-code the v2.2.0 Domain names; downstream reconciliation CRs (CR-MM-ECF-01, CR-BC-ECF-01, CR-BP-ECF-01) are the migration carriers. |
 
 ## Conformance Gate series
 
@@ -49,6 +50,16 @@ Parked (landed in dependency order; each lands with its own PR):
 | CR | Title | Primary copy |
 |----|-------|--------------|
 | [CR-CM-000A](./CR-CM-000A-xref.md) | Terminology Alignment (extension) | `technehub-labs/dea-metamodel` |
+
+## ADR series
+
+Architecture Decision Records (ADRs) record the design decisions behind
+this framework. ADRs are immutable once landed; they are cited by CRs
+when those decisions are implemented.
+
+| ADR | Title | Status | Notes |
+|-----|-------|--------|-------|
+| [ADR-ECF-001](./ADR-ECF-001.md) | ECF Domain Specifications: Normative Descriptions Update | Proposed (this PR) | The design decision behind CR-ECF-006. Introduces the five-tests rubric (Semantic Anchor, Lifecycle Completeness, Boundary Integrity, Technology Independence, Collective Exhaustiveness) used to assess each Domain, and records the rationale for each rename. Landed as authored. |
 
 ## Conventions
 

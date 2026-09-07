@@ -9,13 +9,14 @@ Every word in that sentence generates a domain. The framework is not asserted
 
 | Word in the axiom | Generated domain | Why |
 |-------------------|-----------------|-----|
-| "bounded entity" | → Governance & Existence | Boundedness requires a boundary — who is inside, what rules apply, what constitutes the entity itself. |
-| "persists" | → Supply & Resources | Persistence requires a substrate — the physical or virtual assets that keep the entity alive over time. |
-| "persists" | → People & Organization | Persistence requires agents — the humans who perform the work and the structure that organizes them. |
-| "exchanging value" | → Customer & Demand | Exchange requires a counterparty — the people whose need the entity meets, and the demand they generate. |
-| "exchanging value" | → Product & Offering | Exchange requires something to offer — the catalog of what the entity provides to meet demand. |
-| "exchanging value" | → Operations & Delivery | Exchange requires a mechanism — the engine that turns the offering into a delivered outcome. |
-| "with its environment" | → Finance & Value | The environment requires accounting — the measurement of value created, consumed, and retained. |
+| "bounded entity" | → Governance & Existence | Boundedness requires a boundary, authority, and the assurance that the entity persists as itself. |
+| "persists" (directed) | → Strategy & Direction | Persistence is not mere survival; it requires deliberate, adaptive steering toward a future state. |
+| "persists" (agents) | → People & Organization | Persistence requires agents; the humans who perform the work and the structure that organizes them. |
+| "persists" (substrate as enabler) | → Operations & Enablement | Persistence requires a mechanism; the engine and the means that make execution possible. |
+| "exchanging value" (counterparty) | → Party & Relationship | Exchange requires a counterparty; the external entities with whom the enterprise bonds. |
+| "exchanging value" (bearer of value) | → Product & Value | Exchange requires something to offer; the value-bearing propositions the enterprise creates. |
+| "exchanging value" (mechanism) | → Operations & Enablement | Exchange requires a mechanism; the transformation of offerings into delivered outcomes. |
+| "with its environment" | → Finance & Accounting | The environment requires measurement; the planning, allocation, and recording of money. |
 
 Each domain is a logical consequence of a word in the axiom, not an
 assertion. This is what makes the framework bottom-up: it is derived from

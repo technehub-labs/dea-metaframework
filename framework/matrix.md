@@ -14,13 +14,13 @@ The **domains** answer the question *what does the enterprise do?*
 
 | # | Domain | One-line definition |
 |---|--------|---------------------|
-| 1 | Governance & Existence | The precondition of boundedness: what defines the entity, what rules apply, and the assurance that the other domains behave. |
-| 2 | Supply & Resources | The substrate the enterprise persists on: physical or virtual, owned or rented: and its capacity, health, and disposal. |
-| 3 | People & Organization | The humans who perform every capability: their structure, skills, performance, and movement. |
-| 4 | Customer & Demand | The enterprise's reason to exchange: identifying, acquiring, serving, and retaining the people whose need it meets. |
-| 5 | Product & Offering | The catalog of what the enterprise offers: its design, packaging, release, and retirement. |
-| 6 | Operations & Delivery | The engine that turns an offering into a delivered outcome: planning, fulfilling, running, resolving. |
-| 7 | Finance & Value | The accounting for the environment: the flow of money and the measurement of value created, consumed, and retained. |
+| 1 | Governance & Existence | The domain that constitutes the enterprise as a bounded, legitimate, persisting entity; the precondition of all other domains. |
+| 2 | Strategy & Direction | The domain that determines the enterprise's intentional trajectory; positioning, ambition, and resource allocation priorities. |
+| 3 | People & Organization | The domain that manages the enterprise's internal human fabric; the agents who perform capabilities and the structures that organize them. |
+| 4 | Party & Relationship | The domain that manages the enterprise's external social fabric; the identification, establishment, development, and termination of bonds with all external entities. |
+| 5 | Product & Value | The domain that manages the enterprise's value-bearing propositions; the complete lifecycle of whatever the enterprise creates and makes available for exchange. |
+| 6 | Operations & Enablement | The domain that manages the enterprise's execution engine and the means that make execution possible; processes, delivery, technology, and physical infrastructure. |
+| 7 | Finance & Accounting | The domain that manages the enterprise's monetary reality; the planning, allocation, movement, recording, and reporting of money in exchange with the environment. |
 
 ### Stages (Columns): Value Stream Stages
 
@@ -46,12 +46,12 @@ context is determined by the consuming catalog.
 | Domain \ Stage | Conceive | Design | Build | Activate | Operate | Improve | Retire |
 |----------------|----------|--------|-------|----------|---------|---------|--------|
 | **Governance & Existence** | Policy intent | Controls design | Compliance build | Enforce | Assurance | Risk review | Policy retire |
-| **Supply & Resources** | Capacity vision | Architecture | Build / procure | Integration | Monitoring | Utilization | Retire assets |
+| **Strategy & Direction** | Purpose & ambition | Strategic choices | Initiative portfolio | Launch direction | Course correction | Performance review | Strategic renewal |
 | **People & Organization** | Workforce plan | Org design | Hire / train | Mobilize | Perform & develop | Engagement | Offboard / reassign |
-| **Customer & Demand** | Need identification | Journey mapping | Onboarding | Activation | Support & service | Satisfaction & churn | Offboarding |
-| **Product & Offering** | Market sensing | Catalog & specs | Configuration | Launch | Catalog mgmt | Performance | Sunset |
-| **Operations & Delivery** | Demand planning | Process design | Provisioning | Cut-over | Run & maintain | Quality & incident | Decommission |
-| **Finance & Value** | Business case | Pricing model | Funding | Billing activation | Revenue & cost | Margin analysis | Write-off |
+| **Party & Relationship** | Need identification | Journey mapping | Onboarding | Activation | Support & service | Satisfaction & churn | Offboarding |
+| **Product & Value** | Market sensing | Catalog & specs | Configuration | Launch | Catalog mgmt | Performance | Sunset |
+| **Operations & Enablement** | Demand planning | Process design | Provisioning | Cut-over | Run & maintain | Quality & incident | Decommission |
+| **Finance & Accounting** | Business case | Pricing model | Funding | Billing activation | Revenue & cost | Margin analysis | Write-off |
 
 ## Patterns the Foundation Reveals
 
@@ -125,13 +125,13 @@ Governance × Operate  → assure
 
 | Domain | Subdomains |
 |--------|-----------|
-| Governance & Existence | Policy, Controls, Compliance, Assurance, Retirement |
-| Supply & Resources | Capacity, Build/procure, Integration, Monitoring, Disposal |
-| People & Organization | Planning, Acquisition, Mobilization, Development, Exit |
-| Customer & Demand | Acquisition, Onboarding, Care & support, Retention, Offboarding |
-| Product & Offering | Catalog, Packaging, Pricing, Lifecycle, Sunset |
-| Operations & Delivery | Planning, Fulfillment, Run, Incident, Decommission |
-| Finance & Value | Business case, Funding, Billing, Revenue, Recovery |
+| Governance & Existence | Formation, Mandate, Policy, Compliance, Assurance, Succession |
+| Strategy & Direction | Purpose, Sensing, Choices, Objectives, Planning, Adaptation |
+| People & Organization | Design, Planning, Acquisition, Development, Culture, Transition |
+| Party & Relationship | Identification, Establishment, Engagement, Development, Governance, Termination |
+| Product & Value | Proposition, Portfolio, Development, Packaging, Readiness, Evolution |
+| Operations & Enablement | Process, Fulfillment, Technology, Physical, Planning, Assurance |
+| Finance & Accounting | Planning, Capital, Transaction, Recording, Reporting, Control |
 
 ### Stage Substages
 

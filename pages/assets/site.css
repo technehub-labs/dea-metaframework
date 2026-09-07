@@ -22,12 +22,12 @@
 
   /* ── Domain palette — one accent per row ── */
   --l1: #10b981;   /* Governance & Existence — emerald */
-  --l2: #f59e0b;   /* Supply & Resources — amber */
+  --l2: #f59e0b;   /* Strategy & Direction — amber */
   --l3: #06b6d4;   /* People & Organization — cyan */
-  --l4: #38bdf8;   /* Customer & Demand — sky */
-  --l5: #a78bfa;   /* Product & Offering — violet */
-  --l6: #fb7185;   /* Operations & Delivery — rose */
-  --l7: #fbbf24;   /* Finance & Value — gold */
+  --l4: #38bdf8;   /* Party & Relationship — sky */
+  --l5: #a78bfa;   /* Product & Value — violet */
+  --l6: #fb7185;   /* Operations & Enablement — rose */
+  --l7: #fbbf24;   /* Finance & Accounting — gold */
 
   /* ── Shape (MD3) ── */
   --radius-sm: 8px;

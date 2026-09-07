@@ -18,12 +18,12 @@ from typing import Iterable
 
 DOMAINS: tuple[str, ...] = (
     "GovernanceAndExistence",
-    "SupplyAndResources",
+    "StrategyAndDirection",
     "PeopleAndOrganization",
-    "CustomerAndDemand",
-    "ProductAndOffering",
-    "OperationsAndDelivery",
-    "FinanceAndValue",
+    "PartyAndRelationship",
+    "ProductAndValue",
+    "OperationsAndEnablement",
+    "FinanceAndAccounting",
 )
 
 STAGES: tuple[str, ...] = (
@@ -38,12 +38,12 @@ STAGES: tuple[str, ...] = (
 
 DOMAIN_DISPLAY: dict[str, str] = {
     "GovernanceAndExistence": "Governance & Existence",
-    "SupplyAndResources": "Supply & Resources",
+    "StrategyAndDirection": "Strategy & Direction",
     "PeopleAndOrganization": "People & Organization",
-    "CustomerAndDemand": "Customer & Demand",
-    "ProductAndOffering": "Product & Offering",
-    "OperationsAndDelivery": "Operations & Delivery",
-    "FinanceAndValue": "Finance & Value",
+    "PartyAndRelationship": "Party & Relationship",
+    "ProductAndValue": "Product & Value",
+    "OperationsAndEnablement": "Operations & Enablement",
+    "FinanceAndAccounting": "Finance & Accounting",
 }
 
 STAGE_DISPLAY: dict[str, str] = {

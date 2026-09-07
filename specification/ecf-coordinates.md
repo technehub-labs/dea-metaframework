@@ -69,17 +69,26 @@ coordinate.
 | # | Domain (canonical) | Identifier (camelCase) | Display label |
 |---|--------------------|-------------------------|---------------|
 | 1 | GovernanceAndExistence | governanceAndExistence | Governance & Existence |
-| 2 | SupplyAndResources | supplyAndResources | Supply & Resources |
+| 2 | StrategyAndDirection | strategyAndDirection | Strategy & Direction |
 | 3 | PeopleAndOrganization | peopleAndOrganization | People & Organization |
-| 4 | CustomerAndDemand | customerAndDemand | Customer & Demand |
-| 5 | ProductAndOffering | productAndOffering | Product & Offering |
-| 6 | OperationsAndDelivery | operationsAndDelivery | Operations & Delivery |
-| 7 | FinanceAndValue | financeAndValue | Finance & Value |
+| 4 | PartyAndRelationship | partyAndRelationship | Party & Relationship |
+| 5 | ProductAndValue | productAndValue | Product & Value |
+| 6 | OperationsAndEnablement | operationsAndEnablement | Operations & Enablement |
+| 7 | FinanceAndAccounting | financeAndAccounting | Finance & Accounting |
 
 The `canonical` value is the value carried in the `domain` field of a
 Coordinate. The `identifier` is the camelCase form used in the
 `ecf:<domain>.<stage>` coordinate identifier. The `display` label is the
 human-readable form.
+
+The seven Domains are axiom-derived (see `framework/axiom.md` and
+`framework/domain-grounding.md`); five of the seven were renamed in
+CR-ECF-006 (the rename of "Supply & Resources" to "Strategy & Direction" is
+the only structural replacement; the other four are sharpen-and-expand
+renames of existing Domains). Backward-compatibility aliases for the
+pre-CR-ECF-006 names are NOT defined; the change is a deliberate
+domain-restructure (ADR-ECF-001 records the design rationale), not a
+naming refactor.
 
 ## 5. Stage Enumeration
 
@@ -150,9 +159,9 @@ A modeled construct may reference more than one coordinate:
 ```
 ecf:
   coordinates:
-    - domain: customerAndDemand
+    - domain: partyAndRelationship
       stage:  activate
-    - domain: operationsAndDelivery
+    - domain: operationsAndEnablement
       stage:  operate
 ```
 

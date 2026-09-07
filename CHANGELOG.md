@@ -8,6 +8,113 @@ governed by change requests (`change-requests/`).
 
 No changes.
 
+## [2.3.0] - 2026-09-07
+
+The ECF domain restructure: five of the seven canonical Domains are renamed, one is replaced, and the change is backed by the first ADR in this repository. This is a content-narrowing, scope-grounding, axiomatic-concreteness release; it is NOT a SemVer-major breaking change (v2.3.0, not v3.0.0) because the seven-Domain cardinality and the seven-Stage cardinality are unchanged, the matrix M = D x S still defines 49 coordinates, and the no-cell-filling rule still applies. What changes is the rigor and precision of the Domain names and their boundaries, so the framework can ground downstream mapping work more rigorously and correctly.
+
+### Added
+
+- `change-requests/ADR-ECF-001.md`: the first Architecture Decision Record in
+  this repository. Records the five-tests rubric (Semantic Anchor, Lifecycle
+  Completeness, Boundary Integrity, Technology Independence, Collective
+  Exhaustiveness) used to assess each Domain, and the design decisions
+  behind each rename. (ADR-ECF-001)
+- `change-requests/CR-ECF-006.md`: the change request that records the
+  before/after for each of the seven Domains, the rename rationale, and
+  the redistribution of the prior Supply & Resources content. (CR-ECF-006)
+- `docs/adr/`: directory for Architecture Decision Records (first entry:
+  ADR-ECF-001). The ADR series is the design-decision record; the CR series
+  is the implementation record.
+
+### Changed
+
+- **Domain enumeration (CR-ECF-006, normative change):**
+
+  | # | Before (v2.2.0) | After (v2.3.0) | Change |
+  |---|------------------|------------------|--------|
+  | 1 | Governance & Existence | Governance & Existence | Retained, enhanced definition |
+  | 2 | Supply & Resources | Strategy & Direction | Replaced; substance redistributed |
+  | 3 | People & Organization | People & Organization | Retained, enhanced definition |
+  | 4 | Customer & Demand | Party & Relationship | Renamed and expanded |
+  | 5 | Product & Offering | Product & Value | Renamed and sharpened |
+  | 6 | Operations & Delivery | Operations & Enablement | Renamed and expanded |
+  | 7 | Finance & Value | Finance & Accounting | Renamed and sharpened |
+
+- `framework/domain-grounding.md`: full rewrite of the compound-name audit
+  and all seven Domain grounding records, adding semantic anchors,
+  internal MECE partitions per Domain, and the redistribution rationale
+  for Supply & Resources (assets moved to Operations & Enablement as
+  enablers; financial resources moved to Finance & Accounting; human
+  resources remain in People & Organization). (CR-ECF-003, CR-ECF-006)
+- `framework/constructs.md`: Domain list updated to the v2.3.0 set. (CR-ECF-006)
+- `framework/axiom.md`: derivation table now resolves "persists" into three
+  facets (directed, agents, substrate as enabler) and "exchanging value"
+  into three facets (counterparty, bearer of value, mechanism), one per
+  Domain. (CR-ECF-006)
+- `framework/matrix.md`: domain enumeration, the 7x7 cell content table,
+  and the MECE subdomain table rewritten against the v2.3.0 Domain set.
+  (CR-ECF-006)
+- `framework/case-studies/telecom.md`,
+  `framework/case-studies/digital-services.md`: cell content and worked
+  examples updated to the v2.3.0 Domain names. (CR-ECF-006)
+- `specification/ecf-coordinates.md`: Section 4 Domain Enumeration and
+  Section 9 Multiple Coordinates example updated; a paragraph added
+  noting that the v2.2.0->v2.3.0 transition is a deliberate domain
+  restructure (no backward-compatibility aliases are defined). (CR-ECF-006)
+- `schemas/ecf-domain.schema.json`: canonical PascalCase enum updated to
+  the v2.3.0 Domain set. (CR-ECF-006)
+- `tools/ecf_coordinates.py`: `DOMAINS` and `DOMAIN_DISPLAY` updated to
+  the v2.3.0 Domain set. (CR-ECF-006)
+- `tests/conformance/test_005_coordinate_spec.py`: validator
+  acceptance/rejection test fixtures updated from
+  `OperationsAndDelivery` to `OperationsAndEnablement`. (CR-ECF-006)
+- `pages/assets/site.js`: `DOMAINS` array, cell keys, cell content, and
+  row comments updated. The strategy row content is rewritten to match
+  the new Domain's anchor (purpose, strategic choices, initiative
+  portfolio, course correction) rather than the old supply-and-resources
+  content. (CR-ECF-006)
+- `pages/assets/site.css`: domain palette row labels updated. (CR-ECF-006)
+- `REPORT.md`: the derivation table, domain enumeration, MECE subdomain
+  table, three cell-content tables (foundation, telecom, digital
+  services), the metamodel layer mapping, the domain-to-catalog mapping,
+  and three JSON examples all updated to the v2.3.0 Domain set.
+  (CR-ECF-006)
+
+### Breaking changes for downstream consumers
+
+The five renames and the Supply & Resources replacement are breaking for
+any downstream consumer that hard-codes the v2.2.0 Domain names in
+kebab-case, camelCase, PascalCase, or display form. The
+`dea-metamodel`, `dea-catalog-processes`,
+`dea-catalog-business-capabilities`, `dea-catalog-stakeholders`,
+`dea-catalog-actors`, and `dea-catalog-digital-business-service-factory`
+repositories all require coordinated migration PRs against the
+post-v2.3.0 enum. The following are the canonical kebab-case
+identifiers for the v2.3.0 Domain set (the same identifiers used in
+the v0.2 ECF Overlay and downstream catalog entity files):
+
+- `governance-existence` (unchanged)
+- `strategy-direction` (was `supply-resources`)
+- `people-organization` (unchanged)
+- `party-relationship` (was `customer-demand`)
+- `product-value` (was `product-offering`)
+- `operations-enablement` (was `operations-delivery`)
+- `finance-accounting` (was `finance-value`)
+
+The downstream reconciliation CRs (CR-MM-ECF-01, CR-BC-ECF-01,
+CR-BP-ECF-01; all parked under the post-gate downstream reconciliation
+programme) are the carriers of those migration PRs. Each will be
+unblocked against this v2.3.0 release.
+
+### Verification
+
+- `tests/`: **39/39 pass** (conformance + machinery + structure)
+- 0 en/em dashes introduced in any new authored content
+- en/em dashes in `change-requests/ADR-ECF-001.md` and
+  `change-requests/CR-ECF-006.md` are byte-identical to the source
+  documents as supplied (landing rule: landed CR files are
+  byte-identical to the source section)
+
 ## [2.2.0] - 2026-09-07
 
 The Catalog Repository Standard (four-state per-entity subtrees + machine

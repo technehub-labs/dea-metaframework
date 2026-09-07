@@ -107,16 +107,16 @@ def test_no_cell_filling_rule() -> None:
 
 
 def test_validator_accepts_canonical_coordinate() -> None:
-    payload = {"domain": "OperationsAndDelivery", "stage": "Operate"}
+    payload = {"domain": "OperationsAndEnablement", "stage": "Operate"}
     ok, msg = ecf.validate_coordinate(payload)
     check(ok, f"validator rejected canonical coordinate: {msg}")
 
 
 def test_validator_accepts_coordinate_with_identifier() -> None:
     payload = {
-        "domain": "OperationsAndDelivery",
+        "domain": "OperationsAndEnablement",
         "stage": "Operate",
-        "identifier": "ecf:operationsAndDelivery.operate",
+        "identifier": "ecf:operationsAndEnablement.operate",
     }
     ok, msg = ecf.validate_coordinate(payload)
     check(ok, f"validator rejected coordinate with identifier: {msg}")
@@ -133,7 +133,7 @@ def test_validator_rejects_unknown_domain() -> None:
 
 
 def test_validator_rejects_unknown_stage() -> None:
-    payload = {"domain": "OperationsAndDelivery", "stage": "Maintain"}
+    payload = {"domain": "OperationsAndEnablement", "stage": "Maintain"}
     ok, msg = ecf.validate_coordinate(payload)
     check(not ok, "validator accepted unknown stage")
     check(
@@ -144,9 +144,9 @@ def test_validator_rejects_unknown_stage() -> None:
 
 def test_validator_rejects_identifier_mismatch() -> None:
     payload = {
-        "domain": "OperationsAndDelivery",
+        "domain": "OperationsAndEnablement",
         "stage": "Operate",
-        "identifier": "ecf:operationsAndDelivery.build",
+        "identifier": "ecf:operationsAndEnablement.build",
     }
     ok, msg = ecf.validate_coordinate(payload)
     check(not ok, "validator accepted mismatched identifier")
@@ -154,9 +154,9 @@ def test_validator_rejects_identifier_mismatch() -> None:
 
 def test_validator_rejects_malformed_identifier() -> None:
     payload = {
-        "domain": "OperationsAndDelivery",
+        "domain": "OperationsAndEnablement",
         "stage": "Operate",
-        "identifier": "OPERATIONS-DELIVERY/operate",
+        "identifier": "OPERATIONS-ENABLEMENT/operate",
     }
     ok, msg = ecf.validate_coordinate(payload)
     check(not ok, "validator accepted malformed identifier")
