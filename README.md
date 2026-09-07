@@ -14,25 +14,25 @@ The framework is axiom-derived: in a single sentence:
 
 "An enterprise is any bounded entity"
  
- → *Governance & Existence*
+   → *Governance & Existence*
 
 "that persists"
  
- → *People & Organization (agents who persist)*
+   → *People & Organization (agents who persist)*
  
- → *Strategy & Direction (directed persistence)*
+   → *Strategy & Direction (directed persistence)*
  
- → *Operations & Enablement (substrate and mechanism of persistence)*
+   → *Operations & Enablement (substrate and mechanism of persistence)*
 
 "by exchanging value"
  
- → *Party & Relationship (counterparty of exchange)*
+   → *Party & Relationship (counterparty of exchange)*
  
- → *Product & Value (bearer of value exchanged)*
+   → *Product & Value (bearer of value exchanged)*
 
 "with its environment"
  
- → *Finance & Accounting (measurement of exchange with environment)*
+   → *Finance & Accounting (measurement of exchange with environment)*
 
 generates seven domains. A universal lifecycle of seven stages partitions the work 
 of any object over time.
