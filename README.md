@@ -3,10 +3,11 @@
 **The 7×7 axiom-derived matrix for describing any enterprise.**
 
 This repo holds the **Enterprise Concept Framework (ECF)**: the enterprise
-organizing framework of the TechNeHub Labs DEA ecosystem. ECF is an OpenDEA
-profile: it supplies the Domain x Stage coordinate system that contextualizes
-the concepts the [DEA Metamodel](../dea-metamodel) formally represents and the
-DEA catalogs (`dea-catalog-*`) instantiate.
+organizing framework of the TechNeHub Labs DEA ecosystem. You can star and follow
+for updates. 
+ECF is an OpenDEA profile: it supplies the Domain x Stage coordinate system that 
+contextualizes the concepts the [DEA Metamodel](../dea-metamodel) formally represents 
+and the DEA catalogs (`dea-catalog-*`) instantiate.
 
 The framework is axiom-derived: in a single sentence, *an enterprise is any
 bounded entity that persists by exchanging value with its environment*,
