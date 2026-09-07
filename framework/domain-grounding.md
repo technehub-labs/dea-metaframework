@@ -1,7 +1,8 @@
 # ECF Domain Grounding
 
-Status: Normative (CR-ECF-003)
-Scope: the seven ECF Domains and their compound-name boundaries
+Status: Normative (CR-ECF-003, extended by CR-ECF-006)
+Scope: the seven ECF Domains, their compound-name boundaries, and the formal
+grounding record for each Domain.
 
 The seven Domains are derived from the grounding axiom recorded in
 [`axiom.md`](./axiom.md):
@@ -13,6 +14,14 @@ Each Domain is a logical consequence of a word in the axiom. No Domain is
 asserted; each is grounded. This file records the formal grounding record for
 each Domain and the compound-name boundary audit.
 
+Each Domain satisfies five tests (per ADR-ECF-001):
+
+1. **Semantic Anchor**; a single, stable, manageable subject
+2. **Lifecycle Completeness**; meaningful from conception through dissolution
+3. **Boundary Integrity**; precise inclusion/exclusion rules
+4. **Technology Independence**; survives any technological paradigm shift
+5. **Collective Exhaustiveness**; seven Domains partition the enterprise without remainder
+
 ## 1. Grounding Record Template
 
 Every Domain carries:
@@ -21,25 +30,28 @@ Every Domain carries:
 |-------|---------|
 | Axiom grounding | which word(s) in the axiom generate the Domain |
 | Semantic definition | what the Domain means |
+| Semantic anchor | the stable subject the Domain name identifies |
 | Included concerns | concerns within scope |
 | Excluded concerns | concerns explicitly out of scope |
 | Adjacent Domains | Domains that share concerns and require boundary rules |
 | Boundary rules | how overlap with adjacent Domains is resolved |
+| Internal MECE partition | the sub-concerns that partition the Domain without remainder |
 | Evidence / rationale | case-study and derivation evidence |
 
 ## 2. Compound-Domain Boundary Audit
 
-The seven Domain names are compounds:
+The seven Domain names are compounds. Each compound is audited and a verdict
+recorded.
 
 | Compound | Verdict |
 |----------|---------|
 | Governance + Existence | semantically necessary: the precondition of boundedness spans the rules and the entity that owns them |
-| Supply + Resources | semantically necessary: substrate without capacity is not persistence |
-| People + Organization | semantically necessary: agents require structure |
-| Customer + Demand | semantically necessary: counterparty + the need that drives exchange |
-| Product + Offering | semantically necessary: the offer must be packaged |
-| Operations + Delivery | semantically necessary: offering + mechanism of delivery |
-| Finance + Value | semantically necessary: exchange requires accounting and measurement |
+| Strategy + Direction | semantically necessary: the intentional vector and the steering that maintains it; replaces the prior Supply + Resources, which was a non-substrate (assets, not direction) and failed MECE |
+| People + Organization | semantically necessary: agents require structure; the anchor is organization (the stable subject), with people as the agentive constituent |
+| Party + Relationship | semantically necessary: the entity (Party) and the bond (Relationship) are inseparable complements; replaces the prior Customer + Demand, which was sell-side biased and treated demand (a signal) as a subject |
+| Product + Value | semantically necessary: the bearer of value (Product) and the proposition it carries (Value) are inseparable complements; replaces the prior Product + Offering, where "Offering" overlapped with "Product" without distinguishing the value proposition |
+| Operations + Enablement | semantically necessary: the execution (Operations) and the means that make it possible (Enablement: technology, physical infrastructure) are inseparable complements; replaces the prior Operations + Delivery, which treated delivery as an outcome of execution rather than naming the enablement concern |
+| Finance + Accounting | semantically necessary: planning (Finance) and recording (Accounting) are inseparable complements; replaces the prior Finance + Value, where "Value" was overloaded and created boundary collision with Product + Value |
 
 No decomposition is introduced at this stage. Compounds are retained as a
 single Domain identifier; the audit record is the artefact, not a renaming.
@@ -50,176 +62,325 @@ A future CR may revisit any compound if evidence accumulates.
 ### 3.1 Governance & Existence
 
 - **Axiom grounding**: "bounded entity": boundedness requires a boundary,
-  what defines the entity, what rules apply.
-- **Semantic definition**: the precondition of boundedness; what defines the
-  entity, what rules apply, and the assurance that the other domains behave.
-- **Included concerns**: entity charter; policy and standards; risk; controls;
-  compliance; assurance; policy retirement.
-- **Excluded concerns**: people performing governance work (People & Organization);
-  tooling that enforces controls (Supply & Resources; Operations & Delivery).
+  authority, and the assurance that the entity persists as itself.
+- **Semantic definition**: the domain that constitutes the enterprise as a
+  bounded, legitimate, persisting entity. It owns the enterprise's
+  ontological reality (what it is, why it is legitimate, under what authority
+  it operates) and its constitutional machinery (how decisions are
+  authorized, constrained, and assured). It is the precondition of all other
+  domains.
+- **Semantic anchor**: Enterprise Existence.
+- **Included concerns**: entity charter; legal constitution; policy and
+  standards; risk frameworks; controls; compliance; assurance; policy
+  retirement; mandate and authority; dissolution and succession.
+- **Excluded concerns**: people performing governance work (People &
+  Organization); tooling that enforces controls (Operations & Enablement);
+  monetary accounting of compliance cost (Finance & Accounting); strategic
+  choices about direction (Strategy & Direction).
 - **Adjacent Domains**: People & Organization (governance vs management);
-  Operations & Delivery (controls vs run-time enforcement); Finance & Value
-  (assurance vs audit).
+  Operations & Enablement (controls vs run-time enforcement); Finance &
+  Accounting (assurance vs audit); Strategy & Direction (constitutional
+  authority vs deliberate choice of trajectory).
 - **Boundary rules**: Governance & Existence owns the rules and the assurance
   that the rules hold; the run-time enforcement and the people performing
-  governance work live in adjacent Domains and reference Governance & Existence
-  coordinates.
-- **Evidence / rationale**: REPORT §5.1 and the derivation table in
+  governance work live in adjacent Domains and reference Governance &
+  Existence coordinates. Governance & Existence authorizes but does not
+  direct; Strategy & Direction directs within the authorized frame.
+- **Internal MECE partition**: Formation & Identity; Mandate & Authority;
+  Policy & Control; Risk & Compliance; Assurance & Accountability;
+  Dissolution & Succession.
+- **Evidence / rationale**: REPORT §5.1; the axiom-derivation table in
   [`axiom.md`](./axiom.md); the Telecom and Digital Services case studies
-  place assurance, risk, and policy concerns in this Domain.
+  place assurance, risk, and policy concerns in this Domain. The compound
+  (governance + existence) is justified because boundedness is constituted
+  by the rules and the entity that owns them; one without the other is not
+  governance.
 
-### 3.2 Supply & Resources
+### 3.2 Strategy & Direction
 
-- **Axiom grounding**: "persists": persistence requires a substrate.
-- **Semantic definition**: the substrate the enterprise persists on;
-  physical or virtual, owned or rented, and its capacity, health, and
-  disposal.
-- **Included concerns**: capacity planning; architecture; build and procure;
-  integration; monitoring; utilization; retirement of assets.
-- **Excluded concerns**: the people who run the substrate (People &
-  Organization); the rules governing substrate use (Governance & Existence);
-  the financial accounting for assets (Finance & Value).
-- **Adjacent Domains**: Operations & Delivery (substrate vs the engine that
-  runs on it); People & Organization (assets vs agents); Finance & Value
-  (capacity vs accounting for capacity).
-- **Boundary rules**: Supply & Resources owns the substrate and its capacity;
-  Operations & Delivery owns the run-time usage of the substrate. A
-  capability that provisions capacity lives in Supply & Resources; the
-  capability that consumes capacity at run-time lives in Operations &
-  Delivery.
-- **Evidence / rationale**: REPORT §5.1 and the derivation table;
-  `dea-catalog-digital-business-service-factory` and `dea-catalog-reference-models`
-  patterns.
+- **Axiom grounding**: "persists": persistence is not mere survival; it
+  requires deliberate, adaptive steering toward a future state.
+- **Semantic definition**: the domain that determines the enterprise's
+  intentional trajectory. It translates the enterprise's reason for existing
+  (owned by Governance & Existence) into concrete choices about positioning,
+  ambition, and resource allocation priorities. The domain manages direction
+  as a stable subject: not the strategy document, not the planning ritual,
+  but the enterprise's deliberate determination of where it will go, what
+  it will become, and what it will prioritize.
+- **Semantic anchor**: Direction.
+- **Included concerns**: purpose and ambition; environmental sensing;
+  strategic choices; objectives and targets; strategic planning; strategic
+  adaptation.
+- **Excluded concerns**: legal mandate and constitutional authority
+  (Governance & Existence); operational execution of strategy (Operations &
+  Enablement); monetary budgets and financial plans (Finance & Accounting);
+  product design and portfolio decisions (Product & Value); relationships
+  with market participants (Party & Relationship); organizational redesign
+  execution (People & Organization).
+- **Adjacent Domains**: Governance & Existence (authorized frame vs chosen
+  trajectory); Operations & Enablement (strategy vs execution); Finance &
+  Accounting (strategic investment choices vs monetary plans); Product &
+  Value (portfolio evolution direction vs product design); Party &
+  Relationship (target segments vs relationships); People & Organization
+  (capability requirements vs organization design).
+- **Boundary rules**: Strategy & Direction provides the intentional vector
+  that all execution Domains follow. It decides where and why; it does not
+  decide how (Operations), what (Product), with whom (Party), with what
+  money (Finance), or with what people (People).
+- **Internal MECE partition**: Purpose & Ambition; Environmental Sensing;
+  Strategic Choices; Objectives & Targets; Strategic Planning; Strategic
+  Adaptation.
+- **Evidence / rationale**: REPORT §5.1; the axiom-derivation table;
+  standard frameworks (APQC, TOGAF) treat strategy as a mandatory L0
+  process category. The prior Domain "Supply & Resources" was removed
+  because "Resources" is a cross-cutting asset class, not a stable
+  subject: physical resources moved to Operations & Enablement (as
+  enablers); financial resources moved to Finance & Accounting; human
+  resources stay in People & Organization. The vacated axiom slot
+  ("persists" as deliberate steering) maps cleanly to this new Domain.
 
 ### 3.3 People & Organization
 
-- **Axiom grounding**: "persists": persistence requires agents.
-- **Semantic definition**: the humans who perform every capability; their
-  structure, skills, performance, and movement.
-- **Included concerns**: workforce planning; organizational design; hiring
-  and training; mobilization; performance and development; engagement;
-  offboarding and reassignment.
-- **Excluded concerns**: governance of people (Governance & Existence);
-  tooling that supports people (Supply & Resources); the demand side of
-  customers (Customer & Demand).
-- **Adjacent Domains**: Governance & Organization (rules that govern
-  organizational behaviour); Supply & Resources (digital tools that
-  people use); Customer & Demand (people-as-customers, distinct from
-  people-as-agents).
+- **Axiom grounding**: "persists": persistence requires agents; the
+  enterprise cannot act without humans organized for purpose.
+- **Semantic definition**: the domain that manages the enterprise's internal
+  human fabric. It owns the constitution, coordination, development, and
+  movement of the agents who perform all enterprise capabilities, and the
+  structures through which they are organized. The domain manages
+  organization as a stable subject: the durable pattern of roles, authority,
+  collaboration, and culture through which human agency is coordinated. People
+  are the agents; organization is the structure that channels their agency.
+- **Semantic anchor**: Organization.
+- **Included concerns**: organizational design; workforce planning;
+  acquisition and onboarding; development and performance; culture and
+  collaboration; movement and transition.
+- **Excluded concerns**: external parties (Party & Relationship); strategic
+  direction (Strategy & Direction); governance authority and policy
+  (Governance & Existence); operational execution they perform (Operations &
+  Enablement); monetary compensation decisions (Finance & Accounting);
+  product work they produce (Product & Value).
+- **Adjacent Domains**: Governance & Existence (rules that govern
+  organizational behaviour); Strategy & Direction (capability requirements
+  vs direction); Operations & Enablement (agents vs the engine they staff);
+  Party & Relationship (internal people vs external parties); Finance &
+  Accounting (compensation accounting vs compensation decisions).
 - **Boundary rules**: People & Organization owns agents and the structure
-  that organizes them. People-as-customers are not modelled here; they
-  live in Customer & Demand.
-- **Evidence / rationale**: REPORT §5.1; `dea-catalog-actors` patterns.
+  that organizes them. People-as-counterparties are not modelled here; they
+  live in Party & Relationship.
+- **Internal MECE partition**: Organizational Design; Workforce Planning;
+  Acquisition & Onboarding; Development & Performance; Culture &
+  Collaboration; Movement & Transition.
+- **Evidence / rationale**: REPORT §5.1; `dea-catalog-actors` patterns;
+  the anchor (organization, not people) prevents the domain from being
+  reduced to "HR management." The compound (people + organization) is
+  justified because the agents require the structure and the structure
+  exists to channel the agents.
 
-### 3.4 Customer & Demand
+### 3.4 Party & Relationship
 
-- **Axiom grounding**: "exchanging value": exchange requires a counterparty.
-- **Semantic definition**: the enterprise's reason to exchange; identifying,
-  acquiring, serving, and retaining the people whose need it meets.
-- **Included concerns**: need identification; journey mapping; onboarding;
-  activation; support and service; satisfaction and churn; offboarding.
-- **Excluded concerns**: the people who perform customer-facing work
-  (People & Organization); the offering itself (Product & Offering); the
-  financial accounting of customer value (Finance & Value).
-- **Adjacent Domains**: Product & Offering (demand for the offering);
-  People & Organization (people-as-agents, not customers); Finance & Value
-  (customer-lifetime-value accounting).
-- **Boundary rules**: Customer & Demand owns the counterparty relationship
-  and the demand signal. The offering that meets the demand lives in
-  Product & Offering; the financial accounting of customer value lives in
-  Finance & Value.
-- **Evidence / rationale**: REPORT §5.1; Business Process Catalog topology
-  for activation and support patterns.
+- **Axiom grounding**: "exchanging value": exchange requires a counterparty;
+  the enterprise cannot exchange with itself.
+- **Semantic definition**: the domain that manages the enterprise's external
+  social fabric. It owns the identification, establishment, development, and
+  termination of bonds between the enterprise and all external entities with
+  whom it interacts. The domain manages relationships as stable subjects with
+  full lifecycle integrity, not merely the transactional events that occur
+  within them. It encompasses all external parties regardless of their role
+  (customer, supplier, partner, regulator, community).
+- **Semantic anchor**: Relationship.
+- **Included concerns**: party identification; relationship establishment;
+  engagement and interaction; relationship development; relationship
+  governance; relationship termination.
+- **Excluded concerns**: internal agents (People & Organization); the
+  product or service exchanged (Product & Value); monetary transactions and
+  records (Finance & Accounting); operational fulfillment of exchanges
+  (Operations & Enablement); strategic targeting decisions (Strategy &
+  Direction); legal entity constitution (Governance & Existence).
+- **Adjacent Domains**: Product & Value (demand for the offering vs the
+  offering itself); People & Organization (people-as-agents vs
+  people-as-parties); Finance & Accounting (relationship accounting vs
+  monetary measurement); Strategy & Direction (targeting vs market
+  intelligence); Operations & Enablement (engagement management vs
+  fulfillment execution).
+- **Boundary rules**: Party & Relationship owns the counterparty
+  relationship and the bond. The offering that meets the need lives in
+  Product & Value; the financial accounting of relationship value lives in
+  Finance & Accounting. A single party may simultaneously be a customer, a
+  supplier, and a partner; the party is one entity with multiple roles, and
+  the relationship is a single bond with multiple facets, not three separate
+  domains.
+- **Internal MECE partition**: Party Identification; Relationship
+  Establishment; Engagement & Interaction; Relationship Development;
+  Relationship Governance; Relationship Termination.
+- **Evidence / rationale**: REPORT §5.1; the prior Domain "Customer &
+  Demand" was renamed and broadened because "Customer" is a role a party
+  plays (a single party can be customer, supplier, and partner
+  simultaneously), and "Demand" is a transient signal rather than a
+  manageable subject. Party + Relationship is MECE-complete for the
+  external environment.
 
-### 3.5 Product & Offering
+### 3.5 Product & Value
 
 - **Axiom grounding**: "exchanging value": exchange requires something to
-  offer.
-- **Semantic definition**: the catalog of what the enterprise offers; its
-  design, packaging, release, and retirement.
-- **Included concerns**: market sensing; catalog and specs; configuration;
-  launch; catalog management; performance; sunset.
-- **Excluded concerns**: the demand for the offering (Customer & Demand);
-  the delivery of the offering (Operations & Delivery); the financial
-  pricing model (Finance & Value).
-- **Adjacent Domains**: Customer & Demand (offering vs demand);
-  Operations & Delivery (offering vs the engine that delivers it);
-  Finance & Value (offering vs the financial model around it).
-- **Boundary rules**: Product & Offering owns the offering itself. Delivery
-  of the offering is Operations & Delivery; pricing of the offering is
-  Finance & Value.
+  offer; a bearer of value must exist to be exchanged.
+- **Semantic definition**: the domain that manages the enterprise's
+  value-bearing propositions. It owns the complete lifecycle of whatever the
+  enterprise creates, shapes, packages, and makes available for exchange
+  with external parties. The domain manages products as stable subjects: not
+  merely physical goods, but any value-bearing entity (services, solutions,
+  experiences, platforms, intellectual property) that the enterprise designs,
+  builds, evolves, and eventually retires. The critical boundary: Product &
+  Value owns the value-bearing proposition, not every form of value in the
+  enterprise.
+- **Semantic anchor**: Product.
+- **Included concerns**: proposition design; portfolio management; product
+  development; packaging and configuration; market readiness; product
+  evolution.
+- **Excluded concerns**: relationships with buyers (Party & Relationship);
+  monetary pricing decisions (Finance & Accounting); operational delivery
+  of the product (Operations & Enablement); strategic portfolio investment
+  decisions (Strategy & Direction); technology platforms that enable
+  products (Operations & Enablement); legal governance of IP (Governance &
+  Existence).
+- **Adjacent Domains**: Party & Relationship (offering vs demand);
+  Operations & Enablement (offering vs the engine that delivers it);
+  Finance & Accounting (offering vs the financial model around it);
+  Strategy & Direction (product direction vs strategic direction).
+- **Boundary rules**: Product & Value owns the value-bearing proposition
+  itself. Delivery of the offering is Operations & Enablement; pricing of
+  the offering is Finance & Accounting. "Value" in this Domain's name
+  refers to the value proposition carried by the product, not to
+  enterprise-wide value (which is a cross-cutting outcome).
+- **Internal MECE partition**: Proposition Design; Portfolio Management;
+  Product Development; Packaging & Configuration; Market Readiness; Product
+  Evolution.
 - **Evidence / rationale**: REPORT §5.1; `dea-catalog-digital-business-service-factory`
-  and `dea-catalog-solution-hub` patterns.
+  and `dea-catalog-solution-hub` patterns. The compound (product + value) is
+  justified because the bearer of value (Product) and the value proposition
+  (Value) it carries are inseparable complements; "Offering" in the prior
+  compound was vague and overlapped with "Product" without distinguishing
+  the value proposition.
 
-### 3.6 Operations & Delivery
+### 3.6 Operations & Enablement
 
-- **Axiom grounding**: "exchanging value": exchange requires a mechanism.
-- **Semantic definition**: the engine that turns an offering into a
-  delivered outcome; planning, fulfilling, running, resolving.
-- **Included concerns**: demand planning; process design; provisioning;
-  cut-over; run and maintain; quality and incident; decommission.
-- **Excluded concerns**: the offering being delivered (Product & Offering);
-  the substrate being run on (Supply & Resources); the financial accounting
-  of delivered value (Finance & Value).
-- **Adjacent Domains**: Supply & Resources (engine vs substrate);
-  Product & Offering (engine vs offering); Finance & Value (delivered
-  outcome vs financial recognition).
-- **Boundary rules**: Operations & Delivery owns the delivery mechanism.
-  The offering is Product & Offering; the substrate is Supply & Resources;
-  the financial recognition of delivered outcome is Finance & Value.
+- **Axiom grounding**: "exchanging value": exchange requires a mechanism;
+  value must be produced, delivered, and sustained.
+- **Semantic definition**: the domain that manages the enterprise's
+  execution engine and the means that make execution possible. It owns the
+  transformation of offerings into delivered outcomes, and the physical,
+  virtual, and procedural infrastructure that enables that transformation.
+  The domain manages execution as a stable subject: the repeatable,
+  manageable, measurable engine that produces outcomes. Technology, platforms,
+  and physical assets are positioned as enablers of execution, not as ends
+  in themselves.
+- **Semantic anchor**: Execution.
+- **Included concerns**: process design and management; execution and
+  fulfillment; technology enablement; physical enablement; operational
+  planning; operational assurance.
+- **Excluded concerns**: strategic direction for operations (Strategy &
+  Direction); product design and portfolio decisions (Product & Value);
+  monetary capital expenditure decisions (Finance & Accounting);
+  relationships with counterparties (Party & Relationship); organizational
+  structure of operations teams (People & Organization); governance policies
+  that constrain operations (Governance & Existence).
+- **Adjacent Domains**: Strategy & Direction (engine vs direction);
+  Product & Value (engine vs offering); Finance & Accounting (delivered
+  outcome vs financial recognition); Party & Relationship (fulfillment vs
+  relationship); People & Organization (execution agents vs organizational
+  design); Governance & Existence (operational enforcement vs policy).
+- **Boundary rules**: Operations & Enablement owns the execution mechanism
+  and the means that enable it. Technology, platforms, and physical
+  infrastructure are positioned as enablers of execution (not as a separate
+  Domain) so that the Domain survives any technological paradigm shift
+  (Technology Independence test, ADR-ECF-001 §4). Physical and virtual
+  resources that previously sat in "Supply & Resources" now live here as
+  enablers.
+- **Internal MECE partition**: Process Design & Management; Execution &
+  Fulfillment; Technology Enablement; Physical Enablement; Operational
+  Planning; Operational Assurance.
 - **Evidence / rationale**: REPORT §5.1; the Business Process Catalog's
-  L0..L4 topology and the telecom run/assure patterns.
+  L0..L4 topology and the telecom run/assure patterns. The compound
+  (operations + enablement) is justified because execution requires the
+  means; the prior "Delivery" named only an outcome of execution and
+  omitted the enablement concern that the absorption of "Supply & Resources"
+  brings in.
 
-### 3.7 Finance & Value
+### 3.7 Finance & Accounting
 
 - **Axiom grounding**: "with its environment": the environment requires
-  accounting.
-- **Semantic definition**: the accounting for the environment; the flow of
-  money and the measurement of value created, consumed, and retained.
-- **Included concerns**: business case; pricing model; funding; billing
-  activation; revenue and cost; margin analysis; write-off.
-- **Excluded concerns**: the offering priced (Product & Offering); the
-  delivered outcome recognized (Operations & Delivery); the customer
-  whose lifetime value is measured (Customer & Demand).
-- **Adjacent Domains**: all other Domains: Finance & Value intersects
-  every Domain because every Domain produces and consumes value.
-- **Boundary rules**: Finance & Value owns the financial model and the
-  measurement of value. The sources of value live in their owning Domains;
-  Finance & Value provides the accounting lens.
+  measurement; value exchanged must be quantified in monetary terms.
+- **Semantic definition**: the domain that manages the enterprise's monetary
+  reality. It owns the planning, allocation, movement, recording, and
+  reporting of money as it flows through the enterprise in exchange with its
+  environment. The domain manages money as a stable subject: the universal
+  medium through which all enterprise activity is measured, compared, and
+  controlled in monetary terms. It is explicitly not the domain of "value"
+  in the abstract; it is the domain of monetary consequence.
+- **Semantic anchor**: Money.
+- **Included concerns**: financial planning; funding and capital;
+  transaction and exchange; accounting and recording; reporting and
+  disclosure; financial control.
+- **Excluded concerns**: general enterprise value (a cross-cutting outcome);
+  strategic investment choices (Strategy & Direction); product value
+  proposition (Product & Value); operational cost drivers (Operations &
+  Enablement); governance authority for financial controls (Governance &
+  Existence); people decisions about who to pay (People & Organization).
+- **Adjacent Domains**: all other Domains; Finance & Accounting
+  intersects every Domain because every Domain produces and consumes
+  monetary consequence. Product & Value (revenue/cost recognition);
+  Operations & Enablement (capex/opex accounting); Strategy & Direction
+  (investment appraisal); Party & Relationship (receivables/payables);
+  People & Organization (payroll/benefits accounting); Governance &
+  Existence (audit/compliance accounting).
+- **Boundary rules**: Finance & Accounting owns the monetary model and the
+  measurement of monetary consequence. The sources of monetary consequence
+  live in their owning Domains; Finance & Accounting provides the
+  accounting lens. "Value" in the prior compound was overloaded; "Accounting"
+  correctly scopes the Domain to monetary measurement.
+- **Internal MECE partition**: Financial Planning; Funding & Capital;
+  Transaction & Exchange; Accounting & Recording; Reporting & Disclosure;
+  Financial Control.
 - **Evidence / rationale**: REPORT §5.1; the Commercialization route in
-  REPORT §8.2; `dea-catalog-metrics` patterns.
+  REPORT §8.2; `dea-catalog-metrics` patterns. The compound (finance +
+  accounting) is justified because the planning (Finance) and the recording
+  (Accounting) are inseparable complements; one without the other is not
+  a complete monetary Domain.
 
 ## 4. Domain Orthogonality
 
 Knowledge of a Domain does not determine a Stage; knowledge of a Stage
 does not determine a Domain. A capability contextualized by
-`(Customer & Demand, Conceive)` is meaningfully different from one
-contextualized by `(Customer & Demand, Operate)`; a capability
-contextualized by `(Finance & Value, Conceive)` is meaningfully different
-from one contextualized by `(Customer & Demand, Conceive)`. The seven
-Domains and the seven Stages remain independent partitions.
+`(Party & Relationship, Conceive)` is meaningfully different from one
+contextualized by `(Party & Relationship, Operate)`; a capability
+contextualized by `(Finance & Accounting, Conceive)` is meaningfully
+different from one contextualized by `(Party & Relationship, Conceive)`.
+The seven Domains and the seven Stages remain independent partitions.
 
 ## 5. Domain Completeness
 
-The seven Domains collectively cover the grounding axiom:
+The seven Domains collectively cover the grounding axiom (per CR-ECF-006
+axiomatic mapping):
 
 - "bounded entity" -> Governance & Existence
-- "persists" (substrate) -> Supply & Resources
+- "persists" (substrate as enabler) -> Operations & Enablement
 - "persists" (agents) -> People & Organization
-- "exchanging value" (counterparty) -> Customer & Demand
-- "exchanging value" (offering) -> Product & Offering
-- "exchanging value" (mechanism) -> Operations & Delivery
-- "with its environment" -> Finance & Value
+- "persists" (directed) -> Strategy & Direction
+- "exchanging value" (counterparty) -> Party & Relationship
+- "exchanging value" (bearer of value) -> Product & Value
+- "exchanging value" (mechanism) -> Operations & Enablement
+- "with its environment" -> Finance & Accounting
 
 No gap: each word is grounded. No hidden assumption: the derivation is the
 axiom. No imported framework category: the Domain set is axiom-derived, not
 reverse-engineered from a specific industry. Controlled overlap: the
-boundary rules above resolve the apparent overlap between Finance & Value
-and the other Domains.
+boundary rules above resolve the apparent overlap between Finance &
+Accounting and the other Domains.
 
 ## 6. Renaming Rule
 
 No Domain is renamed or restructured without explicit evidence and
-governance. A future CR (or an extension of CR-ECF-003) may revisit any
-Domain if evidence accumulates; the change must cite the evidence and the
-governance decision.
+governance. A future CR (or an extension of CR-ECF-003 / CR-ECF-006) may
+revisit any Domain if evidence accumulates; the change must cite the
+evidence and the governance decision. CR-ECF-006 + ADR-ECF-001 are the
+exemplar of this rule: the five renames and the Supply & Resources removal
+are backed by the ADR's five-tests rubric and the CR's before/after audit.

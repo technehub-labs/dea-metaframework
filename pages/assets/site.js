@@ -8,14 +8,19 @@
 
   // ── ECF canonical data ─────────────────────────────────
   // The 7 domains (rows) — order is axiomatic: governance first, finance last.
+  // Per CR-ECF-006 / ADR-ECF-001. Supply & Resources was replaced by
+  // Strategy & Direction; Customer & Demand was renamed to Party &
+  // Relationship; Product & Offering -> Product & Value; Operations &
+  // Delivery -> Operations & Enablement; Finance & Value -> Finance &
+  // Accounting.
   const DOMAINS = [
-    { id: 1, key: 'governance', name: 'Governance & Existence', shortName: 'Governance', color: 'var(--l1)' },
-    { id: 2, key: 'supply',     name: 'Supply & Resources',      shortName: 'Supply',     color: 'var(--l2)' },
+    { id: 1, key: 'governance', name: 'Governance & Existence',  shortName: 'Governance', color: 'var(--l1)' },
+    { id: 2, key: 'strategy',   name: 'Strategy & Direction',    shortName: 'Strategy',   color: 'var(--l2)' },
     { id: 3, key: 'people',     name: 'People & Organization',  shortName: 'People',     color: 'var(--l3)' },
-    { id: 4, key: 'customer',   name: 'Customer & Demand',      shortName: 'Customer',   color: 'var(--l4)' },
-    { id: 5, key: 'product',    name: 'Product & Offering',     shortName: 'Product',    color: 'var(--l5)' },
-    { id: 6, key: 'operations', name: 'Operations & Delivery',  shortName: 'Operations', color: 'var(--l6)' },
-    { id: 7, key: 'finance',    name: 'Finance & Value',        shortName: 'Finance',    color: 'var(--l7)' },
+    { id: 4, key: 'party',      name: 'Party & Relationship',   shortName: 'Party',      color: 'var(--l4)' },
+    { id: 5, key: 'product',    name: 'Product & Value',        shortName: 'Product',    color: 'var(--l5)' },
+    { id: 6, key: 'operations', name: 'Operations & Enablement', shortName: 'Operations', color: 'var(--l6)' },
+    { id: 7, key: 'finance',    name: 'Finance & Accounting',   shortName: 'Finance',    color: 'var(--l7)' },
   ];
 
   // The 7 stages (columns) — universal lifecycle order
@@ -243,14 +248,14 @@
       'governance.improve':  { text: 'Risk review — periodic re-assessment.', glyph: '●', actors: ['risk-team'], metamodelEntities: ['Performance Metric'] },
       'governance.retire':   { text: 'Policy retire — sunset obsolete mandates.', glyph: '·', actors: ['governance-team'], metamodelEntities: ['Strategic Objective'] },
 
-      // Row 2: Supply & Resources
-      'supply.conceive': { text: 'Capacity vision — demand forecast + capacity plan.', glyph: '●', actors: ['capacity-planner'], metamodelEntities: ['Strategic Objective'] },
-      'supply.design':   { text: 'Architecture — target-state infrastructure.', glyph: '●', actors: ['enterprise-architect'], metamodelEntities: ['System Function'] },
-      'supply.build':    { text: 'Build / procure — provision infrastructure.', glyph: '★', actors: ['platform-engineering'], metamodelEntities: ['Platform Service'] },
-      'supply.activate': { text: 'Integration — wire into production.', glyph: '●', actors: ['platform-engineering', 'sre'], metamodelEntities: ['Application Component'] },
-      'supply.operate':  { text: 'Monitoring — health, capacity, alerts.', glyph: '●', actors: ['sre'], metamodelEntities: ['Platform Service'] },
-      'supply.improve':  { text: 'Utilization — right-sizing, FinOps.', glyph: '●', actors: ['finops', 'sre'], metamodelEntities: ['Performance Metric'] },
-      'supply.retire':   { text: 'Retire assets — decommission, dispose.', glyph: '●', actors: ['platform-engineering'], metamodelEntities: ['Platform Service'] },
+      // Row 2: Strategy & Direction
+      'strategy.conceive': { text: 'Purpose & ambition — mission, vision, aspiration.', glyph: '●', actors: ['strategy-lead', 'executive'], metamodelEntities: ['Strategic Objective'] },
+      'strategy.design':   { text: 'Strategic choices — positioning, scope, advantage logic.', glyph: '●', actors: ['strategy-lead'], metamodelEntities: ['Strategic Objective'] },
+      'strategy.build':    { text: 'Initiative portfolio — roadmap, resource allocation.', glyph: '★', actors: ['strategy-lead', 'pmo'], metamodelEntities: ['Investment Initiative'] },
+      'strategy.activate': { text: 'Launch direction — go-to-market alignment.', glyph: '●', actors: ['strategy-lead', 'product'], metamodelEntities: ['Strategic Objective'] },
+      'strategy.operate':  { text: 'Course correction — track vs plan, adapt.', glyph: '●', actors: ['strategy-lead'], metamodelEntities: ['Performance Metric'] },
+      'strategy.improve':  { text: 'Strategic review — performance vs ambition.', glyph: '●', actors: ['strategy-lead', 'executive'], metamodelEntities: ['Performance Metric'] },
+      'strategy.retire':   { text: 'Strategic renewal — pivot, divest, transform.', glyph: '●', actors: ['executive', 'strategy-lead'], metamodelEntities: ['Strategic Objective'] },
 
       // Row 3: People & Organization
       'people.conceive': { text: 'Workforce plan — headcount and skills forecast.', glyph: '●', actors: ['workforce-planner'], metamodelEntities: ['Organizational Unit'] },
@@ -261,16 +266,16 @@
       'people.improve':  { text: 'Engagement — pulse surveys, eNPS.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Performance Metric'] },
       'people.retire':   { text: 'Offboard / reassign — exit or transfer.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Organizational Unit'] },
 
-      // Row 4: Customer & Demand
-      'customer.conceive': { text: 'Need identification — market research, JTBD.', glyph: '●', actors: ['product', 'growth'], metamodelEntities: ['Value Stream'] },
-      'customer.design':   { text: 'Journey mapping — personas, friction points.', glyph: '●', actors: ['product-design'], metamodelEntities: ['Journey Touchpoint'] },
-      'customer.build':    { text: 'Onboarding — signup flow, verification.', glyph: '●', actors: ['growth', 'engineering'], metamodelEntities: ['Business Process'] },
-      'customer.activate': { text: 'Activation — first value moment.', glyph: '★', actors: ['growth'], metamodelEntities: ['Journey Touchpoint'] },
-      'customer.operate':  { text: 'Support & service — customer care.', glyph: '●', actors: ['care-ops'], metamodelEntities: ['Business Process'] },
-      'customer.improve':  { text: 'Satisfaction & churn — NPS, retention cohorts.', glyph: '●', actors: ['analytics', 'care-ops'], metamodelEntities: ['Performance Metric'] },
-      'customer.retire':   { text: 'Offboarding — account closure, GDPR.', glyph: '●', actors: ['care-ops', 'legal'], metamodelEntities: ['Business Object'] },
+      // Row 4: Party & Relationship
+      'party.conceive': { text: 'Party identification — discovery, segmentation, qualification.', glyph: '●', actors: ['marketing', 'sales'], metamodelEntities: ['Value Stream'] },
+      'party.design':   { text: 'Journey mapping — personas, friction points, channel design.', glyph: '●', actors: ['product-design'], metamodelEntities: ['Journey Touchpoint'] },
+      'party.build':    { text: 'Onboarding — contracting, trust, integration.', glyph: '●', actors: ['sales', 'legal'], metamodelEntities: ['Business Process'] },
+      'party.activate': { text: 'Activation — first value moment, relationship start.', glyph: '★', actors: ['sales', 'growth'], metamodelEntities: ['Journey Touchpoint'] },
+      'party.operate':  { text: 'Engagement & service — communication, support.', glyph: '●', actors: ['care-ops'], metamodelEntities: ['Business Process'] },
+      'party.improve':  { text: 'Relationship development — NPS, retention, deepening.', glyph: '●', actors: ['analytics', 'care-ops'], metamodelEntities: ['Performance Metric'] },
+      'party.retire':   { text: 'Relationship termination — offboarding, exit management.', glyph: '●', actors: ['care-ops', 'legal'], metamodelEntities: ['Business Object'] },
 
-      // Row 5: Product & Offering
+      // Row 5: Product & Value
       'product.conceive': { text: 'Market sensing — discovery, opportunity sizing.', glyph: '●', actors: ['product', 'research'], metamodelEntities: ['Business Capability'] },
       'product.design':   { text: 'Catalog & specs — PRD, feature spec.', glyph: '●', actors: ['product-design'], metamodelEntities: ['Business Capability'] },
       'product.build':    { text: 'Configuration — bundle, packaging.', glyph: '●', actors: ['engineering'], metamodelEntities: ['Business Process'] },
@@ -279,7 +284,7 @@
       'product.improve':  { text: 'Performance — adoption, usage, satisfaction.', glyph: '●', actors: ['analytics', 'product'], metamodelEntities: ['Performance Metric'] },
       'product.retire':   { text: 'Sunset — deprecate, migrate users.', glyph: '●', actors: ['product', 'care-ops'], metamodelEntities: ['Business Object'] },
 
-      // Row 6: Operations & Delivery
+      // Row 6: Operations & Enablement
       'operations.conceive': { text: 'Demand planning — forecast workload.', glyph: '●', actors: ['demand-planner'], metamodelEntities: ['Business Process'] },
       'operations.design':   { text: 'Process design — SOPs, automation.', glyph: '●', actors: ['process-architect'], metamodelEntities: ['Business Process'] },
       'operations.build':    { text: 'Provisioning — environment, tooling.', glyph: '★', actors: ['platform-engineering'], metamodelEntities: ['System Function'] },
@@ -288,7 +293,7 @@
       'operations.improve':  { text: 'Quality & incident — post-mortems, SLO.', glyph: '●', actors: ['sre', 'quality'], metamodelEntities: ['Performance Metric'] },
       'operations.retire':   { text: 'Decommission — environment teardown.', glyph: '●', actors: ['platform-engineering'], metamodelEntities: ['System Function'] },
 
-      // Row 7: Finance & Value
+      // Row 7: Finance & Accounting
       'finance.conceive': { text: 'Business case — investment thesis.', glyph: '●', actors: ['finance', 'product'], metamodelEntities: ['Investment Initiative'] },
       'finance.design':   { text: 'Pricing model — tariff, tiers.', glyph: '●', actors: ['pricing-analyst'], metamodelEntities: ['Business Capability'] },
       'finance.build':    { text: 'Funding — budget approval, allocation.', glyph: '●', actors: ['finance', 'cfo'], metamodelEntities: ['Investment Initiative'] },
@@ -309,13 +314,13 @@
       'governance.improve':  { text: 'Risk review — quarterly audit cycle.', glyph: '●', actors: ['risk-team'], metamodelEntities: ['Performance Metric'] },
       'governance.retire':   { text: 'Policy repeal — sunset obsolete mandates.', glyph: '·', actors: ['regulatory-affairs'], metamodelEntities: ['Strategic Objective'] },
 
-      'supply.conceive': { text: 'Spectrum vision — RAN roadmap, 5G spectrum planning.', glyph: '●', actors: ['spectrum-planner'], metamodelEntities: ['Strategic Objective'] },
-      'supply.design':   { text: 'Core architecture (EPC/5GC).', glyph: '●', actors: ['network-architect'], metamodelEntities: ['System Function'] },
-      'supply.build':    { text: 'Equipment install — RAN, core nodes.', glyph: '★', actors: ['field-ops'], metamodelEntities: ['Platform Service'] },
-      'supply.activate': { text: 'Network integration — cut-over to live.', glyph: '★', actors: ['noc', 'field-ops'], metamodelEntities: ['Application Component'] },
-      'supply.operate':  { text: 'NMS monitoring — alarms, KPIs.', glyph: '●', actors: ['noc'], metamodelEntities: ['Platform Service'] },
-      'supply.improve':  { text: 'KPI utilization (erlang).', glyph: '●', actors: ['capacity-planner'], metamodelEntities: ['Performance Metric'] },
-      'supply.retire':   { text: 'Equipment retire — 3G sunset.', glyph: '●', actors: ['field-ops'], metamodelEntities: ['Platform Service'] },
+      'strategy.conceive': { text: 'Spectrum vision — RAN roadmap, 5G spectrum planning.', glyph: '●', actors: ['spectrum-planner'], metamodelEntities: ['Strategic Objective'] },
+      'strategy.design':   { text: 'Core architecture (EPC/5GC).', glyph: '●', actors: ['network-architect'], metamodelEntities: ['System Function'] },
+      'strategy.build':    { text: 'Equipment install — RAN, core nodes.', glyph: '★', actors: ['field-ops'], metamodelEntities: ['Platform Service'] },
+      'strategy.activate': { text: 'Network integration — cut-over to live.', glyph: '★', actors: ['noc', 'field-ops'], metamodelEntities: ['Application Component'] },
+      'strategy.operate':  { text: 'NMS monitoring — alarms, KPIs.', glyph: '●', actors: ['noc'], metamodelEntities: ['Platform Service'] },
+      'strategy.improve':  { text: 'KPI utilization (erlang).', glyph: '●', actors: ['capacity-planner'], metamodelEntities: ['Performance Metric'] },
+      'strategy.retire':   { text: 'Equipment retire — 3G sunset.', glyph: '●', actors: ['field-ops'], metamodelEntities: ['Platform Service'] },
 
       'people.conceive': { text: 'Field force plan — coverage model.', glyph: '●', actors: ['workforce-planner'], metamodelEntities: ['Organizational Unit'] },
       'people.design':   { text: 'NOC/org design — escalation tree.', glyph: '●', actors: ['org-design'], metamodelEntities: ['Organizational Unit'] },
@@ -325,13 +330,13 @@
       'people.improve':  { text: 'Engagement — pulse surveys.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Performance Metric'] },
       'people.retire':   { text: 'Redeploy — move between regions.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Organizational Unit'] },
 
-      'customer.conceive': { text: 'Subscriber need — coverage gaps, churn.', glyph: '●', actors: ['product', 'marketing'], metamodelEntities: ['Value Stream'] },
-      'customer.design':   { text: 'Tariff plans — pricing, bundles.', glyph: '●', actors: ['product', 'pricing'], metamodelEntities: ['Journey Touchpoint'] },
-      'customer.build':    { text: 'SIM provisioning — order capture.', glyph: '●', actors: ['commerce', 'fulfillment'], metamodelEntities: ['Business Process'] },
-      'customer.activate': { text: 'Network attach (HLR/HSS) — first call.', glyph: '★', actors: ['noc', 'commerce'], metamodelEntities: ['Journey Touchpoint'] },
-      'customer.operate':  { text: 'Customer care (CRM).', glyph: '●', actors: ['care-ops'], metamodelEntities: ['Business Process'] },
-      'customer.improve':  { text: 'Churn scoring (ARPU).', glyph: '●', actors: ['analytics'], metamodelEntities: ['Performance Metric'] },
-      'customer.retire':   { text: 'Number port (MNP) — out to other carrier.', glyph: '●', actors: ['care-ops'], metamodelEntities: ['Business Object'] },
+      'party.conceive': { text: 'Subscriber need — coverage gaps, churn.', glyph: '●', actors: ['product', 'marketing'], metamodelEntities: ['Value Stream'] },
+      'party.design':   { text: 'Tariff plans — pricing, bundles.', glyph: '●', actors: ['product', 'pricing'], metamodelEntities: ['Journey Touchpoint'] },
+      'party.build':    { text: 'SIM provisioning — order capture.', glyph: '●', actors: ['commerce', 'fulfillment'], metamodelEntities: ['Business Process'] },
+      'party.activate': { text: 'Network attach (HLR/HSS) — first call.', glyph: '★', actors: ['noc', 'commerce'], metamodelEntities: ['Journey Touchpoint'] },
+      'party.operate':  { text: 'Customer care (CRM).', glyph: '●', actors: ['care-ops'], metamodelEntities: ['Business Process'] },
+      'party.improve':  { text: 'Churn scoring (ARPU).', glyph: '●', actors: ['analytics'], metamodelEntities: ['Performance Metric'] },
+      'party.retire':   { text: 'Number port (MNP) — out to other carrier.', glyph: '●', actors: ['care-ops'], metamodelEntities: ['Business Object'] },
 
       'product.conceive': { text: 'Service roadmap (5G, IoT).', glyph: '●', actors: ['product', 'research'], metamodelEntities: ['Business Capability'] },
       'product.design':   { text: 'Service catalog (BSS).', glyph: '●', actors: ['product-design'], metamodelEntities: ['Business Capability'] },
@@ -369,13 +374,13 @@
       'governance.improve':  { text: 'Risk review (pentest).', glyph: '●', actors: ['security-team'], metamodelEntities: ['Performance Metric'] },
       'governance.retire':   { text: 'Policy retire.', glyph: '·', actors: ['legal'], metamodelEntities: ['Strategic Objective'] },
 
-      'supply.conceive': { text: 'Scale vision — capacity for growth.', glyph: '●', actors: ['capacity-planner'], metamodelEntities: ['Strategic Objective'] },
-      'supply.design':   { text: 'Cloud architecture (AWS/GCP).', glyph: '●', actors: ['enterprise-architect'], metamodelEntities: ['System Function'] },
-      'supply.build':    { text: 'Infra build (Terraform).', glyph: '★', actors: ['platform-engineering'], metamodelEntities: ['Platform Service'] },
-      'supply.activate': { text: 'Service mesh.', glyph: '●', actors: ['platform-engineering', 'sre'], metamodelEntities: ['Application Component'] },
-      'supply.operate':  { text: 'Observability — metrics, logs, traces.', glyph: '●', actors: ['sre'], metamodelEntities: ['Platform Service'] },
-      'supply.improve':  { text: 'Cost/usage (FinOps).', glyph: '★', actors: ['finops', 'sre'], metamodelEntities: ['Performance Metric'] },
-      'supply.retire':   { text: 'Infra retire — end-of-service decommission.', glyph: '●', actors: ['platform-engineering'], metamodelEntities: ['Platform Service'] },
+      'strategy.conceive': { text: 'Scale vision — capacity for growth.', glyph: '●', actors: ['capacity-planner'], metamodelEntities: ['Strategic Objective'] },
+      'strategy.design':   { text: 'Cloud architecture (AWS/GCP).', glyph: '●', actors: ['enterprise-architect'], metamodelEntities: ['System Function'] },
+      'strategy.build':    { text: 'Infra build (Terraform).', glyph: '★', actors: ['platform-engineering'], metamodelEntities: ['Platform Service'] },
+      'strategy.activate': { text: 'Service mesh.', glyph: '●', actors: ['platform-engineering', 'sre'], metamodelEntities: ['Application Component'] },
+      'strategy.operate':  { text: 'Observability — metrics, logs, traces.', glyph: '●', actors: ['sre'], metamodelEntities: ['Platform Service'] },
+      'strategy.improve':  { text: 'Cost/usage (FinOps).', glyph: '★', actors: ['finops', 'sre'], metamodelEntities: ['Performance Metric'] },
+      'strategy.retire':   { text: 'Infra retire — end-of-service decommission.', glyph: '●', actors: ['platform-engineering'], metamodelEntities: ['Platform Service'] },
 
       'people.conceive': { text: 'Team topology — stream-aligned teams.', glyph: '●', actors: ['workforce-planner'], metamodelEntities: ['Organizational Unit'] },
       'people.design':   { text: 'Org design (pods).', glyph: '●', actors: ['org-design'], metamodelEntities: ['Organizational Unit'] },
@@ -385,13 +390,13 @@
       'people.improve':  { text: 'Engagement (eNPS).', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Performance Metric'] },
       'people.retire':   { text: 'Offboard.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Organizational Unit'] },
 
-      'customer.conceive': { text: 'User need (JTBD).', glyph: '●', actors: ['product', 'research'], metamodelEntities: ['Value Stream'] },
-      'customer.design':   { text: 'Persona map.', glyph: '●', actors: ['product-design'], metamodelEntities: ['Journey Touchpoint'] },
-      'customer.build':    { text: 'Signup flow.', glyph: '●', actors: ['growth', 'engineering'], metamodelEntities: ['Business Process'] },
-      'customer.activate': { text: 'Activation event (aha).', glyph: '★', actors: ['growth', 'product'], metamodelEntities: ['Journey Touchpoint'] },
-      'customer.operate':  { text: 'In-product help.', glyph: '●', actors: ['support', 'product'], metamodelEntities: ['Business Process'] },
-      'customer.improve':  { text: 'Retention cohort (DAU).', glyph: '●', actors: ['analytics'], metamodelEntities: ['Performance Metric'] },
-      'customer.retire':   { text: 'Account deletion (GDPR).', glyph: '●', actors: ['support', 'legal'], metamodelEntities: ['Business Object'] },
+      'party.conceive': { text: 'User need (JTBD).', glyph: '●', actors: ['product', 'research'], metamodelEntities: ['Value Stream'] },
+      'party.design':   { text: 'Persona map.', glyph: '●', actors: ['product-design'], metamodelEntities: ['Journey Touchpoint'] },
+      'party.build':    { text: 'Signup flow.', glyph: '●', actors: ['growth', 'engineering'], metamodelEntities: ['Business Process'] },
+      'party.activate': { text: 'Activation event (aha).', glyph: '★', actors: ['growth', 'product'], metamodelEntities: ['Journey Touchpoint'] },
+      'party.operate':  { text: 'In-product help.', glyph: '●', actors: ['support', 'product'], metamodelEntities: ['Business Process'] },
+      'party.improve':  { text: 'Retention cohort (DAU).', glyph: '●', actors: ['analytics'], metamodelEntities: ['Performance Metric'] },
+      'party.retire':   { text: 'Account deletion (GDPR).', glyph: '●', actors: ['support', 'legal'], metamodelEntities: ['Business Object'] },
 
       'product.conceive': { text: 'Discovery — opportunity sizing.', glyph: '●', actors: ['product', 'research'], metamodelEntities: ['Business Capability'] },
       'product.design':   { text: 'Feature spec (PRD).', glyph: '●', actors: ['product-design'], metamodelEntities: ['Business Capability'] },

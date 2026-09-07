@@ -30,13 +30,14 @@ Every word in that sentence generates a domain. The framework is not asserted, i
 
 | Word in the axiom | Generated domain | Why |
 |-------------------|-----------------|-----|
-| "bounded entity" | → Governance & Existence | Boundedness requires a boundary: who is inside, what rules apply, what constitutes the entity itself. |
-| "persists" | → Supply & Resources | Persistence requires a substrate: the physical or virtual assets that keep the entity alive over time. |
-| "persists" | → People & Organization | Persistence requires agents: the humans who perform the work and the structure that organizes them. |
-| "exchanging value" | → Customer & Demand | Exchange requires a counterparty: the people whose need the entity meets, and the demand they generate. |
-| "exchanging value" | → Product & Offering | Exchange requires something to offer: the catalog of what the entity provides to meet demand. |
-| "exchanging value" | → Operations & Delivery | Exchange requires a mechanism: the engine that turns the offering into a delivered outcome. |
-| "with its environment" | → Finance & Value | The environment requires accounting — the measurement of value created, consumed, and retained. |
+| "bounded entity" | → Governance & Existence | Boundedness requires a boundary, authority, and the assurance that the entity persists as itself. |
+| "persists" (directed) | → Strategy & Direction | Persistence is not mere survival; it requires deliberate, adaptive steering toward a future state. |
+| "persists" (agents) | → People & Organization | Persistence requires agents: the humans who perform the work and the structure that organizes them. |
+| "persists" (substrate as enabler) | → Operations & Enablement | Persistence requires a mechanism: the engine and the means that make execution possible. |
+| "exchanging value" (counterparty) | → Party & Relationship | Exchange requires a counterparty: the external entities with whom the enterprise bonds. |
+| "exchanging value" (bearer of value) | → Product & Value | Exchange requires something to offer: the value-bearing propositions the enterprise creates. |
+| "exchanging value" (mechanism) | → Operations & Enablement | Exchange requires a mechanism: the transformation of offerings into delivered outcomes. |
+| "with its environment" | → Finance & Accounting | The environment requires measurement: the planning, allocation, and recording of money. |
 
 Each domain is a logical consequence of a word in the axiom, not an assertion. This is what makes the framework bottom-up: it is derived from the definition of an enterprise, not reverse-engineered from a specific industry's practices.
 
@@ -73,13 +74,13 @@ The **domains** answer the question *what does the enterprise do?* Seven domains
 
 | # | Domain | One-line definition |
 |---|--------|---------------------|
-| 1 | Governance & Existence | The precondition of boundedness: what defines the entity, what rules apply, and the assurance that the other domains behave. |
-| 2 | Supply & Resources | The substrate the enterprise persists on: physical or virtual, owned or rented, and its capacity, health, and disposal. |
-| 3 | People & Organization | The humans who perform every capability: their structure, skills, performance, and movement. |
-| 4 | Customer & Demand | The enterprise's reason to exchange: identifying, acquiring, serving, and retaining the people whose need it meets. |
-| 5 | Product & Offering | The catalog of what the enterprise offers: its design, packaging, release, and retirement. |
-| 6 | Operations & Delivery | The engine that turns an offering into a delivered outcome: planning, fulfilling, running, resolving. |
-| 7 | Finance & Value | The accounting for the environment: the flow of money and the measurement of value created, consumed, and retained. |
+| 1 | Governance & Existence | The domain that constitutes the enterprise as a bounded, legitimate, persisting entity; the precondition of all other domains. |
+| 2 | Strategy & Direction | The domain that determines the enterprise's intentional trajectory; positioning, ambition, and resource allocation priorities. |
+| 3 | People & Organization | The domain that manages the enterprise's internal human fabric; the agents who perform capabilities and the structures that organize them. |
+| 4 | Party & Relationship | The domain that manages the enterprise's external social fabric; the identification, establishment, development, and termination of bonds with all external entities. |
+| 5 | Product & Value | The domain that manages the enterprise's value-bearing propositions; the complete lifecycle of whatever the enterprise creates and makes available for exchange. |
+| 6 | Operations & Enablement | The domain that manages the enterprise's execution engine and the means that make execution possible; processes, delivery, technology, and physical infrastructure. |
+| 7 | Finance & Accounting | The domain that manages the enterprise's monetary reality; the planning, allocation, movement, recording, and reporting of money in exchange with the environment. |
 
 The formal grounding records for each Domain (axiom grounding, semantic definition, included concerns, excluded concerns, adjacent Domains, boundary rules, evidence) live in [`framework/domain-grounding.md`](./framework/domain-grounding.md) (CR-ECF-003). Compound-name boundary audit and the orthogonality/completeness checks are recorded there as well.
 
@@ -110,9 +111,9 @@ The domains are *derived* — each falls out of the axiom as a logical consequen
 The ECF coordinate system is defined by three primitives:
 
 - **Domain.** One of the seven canonical enterprise concern dimensions of
-  ECF: Governance & Existence; Supply & Resources; People & Organization;
-  Customer & Demand; Product & Offering; Operations & Delivery;
-  Finance & Value.
+  ECF (per CR-ECF-006 / ADR-ECF-001): Governance & Existence; Strategy &
+  Direction; People & Organization; Party & Relationship; Product & Value;
+  Operations & Enablement; Finance & Accounting.
 - **Stage.** One of the seven canonical lifecycle dimensions of ECF:
   Conceive; Design; Build; Activate; Operate; Improve; Retire.
 - **Coordinate.** The ordered pair `(Domain, Stage)`. The ECF matrix
@@ -177,13 +178,13 @@ L4). The two mechanisms are governed separately.
 
 | Domain | Subdomains |
 |--------|-----------|
-| Governance & Existence | Policy, Controls, Compliance, Assurance, Retirement |
-| Supply & Resources | Capacity, Build/procure, Integration, Monitoring, Disposal |
-| People & Organization | Planning, Acquisition, Mobilization, Development, Exit |
-| Customer & Demand | Acquisition, Onboarding, Care & support, Retention, Offboarding |
-| Product & Offering | Catalog, Packaging, Pricing, Lifecycle, Sunset |
-| Operations & Delivery | Planning, Fulfillment, Run, Incident, Decommission |
-| Finance & Value | Business case, Funding, Billing, Revenue, Recovery |
+| Governance & Existence | Formation, Mandate, Policy, Compliance, Assurance, Succession |
+| Strategy & Direction | Purpose, Sensing, Choices, Objectives, Planning, Adaptation |
+| People & Organization | Design, Planning, Acquisition, Development, Culture, Transition |
+| Party & Relationship | Identification, Establishment, Engagement, Development, Governance, Termination |
+| Product & Value | Proposition, Portfolio, Development, Packaging, Readiness, Evolution |
+| Operations & Enablement | Process, Fulfillment, Technology, Physical, Planning, Assurance |
+| Finance & Accounting | Planning, Capital, Transaction, Recording, Reporting, Control |
 
 ### 7.2 Stage Substages
 
@@ -270,13 +271,13 @@ ECF recursion is independent of Business Process decomposition. A Business Proce
 
 | Domain \ Stage | Conceive | Design | Build | Activate | Operate | Improve | Retire |
 |----------------|----------|--------|-------|----------|---------|---------|--------|
-| Governance & Existence | Policy intent | Controls design | Compliance build | Enforce | Assurance | Risk review | Policy retire |
-| Supply & Resources | Capacity vision | Architecture | Build / procure | Integration | Monitoring | Utilization | Retire assets |
-| People & Organization | Workforce plan | Org design | Hire / train | Mobilize | Perform & develop | Engagement | Offboard / reassign |
-| Customer & Demand | Need identification | Journey mapping | Onboarding | Activation | Support & service | Satisfaction & churn | Offboarding |
-| Product & Offering | Market sensing | Catalog & specs | Configuration | Launch | Catalog mgmt | Performance | Sunset |
-| Operations & Delivery | Demand planning | Process design | Provisioning | Cut-over | Run & maintain | Quality & incident | Decommission |
-| Finance & Value | Business case | Pricing model | Funding | Billing activation | Revenue & cost | Margin analysis | Write-off |
+| **Governance & Existence** | Policy intent | Controls design | Compliance build | Enforce | Assurance | Risk review | Policy retire |
+| **Strategy & Direction** | Purpose & ambition | Strategic choices | Initiative portfolio | Launch direction | Course correction | Performance review | Strategic renewal |
+| **People & Organization** | Workforce plan | Org design | Hire / train | Mobilize | Perform & develop | Engagement | Offboard / reassign |
+| **Party & Relationship** | Need identification | Journey mapping | Onboarding | Activation | Support & service | Satisfaction & churn | Offboarding |
+| **Product & Value** | Market sensing | Catalog & specs | Configuration | Launch | Catalog mgmt | Performance | Sunset |
+| **Operations & Enablement** | Demand planning | Process design | Provisioning | Cut-over | Run & maintain | Quality & incident | Decommission |
+| **Finance & Accounting** | Business case | Pricing model | Funding | Billing activation | Revenue & cost | Margin analysis | Write-off |
 
 ### Patterns the Foundation Reveals
 
@@ -290,13 +291,13 @@ ECF recursion is independent of Business Process decomposition. A Business Proce
 
 | Domain \ Stage | Conceive | Design | Build | Activate | Operate | Improve | Retire |
 |----------------|----------|--------|-------|----------|---------|---------|--------|
-| Governance & Existence | Reg. mandate (TRA) | Controls design (SOX) | Compliance build (DPI) | Audit enforce | Lawful intercept | Risk review | Policy repeal |
-| Supply & Resources | Spectrum vision (RAN) | Core arch. (EPC/5GC) | Equip. install | Network integ. | NMS monitoring | KPI utilization (erlang) | Equip. retire |
-| People & Organization | Field force plan | NOC/org design | Engineer training | Crew dispatch | Performance (OKR) | Engagement | Redeploy |
-| Customer & Demand | Subscriber need | Tariff plans | SIM provisioning | Network attach (HLR/HSS) | Customer care (CRM) | Churn scoring (ARPU) | Number port (MNP) |
-| Product & Offering | Service roadmap (5G) | Service catalog (BSS) | Bundle config | Commercial launch | Catalog lifecycle (OSS) | Service uptake | Plan sunset |
-| Operations & Delivery | Traffic forecast | Network design | Circuit prov. | Site cut-over | NOC operations (24/7) | Fault mgm (TT) | Site decom. |
-| Finance & Value | Investment case | Tariff model (regulator) | Funding approval | Billing start (mediation) | Revenue recog. (ARPU) | Margin by plan (EBITDA) | Asset impair. |
+| **Governance & Existence** | Reg. mandate (TRA) | Controls design (SOX) | Compliance build (DPI) | Audit enforce | Lawful intercept | Risk review | Policy repeal |
+| **Strategy & Direction** | Market sensing | Strategic choice (5G) | Capex plan | Launch direction | Course correct | Strategic review | Strategic renewal |
+| **People & Organization** | Field force plan | NOC/org design | Engineer training | Crew dispatch | Performance (OKR) | Engagement | Redeploy |
+| **Party & Relationship** | Subscriber need | Tariff plans | SIM provisioning | Network attach (HLR/HSS) | Customer care (CRM) | Churn scoring (ARPU) | Number port (MNP) |
+| **Product & Value** | Service roadmap (5G) | Service catalog (BSS) | Bundle config | Commercial launch | Catalog lifecycle (OSS) | Service uptake | Plan sunset |
+| **Operations & Enablement** | Traffic forecast | Network design | Circuit prov. | Site cut-over | NOC operations (24/7) | Fault mgm (TT) | Site decom. |
+| **Finance & Accounting** | Investment case | Tariff model (regulator) | Funding approval | Billing start (mediation) | Revenue recog. (ARPU) | Margin by plan (EBITDA) | Asset impair. |
 
 ### Telecom Patterns
 
@@ -309,13 +310,13 @@ ECF recursion is independent of Business Process decomposition. A Business Proce
 
 | Domain \ Stage | Conceive | Design | Build | Activate | Operate | Improve | Retire |
 |----------------|----------|--------|-------|----------|---------|---------|--------|
-| Governance & Existence | Privacy policy | Controls design (SOC2) | Compliance build | Enforce (guardrails) | Audit log | Risk review (pentest) | Policy retire |
-| Supply & Resources | Scale vision | Cloud arch. (AWS/GCP) | Infra build (Terraform) | Service mesh | Observability | Cost/usage (FinOps) | Infra retire |
-| People & Organization | Team topology | Org design (pods) | Hire / onboard | Sprint mobilize | Perf review (360) | Engagement (eNPS) | Offboard |
-| Customer & Demand | User need (JTBD) | Persona map | Signup flow | Activation event (aha) | In-product help | Retention cohort (DAU) | Account deletion (GDPR) |
-| Product & Offering | Discovery | Feature spec (PRD) | Build sprint | Feature flag launch | Roadmap mgmt | Feature adoption | Deprecation |
-| Operations & Delivery | Demand forecast | Pipeline design (CI/CD) | Provision env (IaC) | Deploy to prod (canary) | SRE on-call (SLO) | Incident review (PSE) | Env teardown |
-| Finance & Value | Unit econ (LTV) | Pricing tier (SaaS) | Funding round | Subscription start (stripe) | MRR / churn | Cohort margin (CAC) | Dunning / refund |
+| **Governance & Existence** | Privacy policy | Controls design (SOC2) | Compliance build | Enforce (guardrails) | Audit log | Risk review (pentest) | Policy retire |
+| **Strategy & Direction** | Market sensing | Strategic choice | Initiative portfolio | Launch direction | Course correct | Strategic review | Strategic renewal |
+| **People & Organization** | Team topology | Org design (pods) | Hire / onboard | Sprint mobilize | Perf review (360) | Engagement (eNPS) | Offboard |
+| **Party & Relationship** | User need (JTBD) | Persona map | Signup flow | Activation event (aha) | In-product help | Retention cohort (DAU) | Account deletion (GDPR) |
+| **Product & Value** | Discovery | Feature spec (PRD) | Build sprint | Feature flag launch | Roadmap mgmt | Feature adoption | Deprecation |
+| **Operations & Enablement** | Demand forecast | Pipeline design (CI/CD) | Provision env (IaC) | Deploy to prod (canary) | SRE on-call (SLO) | Incident review (PSE) | Env teardown |
+| **Finance & Accounting** | Unit econ (LTV) | Pricing tier (SaaS) | Funding round | Subscription start (stripe) | MRR / churn | Cohort margin (CAC) | Dunning / refund |
 
 ### Digital Services Patterns
 
@@ -361,7 +362,7 @@ A canonical business object catalog entry, with typed attributes, structured own
 {
   "id": "tel.subscriber.001",
   "name": "Subscriber",
-  "domain": "Customer & Demand",
+  "domain": "Party & Relationship",
   "lifecycleStage": "Deploy / Activate",
   "attributes": [
     { "name": "msisdn", "type": "string", "required": true },
@@ -389,7 +390,7 @@ A canonical business object catalog entry, with typed attributes, structured own
 {
   "id": "tel.subscriber.001",
   "name": "Subscriber",
-  "domain": "Customer & Demand",
+  "domain": "Party & Relationship",
   "stage": "Deploy / Activate",
   "attributes": [
     { "name": "msisdn", "type": "string", "required": true },
@@ -407,7 +408,7 @@ A canonical business object catalog entry, with typed attributes, structured own
 {
   "id": "dig.user.001",
   "name": "User account",
-  "domain": "Customer & Demand",
+  "domain": "Party & Relationship",
   "stage": "Deploy / Activate",
   "attributes": [
     { "name": "userId",   "type": "string", "required": true },
@@ -600,10 +601,10 @@ The five layers map onto ECF as follows:
 
 | Metamodel Layer | ECF Domain | ECF Stage |
 |-----------------|-----------|-----------|
-| Layer 1 — Strategic & Investment | Finance & Value | Conceive |
+| Layer 1 — Strategic & Investment | Strategy & Direction, Finance & Accounting | Conceive |
 | Layer 2 — Business Operating Model | All seven domains | All seven stages |
-| Layer 3 — Digital Ecosystem & Intelligence | Customer & Supply domains | Build → Operate |
-| Layer 4 — Technology & Execution | Supply & Resources | Build → Operate |
+| Layer 3 — Digital Ecosystem & Intelligence | Party & Relationship, Product & Value, Operations & Enablement | Build → Operate |
+| Layer 4 — Technology & Execution | Operations & Enablement | Build → Operate |
 | Layer 5 — Measurement & Governance | Governance & Existence | Cross-cutting (all stages) |
 
 ### 16.7 Relationship Summary
@@ -758,12 +759,12 @@ The following mapping is an illustrative snapshot. The TechNeHub Labs portfolio 
 | ECF Domain | DEA Repo(s) | What it holds |
 |------------|-------------|---------------|
 | Governance & Existence | `dea-catalog-principles`, `dea-catalog-standards` | Architecture principles (API-first, Zero Trust) and technical standards (REST, OAuth2) — the guardrails. |
-| Supply & Resources | `dea-catalog-reference-models`, `dea-catalog-solution-hub` | Platform systems, IaC accelerators (CDP, API Gateway, Event Streaming, Identity). |
+| Strategy & Direction | `dea-catalog-reference-models`, `dea-catalog-solution-hub` | Strategic intent, initiative portfolios, positioning artefacts. |
 | People & Organization | `dea-catalog-digital-business-service-factory` | HR business service — workforce capability maps and SLA governance. |
-| Customer & Demand | `dea-catalog-digital-business-service-factory` | Customer business service — acquisition, onboarding, care, retention. |
-| Product & Offering | `dea-catalog-digital-business-service-factory`, `dea-catalog-solution-hub` | Product business service + solution archetypes and delivery templates. |
-| Operations & Delivery | `dea-catalog-patterns`, `dea-catalog-solution-hub` | Architecture patterns (CQRS, Saga, Strangler Fig) + workflow accelerators. |
-| Finance & Value | `dea-catalog-digital-business-service-factory`, `dea-catalog-metrics` | Finance business service + KPIs and measurement frameworks. |
+| Party & Relationship | `dea-catalog-digital-business-service-factory` | Party business service — party identification, relationship lifecycle, engagement. |
+| Product & Value | `dea-catalog-digital-business-service-factory`, `dea-catalog-solution-hub` | Product business service + value propositions and delivery templates. |
+| Operations & Enablement | `dea-catalog-patterns`, `dea-catalog-solution-hub` | Architecture patterns (CQRS, Saga, Strangler Fig) + workflow accelerators + technology and physical enablers. |
+| Finance & Accounting | `dea-catalog-digital-business-service-factory`, `dea-catalog-metrics` | Finance business service + accounting, planning, and reporting frameworks. |
 
 ### 21.4 Stage → DERA Phase Mapping
 
@@ -800,7 +801,7 @@ ECF is consumed as an OpenDEA profile by `dea-metamodel` and as classification c
 
 | Gap | What ECF surfaces |
 |-----|-------------------|
-| Supply & Resources has no dedicated catalog | Infrastructure patterns are scattered across solution-hub and reference-models. ECF's Supply domain argues for a consolidated catalog. |
+| Supply has no dedicated catalog post-rename (was `dea-catalog-reference-models`/solution-hub) | Infrastructure patterns are scattered; the absorption of the prior "Supply & Resources" content into Operations & Enablement argues for a consolidated enablement catalog. |
 | Retire / Renew is underrepresented | DERA's Phase 4 (Evolve & Retire) is the least detailed. ECF's Retire stage surfaces decommission, migration, and recovery as first-class work. |
 | Recursive self-similarity is not in the metamodel | No mechanism to decompose an entity into a sub-matrix. ECF's recursive property would add depth without new entity types. |
 | Value stream overlays are not expressed | No construct for directed routes through cells (Commercialization, Compliance). ECF's overlay model would add this as a typed `Relationship`. |

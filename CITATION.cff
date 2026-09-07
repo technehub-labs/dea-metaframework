@@ -3,7 +3,7 @@ message: >-
   If you use the Enterprise Concept Framework in academic or commercial
   work, please cite it using the metadata below.
 title: "Enterprise Concept Framework"
-version: 2.2.0
+version: 2.3.0
 date-released: 2026-09-07
 license: MIT
 license-url: https://github.com/technehub-labs/dea-metaframework/blob/main/LICENSE

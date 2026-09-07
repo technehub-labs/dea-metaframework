@@ -2,15 +2,15 @@
   "$schema": "https://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/technehub-labs/dea-metaframework/schemas/ecf-domain.schema.json",
   "title": "ECF Domain",
-  "description": "Canonical ECF Domain enumeration. One of seven axiom-derived concern dimensions (CR-ECF-003, CR-ECF-005).",
+  "description": "Canonical ECF Domain enumeration. One of seven axiom-derived concern dimensions (CR-ECF-003, CR-ECF-005; domain set extended by CR-ECF-006).",
   "type": "string",
   "enum": [
     "GovernanceAndExistence",
-    "SupplyAndResources",
+    "StrategyAndDirection",
     "PeopleAndOrganization",
-    "CustomerAndDemand",
-    "ProductAndOffering",
-    "OperationsAndDelivery",
-    "FinanceAndValue"
+    "PartyAndRelationship",
+    "ProductAndValue",
+    "OperationsAndEnablement",
+    "FinanceAndAccounting"
   ]
 }
