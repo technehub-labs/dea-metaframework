@@ -778,4 +778,69 @@ body {
   .stage-head .stage-name { font-size: 0.65rem; }
   .cell { min-height: 60px; padding: 5px; }
   .cell-text { font-size: 0.6rem; }
+}/* ── Release badge ─────────────────────────────────── */
+.mf-release-host { display: inline-flex; align-items: center; }
+.mf-release-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  background: rgba(45, 212, 191, 0.08);
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  border-radius: 999px;
+  color: var(--text-1, #e6edf3);
+  font-family: var(--font-mono, 'JetBrains Mono', ui-monospace, monospace);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+.mf-release-badge:hover {
+  background: rgba(45, 212, 191, 0.18);
+  border-color: rgba(45, 212, 191, 0.55);
+}
+.mf-release-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #2dd4bf;
+  box-shadow: 0 0 6px rgba(45, 212, 191, 0.6);
+  animation: mf-release-pulse 2.4s ease-in-out infinite;
+}
+@keyframes mf-release-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+.mf-release-label {
+  color: var(--text-2, #8b949e);
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+.mf-release-tag {
+  color: #2dd4bf;
+  font-weight: 600;
+}
+.mf-release-name {
+  color: var(--text-1, #e6edf3);
+  max-width: 26rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mf-release-date {
+  color: var(--text-3, #6e7681);
+}
+.mf-release-arrow {
+  color: #2dd4bf;
+  font-size: 0.85rem;
+}
+.mf-release-empty {
+  color: var(--text-3, #6e7681);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+@media (max-width: 640px) {
+  .mf-release-badge { font-size: 0.7rem; padding: 0.3rem 0.6rem; }
+  .mf-release-name { display: none; }
 }
