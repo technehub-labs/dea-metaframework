@@ -18,7 +18,7 @@ The framework is axiom-derived: in a single sentence:
 
 "that persists"
  
-   → *People & Organization (agents who persist)*
+   → *Agency & Organization (agents who persist)*
  
    → *Strategy & Direction (directed persistence)*
  

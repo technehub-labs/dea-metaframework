@@ -44,7 +44,7 @@ The domain manages the enterprise's **ontological reality** (what it is, why it 
 | :--- | :--- |
 | Entity identity and legal standing | Strategic choices about direction (*Strategy & Direction*) |
 | Governance structures and decision rights | Operational enforcement of policies (*Operations & Enablement*) |
-| Risk frameworks and compliance structures | People who implement governance (*People & Organization*) |
+| Risk frameworks and compliance structures | People who implement governance (*Agency & Organization*) |
 | Policies and constitutional rules | Monetary consequences of non-compliance (*Finance & Accounting*) |
 | Assurance mechanisms | Relationships with regulators as parties (*Party & Relationship*) |
 
@@ -56,7 +56,7 @@ Governance & Existence provides the **authority boundary** within which all othe
 Governance & Existence authorizes → Strategy & Direction
 Governance & Existence constrains → Operations & Enablement
 Governance & Existence mandates → Finance & Accounting (audit, compliance)
-Governance & Existence constitutes → People & Organization (roles, authority)
+Governance & Existence constitutes → Agency & Organization (roles, authority)
 Governance & Existence legitimizes → Party & Relationship (legal standing to engage)
 Governance & Existence protects → Product & Value (IP, regulatory approval)
 ```
@@ -97,7 +97,7 @@ The domain manages **direction as a stable subject**: not the strategy document,
 | Objectives and targets | Monetary budgets and financial plans (*Finance & Accounting*) |
 | Initiative prioritization | Product design and portfolio decisions (*Product & Value*) |
 | Competitive and market analysis | Relationships with market participants (*Party & Relationship*) |
-| Transformation direction | Organizational redesign execution (*People & Organization*) |
+| Transformation direction | Organizational redesign execution (*Agency & Organization*) |
 
 ### Cross-Domain Completion
 
@@ -108,7 +108,7 @@ Strategy & Direction sets intent → Operations & Enablement (execution prioriti
 Strategy & Direction directs → Product & Value (portfolio evolution)
 Strategy & Direction identifies → Party & Relationship (target segments, partners)
 Strategy & Direction allocates → Finance & Accounting (investment priorities)
-Strategy & Direction shapes → People & Organization (capability requirements)
+Strategy & Direction shapes → Agency & Organization (capability requirements)
 Strategy & Direction is authorized by → Governance & Existence
 ```
 
@@ -143,7 +143,7 @@ The domain manages **relationships as stable subjects** with full lifecycle inte
 
 | Included | Excluded (owned elsewhere) |
 | :--- | :--- |
-| External parties (persons, organizations, systems) | Internal agents (*People & Organization*) |
+| External parties (persons, organizations, systems) | Internal agents (*Agency & Organization*) |
 | Relationship lifecycle and health | The product/service exchanged (*Product & Value*) |
 | Party roles (customer, supplier, partner, regulator) | Monetary transactions and records (*Finance & Accounting*) |
 | Engagement and interaction management | Operational fulfillment of exchanges (*Operations & Enablement*) |
@@ -159,7 +159,7 @@ Party & Relationship identifies demand → Product & Value (what to offer)
 Party & Relationship establishes bonds → Operations & Enablement (who to fulfill)
 Party & Relationship generates revenue/cost → Finance & Accounting (monetary consequence)
 Party & Relationship informs strategy → Strategy & Direction (market intelligence)
-Party & Relationship requires engagement → People & Organization (who manages the bond)
+Party & Relationship requires engagement → Agency & Organization (who manages the bond)
 Party & Relationship operates under → Governance & Existence (legal/regulatory constraints)
 ```
 
@@ -210,7 +210,7 @@ Product & Value satisfies → Party & Relationship (demand)
 Product & Value is delivered by → Operations & Enablement (execution)
 Product & Value generates → Finance & Accounting (revenue/cost)
 Product & Value is directed by → Strategy & Direction (portfolio choices)
-Product & Value is built by → People & Organization (skills, teams)
+Product & Value is built by → Agency & Organization (skills, teams)
 Product & Value is constrained by → Governance & Existence (regulatory, IP)
 ```
 
@@ -249,7 +249,7 @@ The domain manages **execution as a stable subject**: the repeatable, manageable
 | Technology platforms and infrastructure (as enablers) | Product design and portfolio decisions (*Product & Value*) |
 | Physical facilities and equipment | Monetary capital expenditure decisions (*Finance & Accounting*) |
 | Delivery mechanisms and fulfillment | Relationships with counterparties (*Party & Relationship*) |
-| Operational planning and scheduling | Organizational structure of operations teams (*People & Organization*) |
+| Operational planning and scheduling | Organizational structure of operations teams (*Agency & Organization*) |
 | Quality, resilience, continuity | Governance policies that constrain operations (*Governance & Existence*) |
 
 ### Cross-Domain Completion
@@ -261,13 +261,13 @@ Operations & Enablement delivers → Product & Value (outcomes)
 Operations & Enablement serves → Party & Relationship (fulfillment)
 Operations & Enablement consumes → Finance & Accounting (cost)
 Operations & Enablement executes → Strategy & Direction (initiatives)
-Operations & Enablement is staffed by → People & Organization (agents)
+Operations & Enablement is staffed by → Agency & Organization (agents)
 Operations & Enablement is constrained by → Governance & Existence (policy)
 ```
 
 ---
 
-## Domain 6: People & Organization
+## Domain 6: Agency & Organization
 
 | Attribute | Specification |
 | :--- | :--- |
@@ -277,7 +277,7 @@ Operations & Enablement is constrained by → Governance & Existence (policy)
 
 ### Normative Description
 
-People & Organization is the domain that manages the enterprise's internal human fabric. It owns the constitution, coordination, development, and movement of the agents who perform all enterprise capabilities, and the structures through which they are organized.
+Agency & Organization is the domain that manages the enterprise's internal human fabric. It owns the constitution, coordination, development, and movement of the agents who perform all enterprise capabilities, and the structures through which they are organized.
 
 The domain manages **organization as a stable subject**: the durable pattern of roles, authority, collaboration, and culture through which human agency is coordinated. People are the *agents*; organization is the *structure* that channels their agency.
 
@@ -305,15 +305,15 @@ The domain manages **organization as a stable subject**: the durable pattern of 
 
 ### Cross-Domain Completion
 
-People & Organization provides the **human agency** that all other domains require to function. It owns the *who internally*; it does not own the *what they do* (Operations), the *what they build* (Product), or the *how much they are paid* (Finance).
+Agency & Organization provides the **human agency** that all other domains require to function. It owns the *who internally*; it does not own the *what they do* (Operations), the *what they build* (Product), or the *how much they are paid* (Finance).
 
 ```
-People & Organization staffs → Operations & Enablement (execution agents)
-People & Organization builds → Product & Value (creators, designers)
-People & Organization manages → Party & Relationship (relationship managers)
-People & Organization executes → Strategy & Direction (leaders, planners)
-People & Organization is compensated via → Finance & Accounting (payroll, benefits)
-People & Organization is governed by → Governance & Existence (roles, authority)
+Agency & Organization staffs → Operations & Enablement (execution agents)
+Agency & Organization builds → Product & Value (creators, designers)
+Agency & Organization manages → Party & Relationship (relationship managers)
+Agency & Organization executes → Strategy & Direction (leaders, planners)
+Agency & Organization is compensated via → Finance & Accounting (payroll, benefits)
+Agency & Organization is governed by → Governance & Existence (roles, authority)
 ```
 
 ---
@@ -352,7 +352,7 @@ The domain manages **money as a stable subject**: the universal medium through w
 | Pricing mechanics and revenue recognition | Product value proposition (*Product & Value*) |
 | Cost accounting and margin analysis | Operational cost drivers (*Operations & Enablement*) |
 | Tax, compliance, financial regulation | Governance authority for financial controls (*Governance & Existence*) |
-| Compensation accounting | People decisions about who to pay (*People & Organization*) |
+| Compensation accounting | People decisions about who to pay (*Agency & Organization*) |
 
 ### Cross-Domain Completion
 
@@ -363,7 +363,7 @@ Finance & Accounting measures → Product & Value (cost, revenue, margin)
 Finance & Accounting records → Party & Relationship (receivables, payables)
 Finance & Accounting budgets → Operations & Enablement (capex, opex)
 Finance & Accounting funds → Strategy & Direction (investment)
-Finance & Accounting compensates → People & Organization (payroll)
+Finance & Accounting compensates → Agency & Organization (payroll)
 Finance & Accounting is audited under → Governance & Existence (compliance)
 ```
 
@@ -380,7 +380,7 @@ The seven domains partition the enterprise without remainder. Every enterprise c
 | External parties, relationships, engagement | Party & Relationship | Not internal people; not the product exchanged |
 | Products, services, value propositions | Product & Value | Not the relationship; not the monetary price |
 | Processes, delivery, technology, infrastructure | Operations & Enablement | Not the product designed; not the strategy chosen |
-| Internal people, structure, culture, roles | People & Organization | Not external parties; not operational processes |
+| Internal people, structure, culture, roles | Agency & Organization | Not external parties; not operational processes |
 | Money, budgets, transactions, accounting | Finance & Accounting | Not enterprise value; not product pricing logic |
 
 ### The Axiom is Fully Satisfied
@@ -390,7 +390,7 @@ The seven domains partition the enterprise without remainder. Every enterprise c
         → Governance & Existence
 
 "that persists"
-        → People & Organization (agents who persist)
+        → Agency & Organization (agents who persist)
         → Strategy & Direction (directed persistence)
         → Operations & Enablement (substrate and mechanism of persistence)
 

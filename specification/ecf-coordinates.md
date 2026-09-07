@@ -70,7 +70,7 @@ coordinate.
 |---|--------------------|-------------------------|---------------|
 | 1 | GovernanceAndExistence | governanceAndExistence | Governance & Existence |
 | 2 | StrategyAndDirection | strategyAndDirection | Strategy & Direction |
-| 3 | PeopleAndOrganization | peopleAndOrganization | People & Organization |
+| 3 | AgencyAndOrganization | agencyAndOrganization | Agency & Organization |
 | 4 | PartyAndRelationship | partyAndRelationship | Party & Relationship |
 | 5 | ProductAndValue | productAndValue | Product & Value |
 | 6 | OperationsAndEnablement | operationsAndEnablement | Operations & Enablement |

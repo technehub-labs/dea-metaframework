@@ -7,7 +7,7 @@ identical to any other industry; only the cell content changes.
 |----------------|----------|--------|-------|----------|---------|---------|--------|
 | **Governance & Existence** | Reg. mandate (TRA) | Controls design (SOX) | Compliance build (DPI) | Audit enforce | Lawful intercept | Risk review | Policy repeal |
 | **Strategy & Direction** | Market sensing | Strategic choice (5G) | Capex plan | Launch direction | Course correct | Strategic review | Strategic renewal |
-| **People & Organization** | Field force plan | NOC/org design | Engineer training | Crew dispatch | Performance (OKR) | Engagement | Redeploy |
+| **Agency & Organization** | Field force plan | NOC/org design | Agent training | Crew dispatch | Performance (OKR) | Coordination | Redeploy |
 | **Party & Relationship** | Subscriber need | Tariff plans | SIM provisioning | Network attach (HLR/HSS) | Customer care (CRM) | Churn scoring (ARPU) | Number port (MNP) |
 | **Product & Value** | Service roadmap (5G) | Service catalog (BSS) | Bundle config | Commercial launch | Catalog lifecycle (OSS) | Service uptake | Plan sunset |
 | **Operations & Enablement** | Traffic forecast | Network design | Circuit prov. | Site cut-over | NOC operations (24/7) | Fault mgm (TT) | Site decom. |

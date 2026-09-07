@@ -15,7 +15,7 @@ The current seven Domains shall be retained provisionally:
 
 1. Governance & Existence
 2. Supply & Resources
-3. People & Organization
+3. Agency & Organization
 4. Customer & Demand
 5. Product & Offering
 6. Operations & Delivery

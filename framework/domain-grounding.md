@@ -77,7 +77,7 @@ A future CR may revisit any compound if evidence accumulates.
   Organization); tooling that enforces controls (Operations & Enablement);
   monetary accounting of compliance cost (Finance & Accounting); strategic
   choices about direction (Strategy & Direction).
-- **Adjacent Domains**: People & Organization (governance vs management);
+- **Adjacent Domains**: Agency & Organization (governance vs management);
   Operations & Enablement (controls vs run-time enforcement); Finance &
   Accounting (assurance vs audit); Strategy & Direction (constitutional
   authority vs deliberate choice of trajectory).
@@ -116,12 +116,12 @@ A future CR may revisit any compound if evidence accumulates.
   Enablement); monetary budgets and financial plans (Finance & Accounting);
   product design and portfolio decisions (Product & Value); relationships
   with market participants (Party & Relationship); organizational redesign
-  execution (People & Organization).
+  execution (Agency & Organization).
 - **Adjacent Domains**: Governance & Existence (authorized frame vs chosen
   trajectory); Operations & Enablement (strategy vs execution); Finance &
   Accounting (strategic investment choices vs monetary plans); Product &
   Value (portfolio evolution direction vs product design); Party &
-  Relationship (target segments vs relationships); People & Organization
+  Relationship (target segments vs relationships); Agency & Organization
   (capability requirements vs organization design).
 - **Boundary rules**: Strategy & Direction provides the intentional vector
   that all execution Domains follow. It decides where and why; it does not
@@ -136,45 +136,79 @@ A future CR may revisit any compound if evidence accumulates.
   because "Resources" is a cross-cutting asset class, not a stable
   subject: physical resources moved to Operations & Enablement (as
   enablers); financial resources moved to Finance & Accounting; human
-  resources stay in People & Organization. The vacated axiom slot
+  resources stay in Agency & Organization. The vacated axiom slot
   ("persists" as deliberate steering) maps cleanly to this new Domain.
 
-### 3.3 People & Organization
+### 3.3 Agency & Organization
 
-- **Axiom grounding**: "persists": persistence requires agents; the
-  enterprise cannot act without humans organized for purpose.
-- **Semantic definition**: the domain that manages the enterprise's internal
-  human fabric. It owns the constitution, coordination, development, and
-  movement of the agents who perform all enterprise capabilities, and the
-  structures through which they are organized. The domain manages
-  organization as a stable subject: the durable pattern of roles, authority,
-  collaboration, and culture through which human agency is coordinated. People
-  are the agents; organization is the structure that channels their agency.
+- **Axiom grounding**: "persists" — persistence requires agents; the
+  enterprise cannot act without agents organized for purpose. The axiom
+  requires *agency*, not *biology*: the substrate-independent capacity to
+  act on behalf of the enterprise.
+- **Semantic definition**: the domain that manages the enterprise's
+  internal agentive fabric. It owns the constitution, coordination,
+  development, and lifecycle of all agents that perform enterprise
+  capabilities, and the organizational structures through which their
+  agency is channeled. The domain is **substrate-independent**: it
+  encompasses biological agents (humans), artificial agents (AI systems,
+  autonomous software agents), and hybrid human-AI configurations
+  without requiring reclassification. The domain manages organization
+  as a stable subject: the durable pattern of roles, authority,
+  collaboration, and coordination through which agency is directed.
+  Agency is the agentive constituent (the capacity to act); organization
+  is the structure that channels that capacity.
 - **Semantic anchor**: Organization.
-- **Included concerns**: organizational design; workforce planning;
-  acquisition and onboarding; development and performance; culture and
-  collaboration; movement and transition.
-- **Excluded concerns**: external parties (Party & Relationship); strategic
-  direction (Strategy & Direction); governance authority and policy
-  (Governance & Existence); operational execution they perform (Operations &
-  Enablement); monetary compensation decisions (Finance & Accounting);
-  product work they produce (Product & Value).
+- **Fundamental enterprise question**: how is agency constituted and
+  coordinated?
+- **Definitional note**: "Agency" refers to the *capacity to act on
+  behalf of the enterprise* — the quality that makes an entity a
+  constituent of the enterprise's internal workforce. The term is
+  substrate-independent and encompasses biological agents (humans),
+  artificial agents (AI systems, autonomous software agents), and hybrid
+  configurations. The semantic anchor remains **Organization**: the
+  structure through which agency is coordinated. The term "People" is
+  not used as a domain-level identifier because it is biologically
+  loaded and fails the Technology Independence test (ADR-ECF-002 §3.2
+  Test 4).
+- **Included concerns**: organizational design; agent capacity planning;
+  acquisition and onboarding; development and performance; coordination
+  and collaboration; movement and transition.
+- **Excluded concerns**: external parties (Party & Relationship);
+  strategic direction (Strategy & Direction); governance authority and
+  policy (Governance & Existence); operational execution they perform
+  (Operations & Enablement); monetary compensation decisions (Finance &
+  Accounting); product work they produce (Product & Value).
 - **Adjacent Domains**: Governance & Existence (rules that govern
-  organizational behaviour); Strategy & Direction (capability requirements
-  vs direction); Operations & Enablement (agents vs the engine they staff);
-  Party & Relationship (internal people vs external parties); Finance &
-  Accounting (compensation accounting vs compensation decisions).
-- **Boundary rules**: People & Organization owns agents and the structure
-  that organizes them. People-as-counterparties are not modelled here; they
-  live in Party & Relationship.
-- **Internal MECE partition**: Organizational Design; Workforce Planning;
-  Acquisition & Onboarding; Development & Performance; Culture &
-  Collaboration; Movement & Transition.
+  organizational behaviour); Strategy & Direction (capability
+  requirements vs direction); Operations & Enablement (agents vs the
+  engine they staff); Party & Relationship (internal agents vs external
+  parties); Finance & Accounting (compensation accounting vs
+  compensation decisions).
+- **Boundary rules**: Agency & Organization owns agents and the
+  structure that organizes them. Agents-as-counterparties are not
+  modelled here; they live in Party & Relationship.
+- **Internal MECE partition** (substrate-independent sub-concerns):
+  Organizational Design; Agent Capacity Planning; Acquisition &
+  Onboarding; Development & Performance; Coordination & Collaboration;
+  Movement & Transition. Each sub-concern is interpretable for both
+  biological and artificial agents (e.g., "Acquisition & Onboarding"
+  covers recruitment *and* model deployment / API integration).
+- **Lifecycle applicability**: Conception (define required agent
+  capabilities and organizational structure); Design (design
+  organizational architecture, agent topology, role definitions,
+  authority chains); Build (acquire/provision agents, onboard,
+  configure, integrate); Operate (monitor performance, coordinate
+  collaboration, manage capacity); Improvement (develop capabilities,
+  retrain or fine-tune, reorganize); Retirement (decommission agents,
+  offboard, archive organizational knowledge); Dissolution (wind down
+  organizational structure, release agents, archive records).
 - **Evidence / rationale**: REPORT §5.1; `dea-catalog-actors` patterns;
-  the anchor (organization, not people) prevents the domain from being
-  reduced to "HR management." The compound (people + organization) is
+  the anchor (organization, not agents) prevents the domain from being
+  reduced to "HR management." The compound (agency + organization) is
   justified because the agents require the structure and the structure
-  exists to channel the agents.
+  exists to channel the agents. The rename from "People & Organization"
+  (v2.3.0) is governed by ADR-ECF-002 §5 (Substrate Independence
+  Stress Test) and CR-ECF-007.
 
 ### 3.4 Party & Relationship
 
@@ -191,14 +225,14 @@ A future CR may revisit any compound if evidence accumulates.
 - **Included concerns**: party identification; relationship establishment;
   engagement and interaction; relationship development; relationship
   governance; relationship termination.
-- **Excluded concerns**: internal agents (People & Organization); the
+- **Excluded concerns**: internal agents (Agency & Organization); the
   product or service exchanged (Product & Value); monetary transactions and
   records (Finance & Accounting); operational fulfillment of exchanges
   (Operations & Enablement); strategic targeting decisions (Strategy &
   Direction); legal entity constitution (Governance & Existence).
 - **Adjacent Domains**: Product & Value (demand for the offering vs the
-  offering itself); People & Organization (people-as-agents vs
-  people-as-parties); Finance & Accounting (relationship accounting vs
+  offering itself); Agency & Organization (internal-agent agents vs
+  counterparty parties); Finance & Accounting (relationship accounting vs
   monetary measurement); Strategy & Direction (targeting vs market
   intelligence); Operations & Enablement (engagement management vs
   fulfillment execution).
@@ -281,12 +315,12 @@ A future CR may revisit any compound if evidence accumulates.
   Direction); product design and portfolio decisions (Product & Value);
   monetary capital expenditure decisions (Finance & Accounting);
   relationships with counterparties (Party & Relationship); organizational
-  structure of operations teams (People & Organization); governance policies
+  structure of operations teams (Agency & Organization); governance policies
   that constrain operations (Governance & Existence).
 - **Adjacent Domains**: Strategy & Direction (engine vs direction);
   Product & Value (engine vs offering); Finance & Accounting (delivered
   outcome vs financial recognition); Party & Relationship (fulfillment vs
-  relationship); People & Organization (execution agents vs organizational
+  relationship); Agency & Organization (execution agents vs organizational
   design); Governance & Existence (operational enforcement vs policy).
 - **Boundary rules**: Operations & Enablement owns the execution mechanism
   and the means that enable it. Technology, platforms, and physical
@@ -324,13 +358,13 @@ A future CR may revisit any compound if evidence accumulates.
   strategic investment choices (Strategy & Direction); product value
   proposition (Product & Value); operational cost drivers (Operations &
   Enablement); governance authority for financial controls (Governance &
-  Existence); people decisions about who to pay (People & Organization).
+  Existence); people decisions about who to pay (Agency & Organization).
 - **Adjacent Domains**: all other Domains; Finance & Accounting
   intersects every Domain because every Domain produces and consumes
   monetary consequence. Product & Value (revenue/cost recognition);
   Operations & Enablement (capex/opex accounting); Strategy & Direction
   (investment appraisal); Party & Relationship (receivables/payables);
-  People & Organization (payroll/benefits accounting); Governance &
+  Agency & Organization (payroll/benefits accounting); Governance &
   Existence (audit/compliance accounting).
 - **Boundary rules**: Finance & Accounting owns the monetary model and the
   measurement of monetary consequence. The sources of monetary consequence
@@ -363,7 +397,7 @@ axiomatic mapping):
 
 - "bounded entity" -> Governance & Existence
 - "persists" (substrate as enabler) -> Operations & Enablement
-- "persists" (agents) -> People & Organization
+- "persists" (agents) -> Agency & Organization
 - "persists" (directed) -> Strategy & Direction
 - "exchanging value" (counterparty) -> Party & Relationship
 - "exchanging value" (bearer of value) -> Product & Value

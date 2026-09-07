@@ -32,7 +32,7 @@ Every word in that sentence generates a domain. The framework is not asserted, i
 |-------------------|-----------------|-----|
 | "bounded entity" | → Governance & Existence | Boundedness requires a boundary, authority, and the assurance that the entity persists as itself. |
 | "persists" (directed) | → Strategy & Direction | Persistence is not mere survival; it requires deliberate, adaptive steering toward a future state. |
-| "persists" (agents) | → People & Organization | Persistence requires agents: the humans who perform the work and the structure that organizes them. |
+| "persists" (agents) | → Agency & Organization | Persistence requires agents: biological (humans), artificial (AI systems, autonomous software agents), and hybrid configurations — and the organizational structures through which their agency is channeled. The axiom requires *agency*, not *biology*. See ADR-ECF-002 §5 and CR-ECF-007. |
 | "persists" (substrate as enabler) | → Operations & Enablement | Persistence requires a mechanism: the engine and the means that make execution possible. |
 | "exchanging value" (counterparty) | → Party & Relationship | Exchange requires a counterparty: the external entities with whom the enterprise bonds. |
 | "exchanging value" (bearer of value) | → Product & Value | Exchange requires something to offer: the value-bearing propositions the enterprise creates. |
@@ -76,7 +76,7 @@ The **domains** answer the question *what does the enterprise do?* Seven domains
 |---|--------|---------------------|
 | 1 | Governance & Existence | The domain that constitutes the enterprise as a bounded, legitimate, persisting entity; the precondition of all other domains. |
 | 2 | Strategy & Direction | The domain that determines the enterprise's intentional trajectory; positioning, ambition, and resource allocation priorities. |
-| 3 | People & Organization | The domain that manages the enterprise's internal human fabric; the agents who perform capabilities and the structures that organize them. |
+| 3 | Agency & Organization | The domain that manages the enterprise's internal agentive fabric; the constitution, coordination, development, and lifecycle of all agents (biological, artificial, hybrid) that perform capabilities, and the organizational structures through which their agency is channeled. Substrate-independent: see ADR-ECF-002 §5 and CR-ECF-007. |
 | 4 | Party & Relationship | The domain that manages the enterprise's external social fabric; the identification, establishment, development, and termination of bonds with all external entities. |
 | 5 | Product & Value | The domain that manages the enterprise's value-bearing propositions; the complete lifecycle of whatever the enterprise creates and makes available for exchange. |
 | 6 | Operations & Enablement | The domain that manages the enterprise's execution engine and the means that make execution possible; processes, delivery, technology, and physical infrastructure. |
@@ -112,7 +112,7 @@ The ECF coordinate system is defined by three primitives:
 
 - **Domain.** One of the seven canonical enterprise concern dimensions of
   ECF (per CR-ECF-006 / ADR-ECF-001): Governance & Existence; Strategy &
-  Direction; People & Organization; Party & Relationship; Product & Value;
+  Direction; Agency & Organization; Party & Relationship; Product & Value;
   Operations & Enablement; Finance & Accounting.
 - **Stage.** One of the seven canonical lifecycle dimensions of ECF:
   Conceive; Design; Build; Activate; Operate; Improve; Retire.
@@ -180,7 +180,7 @@ L4). The two mechanisms are governed separately.
 |--------|-----------|
 | Governance & Existence | Formation, Mandate, Policy, Compliance, Assurance, Succession |
 | Strategy & Direction | Purpose, Sensing, Choices, Objectives, Planning, Adaptation |
-| People & Organization | Design, Planning, Acquisition, Development, Culture, Transition |
+| Agency & Organization | Design, Planning, Acquisition, Development, Coordination, Transition |
 | Party & Relationship | Identification, Establishment, Engagement, Development, Governance, Termination |
 | Product & Value | Proposition, Portfolio, Development, Packaging, Readiness, Evolution |
 | Operations & Enablement | Process, Fulfillment, Technology, Physical, Planning, Assurance |
@@ -273,7 +273,7 @@ ECF recursion is independent of Business Process decomposition. A Business Proce
 |----------------|----------|--------|-------|----------|---------|---------|--------|
 | **Governance & Existence** | Policy intent | Controls design | Compliance build | Enforce | Assurance | Risk review | Policy retire |
 | **Strategy & Direction** | Purpose & ambition | Strategic choices | Initiative portfolio | Launch direction | Course correction | Performance review | Strategic renewal |
-| **People & Organization** | Workforce plan | Org design | Hire / train | Mobilize | Perform & develop | Engagement | Offboard / reassign |
+| **Agency & Organization** | Capacity plan | Org design | Acquire / onboard | Mobilize | Perform & develop | Coordination | Offboard / reassign |
 | **Party & Relationship** | Need identification | Journey mapping | Onboarding | Activation | Support & service | Satisfaction & churn | Offboarding |
 | **Product & Value** | Market sensing | Catalog & specs | Configuration | Launch | Catalog mgmt | Performance | Sunset |
 | **Operations & Enablement** | Demand planning | Process design | Provisioning | Cut-over | Run & maintain | Quality & incident | Decommission |
@@ -293,7 +293,7 @@ ECF recursion is independent of Business Process decomposition. A Business Proce
 |----------------|----------|--------|-------|----------|---------|---------|--------|
 | **Governance & Existence** | Reg. mandate (TRA) | Controls design (SOX) | Compliance build (DPI) | Audit enforce | Lawful intercept | Risk review | Policy repeal |
 | **Strategy & Direction** | Market sensing | Strategic choice (5G) | Capex plan | Launch direction | Course correct | Strategic review | Strategic renewal |
-| **People & Organization** | Field force plan | NOC/org design | Engineer training | Crew dispatch | Performance (OKR) | Engagement | Redeploy |
+| **Agency & Organization** | Field force plan | NOC/org design | Agent training | Crew dispatch | Performance (OKR) | Coordination | Redeploy |
 | **Party & Relationship** | Subscriber need | Tariff plans | SIM provisioning | Network attach (HLR/HSS) | Customer care (CRM) | Churn scoring (ARPU) | Number port (MNP) |
 | **Product & Value** | Service roadmap (5G) | Service catalog (BSS) | Bundle config | Commercial launch | Catalog lifecycle (OSS) | Service uptake | Plan sunset |
 | **Operations & Enablement** | Traffic forecast | Network design | Circuit prov. | Site cut-over | NOC operations (24/7) | Fault mgm (TT) | Site decom. |
@@ -312,7 +312,7 @@ ECF recursion is independent of Business Process decomposition. A Business Proce
 |----------------|----------|--------|-------|----------|---------|---------|--------|
 | **Governance & Existence** | Privacy policy | Controls design (SOC2) | Compliance build | Enforce (guardrails) | Audit log | Risk review (pentest) | Policy retire |
 | **Strategy & Direction** | Market sensing | Strategic choice | Initiative portfolio | Launch direction | Course correct | Strategic review | Strategic renewal |
-| **People & Organization** | Team topology | Org design (pods) | Hire / onboard | Sprint mobilize | Perf review (360) | Engagement (eNPS) | Offboard |
+| **Agency & Organization** | Team topology | Org design (pods) | Acquire / onboard | Sprint mobilize | Perf review (360) | Coordination | Offboard |
 | **Party & Relationship** | User need (JTBD) | Persona map | Signup flow | Activation event (aha) | In-product help | Retention cohort (DAU) | Account deletion (GDPR) |
 | **Product & Value** | Discovery | Feature spec (PRD) | Build sprint | Feature flag launch | Roadmap mgmt | Feature adoption | Deprecation |
 | **Operations & Enablement** | Demand forecast | Pipeline design (CI/CD) | Provision env (IaC) | Deploy to prod (canary) | SRE on-call (SLO) | Incident review (PSE) | Env teardown |
@@ -760,7 +760,7 @@ The following mapping is an illustrative snapshot. The TechNeHub Labs portfolio 
 |------------|-------------|---------------|
 | Governance & Existence | `dea-catalog-principles`, `dea-catalog-standards` | Architecture principles (API-first, Zero Trust) and technical standards (REST, OAuth2) — the guardrails. |
 | Strategy & Direction | `dea-catalog-reference-models`, `dea-catalog-solution-hub` | Strategic intent, initiative portfolios, positioning artefacts. |
-| People & Organization | `dea-catalog-digital-business-service-factory` | HR business service — workforce capability maps and SLA governance. |
+| Agency & Organization | `dea-catalog-digital-business-service-factory` | HR business service — workforce capability maps and SLA governance. |
 | Party & Relationship | `dea-catalog-digital-business-service-factory` | Party business service — party identification, relationship lifecycle, engagement. |
 | Product & Value | `dea-catalog-digital-business-service-factory`, `dea-catalog-solution-hub` | Product business service + value propositions and delivery templates. |
 | Operations & Enablement | `dea-catalog-patterns`, `dea-catalog-solution-hub` | Architecture patterns (CQRS, Saga, Strangler Fig) + workflow accelerators + technology and physical enablers. |
