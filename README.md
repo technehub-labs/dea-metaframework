@@ -5,6 +5,7 @@
 This repo holds the **Enterprise Concept Framework (ECF)**: the enterprise
 organizing framework of the TechNeHub Labs DEA ecosystem. You can star and follow
 for updates. 
+
 ECF is an OpenDEA profile: it supplies the Domain x Stage coordinate system that 
 contextualizes the concepts the [DEA Metamodel](../dea-metamodel) formally represents 
 and the DEA catalogs (`dea-catalog-*`) instantiate.
