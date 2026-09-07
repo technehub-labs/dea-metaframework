@@ -10,7 +10,7 @@ named things the matrix contextualizes.
 
 - **Domain.** One of the seven canonical enterprise concern dimensions of
   ECF (per CR-ECF-006): Governance & Existence; Strategy & Direction;
-  People & Organization; Party & Relationship; Product & Value; Operations
+  Agency & Organization; Party & Relationship; Product & Value; Operations
   & Enablement; Finance & Accounting.
 - **Stage.** One of the seven canonical lifecycle dimensions of ECF:
   Conceive; Design; Build; Activate; Operate; Improve; Retire.

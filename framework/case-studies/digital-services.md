@@ -7,7 +7,7 @@ cells, digital-era content.
 |----------------|----------|--------|-------|----------|---------|---------|--------|
 | **Governance & Existence** | Privacy policy | Controls design (SOC2) | Compliance build | Enforce (guardrails) | Audit log | Risk review (pentest) | Policy retire |
 | **Strategy & Direction** | Market sensing | Strategic choice | Initiative portfolio | Launch direction | Course correct | Strategic review | Strategic renewal |
-| **People & Organization** | Team topology | Org design (pods) | Hire / onboard | Sprint mobilize | Perf review (360) | Engagement (eNPS) | Offboard |
+| **Agency & Organization** | Team topology | Org design (pods) | Acquire / onboard | Sprint mobilize | Perf review (360) | Coordination | Offboard |
 | **Party & Relationship** | User need (JTBD) | Persona map | Signup flow | Activation event (aha) | In-product help | Retention cohort (DAU) | Account deletion (GDPR) |
 | **Product & Value** | Discovery | Feature spec (PRD) | Build sprint | Feature flag launch | Roadmap mgmt | Feature adoption | Deprecation |
 | **Operations & Enablement** | Demand forecast | Pipeline design (CI/CD) | Provision env (IaC) | Deploy to prod (canary) | SRE on-call (SLO) | Incident review (PSE) | Env teardown |

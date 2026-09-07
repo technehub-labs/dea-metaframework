@@ -11,7 +11,7 @@ Every word in that sentence generates a domain. The framework is not asserted
 |-------------------|-----------------|-----|
 | "bounded entity" | → Governance & Existence | Boundedness requires a boundary, authority, and the assurance that the entity persists as itself. |
 | "persists" (directed) | → Strategy & Direction | Persistence is not mere survival; it requires deliberate, adaptive steering toward a future state. |
-| "persists" (agents) | → People & Organization | Persistence requires agents; the humans who perform the work and the structure that organizes them. |
+| "persists" (agents) | → Agency & Organization | Persistence requires agents: biological (humans), artificial (AI systems, autonomous software agents), and hybrid configurations — and the organizational structures through which their agency is channeled. The axiom requires *agency*, not *biology*. |
 | "persists" (substrate as enabler) | → Operations & Enablement | Persistence requires a mechanism; the engine and the means that make execution possible. |
 | "exchanging value" (counterparty) | → Party & Relationship | Exchange requires a counterparty; the external entities with whom the enterprise bonds. |
 | "exchanging value" (bearer of value) | → Product & Value | Exchange requires something to offer; the value-bearing propositions the enterprise creates. |

@@ -19,7 +19,7 @@ from typing import Iterable
 DOMAINS: tuple[str, ...] = (
     "GovernanceAndExistence",
     "StrategyAndDirection",
-    "PeopleAndOrganization",
+    "AgencyAndOrganization",
     "PartyAndRelationship",
     "ProductAndValue",
     "OperationsAndEnablement",
@@ -39,12 +39,35 @@ STAGES: tuple[str, ...] = (
 DOMAIN_DISPLAY: dict[str, str] = {
     "GovernanceAndExistence": "Governance & Existence",
     "StrategyAndDirection": "Strategy & Direction",
-    "PeopleAndOrganization": "People & Organization",
+    "AgencyAndOrganization": "Agency & Organization",
     "PartyAndRelationship": "Party & Relationship",
     "ProductAndValue": "Product & Value",
     "OperationsAndEnablement": "Operations & Enablement",
     "FinanceAndAccounting": "Finance & Accounting",
 }
+
+# Deprecated domain aliases (CR-ECF-007 §6.2; ADR-ECF-002 §6.3).
+# Domain 3 was renamed from "People & Organization" to
+# "Agency & Organization" by CR-ECF-007. Consumers that have not yet
+# migrated to the canonical identifier SHOULD resolve the alias and
+# use the canonical value. Maintained for at least 2 release cycles.
+DOMAIN_ALIASES: dict[str, str] = {
+    "PeopleAndOrganization": "AgencyAndOrganization",
+    "peopleAndOrganization": "AgencyAndOrganization",
+    "people-organization": "AgencyAndOrganization",
+    "People & Organization": "AgencyAndOrganization",
+    "people": "AgencyAndOrganization",
+}
+
+
+def resolve_domain_alias(value: str) -> str:
+    """Resolve a deprecated domain alias to the canonical PascalCase value.
+
+    Returns the value unchanged if it is already canonical or unknown.
+    """
+    if value in DOMAINS:
+        return value
+    return DOMAIN_ALIASES.get(value, value)
 
 STAGE_DISPLAY: dict[str, str] = {
     "Conceive": "Conceive",

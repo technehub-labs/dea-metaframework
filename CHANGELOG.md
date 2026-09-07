@@ -8,6 +8,80 @@ governed by change requests (`change-requests/`).
 
 No changes.
 
+## [2.4.0] - 2026-09-07
+
+The **Agency & Organization** rename: ECF Domain 3 is renamed from `PeopleAndOrganization` to `AgencyAndOrganization` (kebab-case `people-organization` → `agency-organization`; display form `People & Organization` → `Agency & Organization`). The change is driven by the **Substrate Independence Stress Test** (ADR-ECF-002 §5): the domain must remain semantically valid whether the enterprise's internal agents are biological (humans), artificial (AI systems, autonomous software agents), or hybrid. The term `People` is biologically loaded and fails the Technology Independence test; `Agency` is the architecturally precise, substrate-independent term for the capacity to act on behalf of the enterprise. No content redistribution is required (the underlying capability taxonomy is unchanged; only the domain name and its surrounding language shift). The other six Domains are unchanged.
+
+### Domain set (canonical v2.4.0)
+
+| # | PascalCase | lowerCamelCase | kebab-case | Display |
+|--:|---|---|---|---|
+| 1 | `GovernanceAndExistence` | `governanceAndExistence` | `governance-existence` | Governance & Existence |
+| 2 | `StrategyAndDirection` | `strategyAndDirection` | `strategy-direction` | Strategy & Direction |
+| 3 | `AgencyAndOrganization` | `agencyAndOrganization` | `agency-organization` | Agency & Organization **(renamed)** |
+| 4 | `PartyAndRelationship` | `partyAndRelationship` | `party-relationship` | Party & Relationship |
+| 5 | `ProductAndValue` | `productAndValue` | `product-value` | Product & Value |
+| 6 | `OperationsAndEnablement` | `operationsAndEnablement` | `operations-enablement` | Operations & Enablement |
+| 7 | `FinanceAndAccounting` | `financeAndAccounting` | `finance-accounting` | Finance & Accounting |
+
+### Why v2.4.0 (not v3.0.0, not v2.3.1)
+
+Per ADR-ECF-001 §6 (Renaming Rule), whenever a canonical identifier is renamed the version is incremented. The cardinality of the seven Domains is unchanged (7), the seven Stages are unchanged (7), the matrix M = D × S still defines 49 coordinates, and the no-cell-filling rule still applies. The change is semantically meaningful (the Domain now survives the AI-agent workforce transition without requiring redefinition) but does not break the matrix topology, so a minor bump is appropriate. `v2.4.0` matches the existing `v2.2.0` / `v2.3.0` minor-bump pattern.
+
+### Why the Domain needs the rename
+
+The ECF grounding axiom states: *An enterprise is any bounded entity that **persists** by exchanging value with its environment.* The derivation for Domain 3 says: *"persists" → persistence requires agents.* The axiom requires **agency**, not **biology**. The semantic quality that makes an entity a constituent of the enterprise is agency — the capacity to act. `People` is the current biological implementation of agency; `Agency` is the substrate-independent subject.
+
+The Domain Semantic Integrity Contract (ADR-ECF-002 §6.4) requires that every domain specification identify a stable enterprise subject, declare exactly one semantic anchor, and survive paradigm shifts (Test 4: Technology Independence). `People & Organization` fails Test 4 by requiring a definitional caveat; `Agency & Organization` passes Test 4 by default.
+
+### What changed
+
+- **Schema** (`schemas/ecf-domain.schema.json`): `AgencyAndOrganization` replaces `PeopleAndOrganization` in the enum; description documents the deprecation aliases.
+- **Tool** (`tools/ecf_coordinates.py`): `AgencyAndOrganization` added to `DOMAINS` and `DOMAIN_DISPLAY`; new `DOMAIN_ALIASES` map and `resolve_domain_alias()` function preserve backward compatibility for the 5 deprecated aliases (`PeopleAndOrganization`, `peopleAndOrganization`, `people-organization`, `People & Organization`, `people`).
+- **Framework docs** (`framework/`):
+  - `domain-grounding.md`: §3.3 Agency & Organization rewritten with substrate-independent language, the **Fundamental Enterprise Question** added, the Internal MECE Partition re-keyed (`Workforce Planning` → `Agent Capacity Planning`; `Culture & Collaboration` → `Coordination & Collaboration`), the **Lifecycle Applicability** section added.
+  - `axiom.md`: derivation table row for "persists" (agents) reworded to remove biological language and cite ADR-ECF-002 §5 / CR-ECF-007.
+  - `matrix.md`: §11 Domain table row 3 entry uses the substrate-independent definition; the canonical matrix row re-keyed (`Workforce plan` → `Capacity plan`; `Hire / train` → `Acquire / onboard`; `Engagement` → `Coordination`); subdomain table `Culture` → `Coordination`.
+  - `case-studies/telecom.md` + `case-studies/digital-services.md`: Agency & Organization row re-keyed for substrate neutrality.
+- **REPORT.md**: §2.1 derivation table, §5.1 domain table, all three matrix snapshots (canonical + 2 case studies), and the subdomain table updated.
+- **README.md**: §3 domain table already used substrate-neutral language; verified consistent.
+- **Page assets** (`pages/assets/`):
+  - `site.js`: DOMAINS row 3 `key: 'people'` → `'agency'`, `shortName: 'People'` → `'Agency'`; all 21 cell keys (3 scenarios × 7 stages) `'people.<stage>'` → `'agency.<stage>'`; `people-ops` actor → `agent-ops`.
+  - `site.css`: color-variable comment for `--l3` re-worded (no functional change).
+- **CITATION.cff**: version `2.3.0` → `2.4.0`.
+
+### Migration mapping (CR-ECF-007 §6.1)
+
+| Old form | New form |
+|---|---|
+| `PeopleAndOrganization` | `AgencyAndOrganization` |
+| `peopleAndOrganization` | `agencyAndOrganization` |
+| `people-organization` | `agency-organization` |
+| `People & Organization` | `Agency & Organization` |
+| `people` (cell-key prefix) | `agency` |
+| `Workforce Planning` | `Agent Capacity Planning` |
+| `Workforce plan` (matrix label) | `Capacity plan` |
+| `Hire / train` (matrix label) | `Acquire / onboard` |
+| `Culture & Collaboration` | `Coordination & Collaboration` |
+| `Engagement` (matrix label) | `Coordination` |
+| `people-ops` (actor identifier) | `agent-ops` |
+
+### Backward compatibility
+
+For a transition period of at least 2 release cycles, `tools/ecf_coordinates.py` exposes the `DOMAIN_ALIASES` map and the `resolve_domain_alias()` function. Consumers that have not yet migrated to the canonical identifier MAY resolve the alias and use the canonical value. The deprecation policy is recorded in ADR-ECF-002 §6.3 and CR-ECF-007 §6.2.
+
+### What did NOT change
+
+- The cardinality of the seven Domains (7), the seven Stages (7), and the matrix M = D × S (49 coordinates) is unchanged.
+- The no-cell-filling rule (ADR-ECF-001 §11) still applies.
+- No content redistribution is required (CR-ECF-007 §6.3): all content that previously belonged to `People & Organization` remains in `Agency & Organization`. The change is a rename and redefinition, not a restructuring of scope.
+- No capability matrix entry is invalidated.
+- The five other Domain renames from v2.3.0 (CR-ECF-006) are unchanged.
+
+### Implementation
+
+This release is the implementation of **CR-ECF-007** (governed by **ADR-ECF-002**). Both documents are filed verbatim in `change-requests/CR-ECF-007.md` and `docs/adr/ADR-ECF-002.md` per the byte-identical-rule convention.
+
 ## [2.3.0] - 2026-09-07
 
 The ECF domain restructure: five of the seven canonical Domains are renamed, one is replaced, and the change is backed by the first ADR in this repository. This is a content-narrowing, scope-grounding, axiomatic-concreteness release; it is NOT a SemVer-major breaking change (v2.3.0, not v3.0.0) because the seven-Domain cardinality and the seven-Stage cardinality are unchanged, the matrix M = D x S still defines 49 coordinates, and the no-cell-filling rule still applies. What changes is the rigor and precision of the Domain names and their boundaries, so the framework can ground downstream mapping work more rigorously and correctly.
@@ -34,7 +108,7 @@ The ECF domain restructure: five of the seven canonical Domains are renamed, one
   |---|------------------|------------------|--------|
   | 1 | Governance & Existence | Governance & Existence | Retained, enhanced definition |
   | 2 | Supply & Resources | Strategy & Direction | Replaced; substance redistributed |
-  | 3 | People & Organization | People & Organization | Retained, enhanced definition |
+  | 3 | Agency & Organization | Agency & Organization | Retained, enhanced definition |
   | 4 | Customer & Demand | Party & Relationship | Renamed and expanded |
   | 5 | Product & Offering | Product & Value | Renamed and sharpened |
   | 6 | Operations & Delivery | Operations & Enablement | Renamed and expanded |
@@ -45,7 +119,7 @@ The ECF domain restructure: five of the seven canonical Domains are renamed, one
   internal MECE partitions per Domain, and the redistribution rationale
   for Supply & Resources (assets moved to Operations & Enablement as
   enablers; financial resources moved to Finance & Accounting; human
-  resources remain in People & Organization). (CR-ECF-003, CR-ECF-006)
+  resources remain in Agency & Organization). (CR-ECF-003, CR-ECF-006)
 - `framework/constructs.md`: Domain list updated to the v2.3.0 set. (CR-ECF-006)
 - `framework/axiom.md`: derivation table now resolves "persists" into three
   facets (directed, agents, substrate as enabler) and "exchanging value"
@@ -95,7 +169,7 @@ the v0.2 ECF Overlay and downstream catalog entity files):
 
 - `governance-existence` (unchanged)
 - `strategy-direction` (was `supply-resources`)
-- `people-organization` (unchanged)
+- `agency-organization` (unchanged)
 - `party-relationship` (was `customer-demand`)
 - `product-value` (was `product-offering`)
 - `operations-enablement` (was `operations-delivery`)

@@ -6,7 +6,7 @@
 | :--- | :--- | :--- | :--- |
 | 1 | Governance & Existence | **Governance & Existence** | Retained & Enhanced |
 | 2 | Supply & Resources | **Strategy & Direction** | Replaced |
-| 3 | People & Organization | **People & Organization** | Retained & Enhanced |
+| 3 | Agency & Organization | **Agency & Organization** | Retained & Enhanced |
 | 4 | Customer & Demand | **Party & Relationship** | Renamed & Expanded |
 | 5 | Product & Offering | **Product & Value** | Renamed & Sharpened |
 | 6 | Operations & Delivery | **Operations & Enablement** | Renamed & Expanded |
@@ -81,7 +81,7 @@
 | Name | Supply & Resources | Strategy & Direction | "Resources" failed MECE: physical assets → Operations; financial resources → Finance; human resources → People |
 | Anchor | Substrate (assets) | Direction (intent) | The enterprise needs a dedicated domain for intentional steering; "Resources" was a cross-cutting asset class, not a stable subject |
 | Scope | Physical/virtual assets, capacity, health, disposal | Purpose, ambition, positioning, choices, objectives, adaptation | Strategy is a mandatory L0 process category in all standard frameworks (APQC, TOGAF) |
-| Redistribution | N/A | Physical/virtual assets moved to **Operations & Enablement** as enablers; financial resources moved to **Finance & Accounting**; human resources moved to **People & Organization** | Achieves true MECE by eliminating the "Resources" catch-all |
+| Redistribution | N/A | Physical/virtual assets moved to **Operations & Enablement** as enablers; financial resources moved to **Finance & Accounting**; human resources moved to **Agency & Organization** | Achieves true MECE by eliminating the "Resources" catch-all |
 
 ### Why "Supply & Resources" Was Removed
 
@@ -89,7 +89,7 @@ Under the **Collective Exhaustiveness (MECE)** test, "Resources" is not a single
 - **Physical resources** (equipment, facilities) → enablers of execution → **Operations & Enablement**
 - **Virtual resources** (IT infrastructure, platforms) → enablers of execution → **Operations & Enablement**
 - **Financial resources** (capital, budgets) → monetary management → **Finance & Accounting**
-- **Human resources** (people, skills) → organizational agents → **People & Organization**
+- **Human resources** (people, skills) → organizational agents → **Agency & Organization**
 
 A standalone "Resources" domain created boundary collisions with all other domains and failed to form a clean partition.
 
@@ -106,13 +106,13 @@ A standalone "Resources" domain created boundary collisions with all other domai
 
 ---
 
-## Domain 3: People & Organization
+## Domain 3: Agency & Organization
 
 ### Before
 
 | Attribute | Original |
 | :--- | :--- |
-| **Domain Name** | People & Organization |
+| **Domain Name** | Agency & Organization |
 | **Axiomatic Derivation** | *"persists"* — Persistence requires agents: the humans who perform the work and the structure that organizes them |
 | **One-line Definition** | The humans who perform every capability: their structure, skills, performance, and movement |
 
@@ -120,7 +120,7 @@ A standalone "Resources" domain created boundary collisions with all other domai
 
 | Attribute | Final |
 | :--- | :--- |
-| **Domain Name** | People & Organization |
+| **Domain Name** | Agency & Organization |
 | **Semantic Anchor** | Organization |
 | **Axiomatic Grounding** | *"persists"* — persistence requires agents; the enterprise cannot act without humans organized for purpose |
 | **Enhanced Definition** | The domain that manages the enterprise's internal human fabric. It owns the constitution, coordination, development, and movement of the agents who perform all enterprise capabilities, and the structures through which they are organized. The domain manages organization as a stable subject: the durable pattern of roles, authority, collaboration, and culture through which human agency is coordinated. People are the agents; organization is the structure that channels their agency. |
@@ -129,7 +129,7 @@ A standalone "Resources" domain created boundary collisions with all other domai
 
 | Aspect | Before | After | Rationale |
 | :--- | :--- | :--- | :--- |
-| Name | People & Organization | People & Organization | Retained — the name was already correct |
+| Name | Agency & Organization | Agency & Organization | Retained — the name was already correct |
 | Anchor | Implicit (People) | Explicit: **Organization** | Organization is the stable, durable subject; People are the agentive constituent. This prevents the domain from being reduced to "HR management" |
 | Scope | "humans who perform every capability" | Full organizational fabric: structure, roles, authority, workforce, culture, collaboration, accountability | Expanded to include organizational design, authority delegation, culture, and organizational development |
 | Boundary | Implicit | Explicit: excludes external parties, governance authority, operational execution, monetary compensation | Prevents collision with Party & Relationship, Governance, Operations, Finance |
@@ -333,7 +333,7 @@ A standalone "Resources" domain created boundary collisions with all other domai
 | :--- | :--- | :--- | :--- | :--- |
 | 1 | Governance & Existence | The precondition of boundedness: what defines the entity, what rules apply, and the assurance that the other domains behave | **Governance & Existence** | The domain that constitutes the enterprise as a bounded, legitimate, persisting entity. It owns the enterprise's ontological reality and its constitutional machinery |
 | 2 | Supply & Resources | The substrate the enterprise persists on: physical or virtual, owned or rented, and its capacity, health, and disposal | **Strategy & Direction** | The domain that determines the enterprise's intentional trajectory. It translates purpose into concrete choices about positioning, ambition, and priorities |
-| 3 | People & Organization | The humans who perform every capability: their structure, skills, performance, and movement | **People & Organization** | The domain that manages the enterprise's internal human fabric: the constitution, coordination, development, and movement of agents and the structures through which they are organized |
+| 3 | Agency & Organization | The humans who perform every capability: their structure, skills, performance, and movement | **Agency & Organization** | The domain that manages the enterprise's internal human fabric: the constitution, coordination, development, and movement of agents and the structures through which they are organized |
 | 4 | Customer & Demand | The enterprise's reason to exchange: identifying, acquiring, serving, and retaining the people whose need it meets | **Party & Relationship** | The domain that manages the enterprise's external social fabric: the identification, establishment, development, and termination of bonds with all external entities |
 | 5 | Product & Offering | The catalog of what the enterprise offers: its design, packaging, release, and retirement | **Product & Value** | The domain that manages the enterprise's value-bearing propositions: the complete lifecycle of whatever the enterprise creates, shapes, and makes available for exchange |
 | 6 | Operations & Delivery | The engine that turns an offering into a delivered outcome: planning, fulfilling, running, resolving | **Operations & Enablement** | The domain that manages the enterprise's execution engine and the means that make execution possible: processes, delivery, technology, and physical infrastructure |
@@ -347,7 +347,7 @@ A standalone "Resources" domain created boundary collisions with all other domai
 | :--- | :--- | :--- | :--- |
 | "bounded entity" | Governance & Existence | Governance & Existence | Retained |
 | "persists" (substrate) | Supply & Resources | Operations & Enablement (as enablers) | Redistributed |
-| "persists" (agents) | People & Organization | People & Organization | Retained |
+| "persists" (agents) | Agency & Organization | Agency & Organization | Retained |
 | "persists" (directed) | *(implicit)* | Strategy & Direction | **Added** |
 | "exchanging value" (counterparty) | Customer & Demand | Party & Relationship | Expanded |
 | "exchanging value" (what) | Product & Offering | Product & Value | Sharpened |

@@ -16,7 +16,7 @@
   const DOMAINS = [
     { id: 1, key: 'governance', name: 'Governance & Existence',  shortName: 'Governance', color: 'var(--l1)' },
     { id: 2, key: 'strategy',   name: 'Strategy & Direction',    shortName: 'Strategy',   color: 'var(--l2)' },
-    { id: 3, key: 'people',     name: 'People & Organization',  shortName: 'People',     color: 'var(--l3)' },
+    { id: 3, key: 'agency',     name: 'Agency & Organization',  shortName: 'Agency',     color: 'var(--l3)' },
     { id: 4, key: 'party',      name: 'Party & Relationship',   shortName: 'Party',      color: 'var(--l4)' },
     { id: 5, key: 'product',    name: 'Product & Value',        shortName: 'Product',    color: 'var(--l5)' },
     { id: 6, key: 'operations', name: 'Operations & Enablement', shortName: 'Operations', color: 'var(--l6)' },
@@ -257,14 +257,14 @@
       'strategy.improve':  { text: 'Strategic review — performance vs ambition.', glyph: '●', actors: ['strategy-lead', 'executive'], metamodelEntities: ['Performance Metric'] },
       'strategy.retire':   { text: 'Strategic renewal — pivot, divest, transform.', glyph: '●', actors: ['executive', 'strategy-lead'], metamodelEntities: ['Strategic Objective'] },
 
-      // Row 3: People & Organization
-      'people.conceive': { text: 'Workforce plan — headcount and skills forecast.', glyph: '●', actors: ['workforce-planner'], metamodelEntities: ['Organizational Unit'] },
-      'people.design':   { text: 'Org design — team topology, RACI.', glyph: '●', actors: ['org-design'], metamodelEntities: ['Organizational Unit'] },
-      'people.build':    { text: 'Hire / train — bring people on.', glyph: '●', actors: ['recruiting', 'l&d'], metamodelEntities: ['Organizational Unit'] },
-      'people.activate': { text: 'Mobilize — assign to teams, onboarding.', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Organizational Unit'] },
-      'people.operate':  { text: 'Perform & develop — regular work.', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Business Process'] },
-      'people.improve':  { text: 'Engagement — pulse surveys, eNPS.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Performance Metric'] },
-      'people.retire':   { text: 'Offboard / reassign — exit or transfer.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Organizational Unit'] },
+      // Row 3: Agency & Organization
+      'agency.conceive': { text: 'Workforce plan — headcount and skills forecast.', glyph: '●', actors: ['workforce-planner'], metamodelEntities: ['Organizational Unit'] },
+      'agency.design':   { text: 'Org design — team topology, RACI.', glyph: '●', actors: ['org-design'], metamodelEntities: ['Organizational Unit'] },
+      'agency.build':    { text: 'Hire / train — bring people on.', glyph: '●', actors: ['recruiting', 'l&d'], metamodelEntities: ['Organizational Unit'] },
+      'agency.activate': { text: 'Mobilize — assign to teams, onboarding.', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Organizational Unit'] },
+      'agency.operate':  { text: 'Perform & develop — regular work.', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Business Process'] },
+      'agency.improve':  { text: 'Engagement — pulse surveys, eNPS.', glyph: '●', actors: ['agent-ops'], metamodelEntities: ['Performance Metric'] },
+      'agency.retire':   { text: 'Offboard / reassign — exit or transfer.', glyph: '●', actors: ['agent-ops'], metamodelEntities: ['Organizational Unit'] },
 
       // Row 4: Party & Relationship
       'party.conceive': { text: 'Party identification — discovery, segmentation, qualification.', glyph: '●', actors: ['marketing', 'sales'], metamodelEntities: ['Value Stream'] },
@@ -322,13 +322,13 @@
       'strategy.improve':  { text: 'KPI utilization (erlang).', glyph: '●', actors: ['capacity-planner'], metamodelEntities: ['Performance Metric'] },
       'strategy.retire':   { text: 'Equipment retire — 3G sunset.', glyph: '●', actors: ['field-ops'], metamodelEntities: ['Platform Service'] },
 
-      'people.conceive': { text: 'Field force plan — coverage model.', glyph: '●', actors: ['workforce-planner'], metamodelEntities: ['Organizational Unit'] },
-      'people.design':   { text: 'NOC/org design — escalation tree.', glyph: '●', actors: ['org-design'], metamodelEntities: ['Organizational Unit'] },
-      'people.build':    { text: 'Engineer training — vendor certs.', glyph: '●', actors: ['l&d'], metamodelEntities: ['Organizational Unit'] },
-      'people.activate': { text: 'Crew dispatch — first-line ready.', glyph: '●', actors: ['dispatch'], metamodelEntities: ['Organizational Unit'] },
-      'people.operate':  { text: 'Performance (OKR).', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Business Process'] },
-      'people.improve':  { text: 'Engagement — pulse surveys.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Performance Metric'] },
-      'people.retire':   { text: 'Redeploy — move between regions.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Organizational Unit'] },
+      'agency.conceive': { text: 'Field force plan — coverage model.', glyph: '●', actors: ['workforce-planner'], metamodelEntities: ['Organizational Unit'] },
+      'agency.design':   { text: 'NOC/org design — escalation tree.', glyph: '●', actors: ['org-design'], metamodelEntities: ['Organizational Unit'] },
+      'agency.build':    { text: 'Engineer training — vendor certs.', glyph: '●', actors: ['l&d'], metamodelEntities: ['Organizational Unit'] },
+      'agency.activate': { text: 'Crew dispatch — first-line ready.', glyph: '●', actors: ['dispatch'], metamodelEntities: ['Organizational Unit'] },
+      'agency.operate':  { text: 'Performance (OKR).', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Business Process'] },
+      'agency.improve':  { text: 'Engagement — pulse surveys.', glyph: '●', actors: ['agent-ops'], metamodelEntities: ['Performance Metric'] },
+      'agency.retire':   { text: 'Redeploy — move between regions.', glyph: '●', actors: ['agent-ops'], metamodelEntities: ['Organizational Unit'] },
 
       'party.conceive': { text: 'Subscriber need — coverage gaps, churn.', glyph: '●', actors: ['product', 'marketing'], metamodelEntities: ['Value Stream'] },
       'party.design':   { text: 'Tariff plans — pricing, bundles.', glyph: '●', actors: ['product', 'pricing'], metamodelEntities: ['Journey Touchpoint'] },
@@ -382,13 +382,13 @@
       'strategy.improve':  { text: 'Cost/usage (FinOps).', glyph: '★', actors: ['finops', 'sre'], metamodelEntities: ['Performance Metric'] },
       'strategy.retire':   { text: 'Infra retire — end-of-service decommission.', glyph: '●', actors: ['platform-engineering'], metamodelEntities: ['Platform Service'] },
 
-      'people.conceive': { text: 'Team topology — stream-aligned teams.', glyph: '●', actors: ['workforce-planner'], metamodelEntities: ['Organizational Unit'] },
-      'people.design':   { text: 'Org design (pods).', glyph: '●', actors: ['org-design'], metamodelEntities: ['Organizational Unit'] },
-      'people.build':    { text: 'Hire / onboard.', glyph: '●', actors: ['recruiting', 'l&d'], metamodelEntities: ['Organizational Unit'] },
-      'people.activate': { text: 'Sprint mobilize — first sprint.', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Organizational Unit'] },
-      'people.operate':  { text: 'Perf review (360).', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Business Process'] },
-      'people.improve':  { text: 'Engagement (eNPS).', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Performance Metric'] },
-      'people.retire':   { text: 'Offboard.', glyph: '●', actors: ['people-ops'], metamodelEntities: ['Organizational Unit'] },
+      'agency.conceive': { text: 'Team topology — stream-aligned teams.', glyph: '●', actors: ['workforce-planner'], metamodelEntities: ['Organizational Unit'] },
+      'agency.design':   { text: 'Org design (pods).', glyph: '●', actors: ['org-design'], metamodelEntities: ['Organizational Unit'] },
+      'agency.build':    { text: 'Hire / onboard.', glyph: '●', actors: ['recruiting', 'l&d'], metamodelEntities: ['Organizational Unit'] },
+      'agency.activate': { text: 'Sprint mobilize — first sprint.', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Organizational Unit'] },
+      'agency.operate':  { text: 'Perf review (360).', glyph: '●', actors: ['line-manager'], metamodelEntities: ['Business Process'] },
+      'agency.improve':  { text: 'Engagement (eNPS).', glyph: '●', actors: ['agent-ops'], metamodelEntities: ['Performance Metric'] },
+      'agency.retire':   { text: 'Offboard.', glyph: '●', actors: ['agent-ops'], metamodelEntities: ['Organizational Unit'] },
 
       'party.conceive': { text: 'User need (JTBD).', glyph: '●', actors: ['product', 'research'], metamodelEntities: ['Value Stream'] },
       'party.design':   { text: 'Persona map.', glyph: '●', actors: ['product-design'], metamodelEntities: ['Journey Touchpoint'] },
