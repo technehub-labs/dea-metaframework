@@ -10,10 +10,24 @@ ECF is an OpenDEA profile: it supplies the Domain x Stage coordinate system that
 contextualizes the concepts the [DEA Metamodel](../dea-metamodel) formally represents 
 and the DEA catalogs (`dea-catalog-*`) instantiate.
 
-The framework is axiom-derived: in a single sentence, *an enterprise is any
-bounded entity that persists by exchanging value with its environment*,
-generates seven domains.
-A universal lifecycle of seven stages partitions the work of any object over time.
+The framework is axiom-derived: in a single sentence:
+*An enterprise is any bounded entity*
+        → Governance & Existence
+
+*that persists*
+        → People & Organization (agents who persist)
+        → Strategy & Direction (directed persistence)
+        → Operations & Enablement (substrate and mechanism of persistence)
+
+*by exchanging value*
+        → Party & Relationship (counterparty of exchange)
+        → Product & Value (bearer of value exchanged)
+
+*with its environment*
+        → Finance & Accounting (measurement of exchange with environment)
+        
+generates seven domains. A universal lifecycle of seven stages partitions the work 
+of any object over time.
 
 The matrix **M = D × S** defines 49 ECF coordinates. Enterprise concepts are
 contextualized by one or more coordinates according to the semantics of the
