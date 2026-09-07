@@ -304,6 +304,21 @@ class TestFetchOffline:
         cat = parse_catalog_yaml(res.bytes)
         assert cat.metadata.abbreviation == "BP"
 
+    def test_cache_dir_accepts_str_path(
+        self, tmp_path, sample_yaml_text: str
+    ) -> None:
+        """cache_dir can be passed as a str (matches callers that pass
+        env vars or os.path.join results); it must be coerced to Path."""
+        cache = tmp_path / "cache"
+        cache.mkdir()
+        (cache / "dea-catalog-processes@main.yaml").write_text(sample_yaml_text)
+        res = fetch_catalog_yaml(
+            "dea-catalog-processes",
+            cache_dir=str(cache),  # str, not Path
+            offline=True,
+        )
+        assert res.from_cache is True
+
     def test_offline_cache_miss_raises(self, tmp_path) -> None:
         cache = tmp_path / "cache"
         cache.mkdir()

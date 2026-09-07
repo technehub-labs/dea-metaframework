@@ -60,7 +60,7 @@ def fetch_catalog_yaml(
     repo: str,
     *,
     ref: str = "main",
-    cache_dir: Path | None = None,
+    cache_dir: "Path | str | None" = None,
     timeout_s: float = DEFAULT_TIMEOUT_S,
     offline: bool = False,
 ) -> FetchResult:
@@ -90,6 +90,7 @@ def fetch_catalog_yaml(
     import urllib.request
 
     if cache_dir is not None:
+        cache_dir = Path(cache_dir)  # accept str | Path
         cache_dir.mkdir(parents=True, exist_ok=True)
         cached = _cache_path(cache_dir, repo, ref)
         if cached.is_file():
@@ -106,6 +107,7 @@ def fetch_catalog_yaml(
         payload = resp.read()
 
     if cache_dir is not None:
+        cache_dir = Path(cache_dir)  # accept str | Path
         _cache_path(cache_dir, repo, ref).write_bytes(payload)
 
     return FetchResult(repo=repo, ref=ref, bytes=payload, from_cache=False)
@@ -115,7 +117,7 @@ def fetch_many(
     repos: Iterable[str],
     *,
     ref: str = "main",
-    cache_dir: Path | None = None,
+    cache_dir: "Path | str | None" = None,
     timeout_s: float = DEFAULT_TIMEOUT_S,
     offline: bool = False,
 ) -> list[FetchResult]:

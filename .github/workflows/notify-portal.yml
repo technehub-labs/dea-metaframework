@@ -1,0 +1,36 @@
+name: Notify Portal — metaframework-updated
+
+# Dispatches a `metaframework-updated` repository_dispatch event to
+# technehub-labs/technehub-labs.github.io whenever the canonical ECF artefacts
+# change on main. The receiving repo's sync-metaframework.yml listens for this
+# event type and pulls pages/* + metamodel/* into the Pages tree so the live
+# landing page always reflects the latest version.
+#
+# Trigger scope is intentionally narrow: only files that affect the live ECF
+# matrix page or the live metamodel SVG. CR drafts, ADR text, and tests do not
+# trigger a portal rebuild.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pages/**'
+      - 'metamodel/**'
+      - 'framework/matrix.md'
+      - 'framework/domain-grounding.md'
+      - 'framework/constructs.md'
+      - 'framework/axiom.md'
+      - 'framework/case-studies/**'
+  workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger portal sync
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.DISPATCH_TOKEN }}
+          repository: technehub-labs/technehub-labs.github.io
+          event-type: metaframework-updated
+          client-payload: '{"source": "dea-metaframework", "commit": "${{ github.sha }}", "ref": "${{ github.ref }}"}'
