@@ -3,8 +3,8 @@ message: >-
   If you use the Enterprise Concept Framework in academic or commercial
   work, please cite it using the metadata below.
 title: "Enterprise Concept Framework"
-version: 2.0.0
-date-released: 2026-07-27
+version: 2.2.0
+date-released: 2026-09-07
 license: MIT
 license-url: https://github.com/technehub-labs/dea-metaframework/blob/main/LICENSE
 type: software
@@ -28,7 +28,7 @@ keywords:
 abstract: >-
   The Enterprise Concept Framework (ECF) is a descriptive instrument:
   every enterprise can be completely described as the product of two
-  partitions — the kind of work it does (7 domains) and the phases
+  partitions; the kind of work it does (7 domains) and the phases
   that work passes through (7 stages). The framework is axiom-derived
   from a single grounding axiom, lifecycle-aware (every object passes
   through every stage), and industry-agnostic. ECF is the conceptual
