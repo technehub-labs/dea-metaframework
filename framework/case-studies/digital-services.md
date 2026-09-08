@@ -10,7 +10,7 @@ cells, digital-era content.
 | **Agency & Organization** | Team topology | Org design (pods) | Acquire / onboard | Sprint mobilize | Perf review (360) | Coordination | Offboard |
 | **Party & Relationship** | User need (JTBD) | Persona map | Signup flow | Activation event (aha) | In-product help | Retention cohort (DAU) | Account deletion (GDPR) |
 | **Product & Value** | Discovery | Feature spec (PRD) | Build sprint | Feature flag launch | Roadmap mgmt | Feature adoption | Deprecation |
-| **Operations & Enablement** | Demand forecast | Pipeline design (CI/CD) | Provision env (IaC) | Deploy to prod (canary) | SRE on-call (SLO) | Incident review (PSE) | Env teardown |
+| **Enablement & Operations** | Demand forecast | Pipeline design (CI/CD) | Provision env (IaC) | Deploy to prod (canary) | SRE on-call (SLO) | Incident review (PSE) | Env teardown |
 | **Finance & Accounting** | Unit econ (LTV) | Pricing tier (SaaS) | Funding round | Subscription start (stripe) | MRR / churn | Cohort margin (CAC) | Dunning / refund |
 
 ## Digital Services Patterns
@@ -41,7 +41,7 @@ Same 7 stages as telco Subscriber; different industry, same skeleton.
 |------|---------|------------------|
 | Party & Relationship × Activate | Network attach (HLR/HSS) | Activation event (aha-moment) |
 | Product & Value × Build | Bundle configuration | Build sprint (agile) |
-| Operations & Enablement × Operate | NOC 24/7 | SRE on-call (SLO) |
+| Enablement & Operations × Operate | NOC 24/7 | SRE on-call (SLO) |
 | Finance & Accounting × Operate | Mediation & rating | MRR / churn |
 | Governance & Existence × Conceive | Regulatory mandate (TRA) | Privacy policy intent |
 

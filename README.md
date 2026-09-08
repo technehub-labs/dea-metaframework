@@ -22,7 +22,7 @@ The framework is axiom-derived: in a single sentence:
  
    → *Strategy & Direction (directed persistence)*
  
-   → *Operations & Enablement (substrate and mechanism of persistence)*
+   → *Enablement & Operations (substrate and mechanism of persistence)*
 
 "by exchanging value"
  

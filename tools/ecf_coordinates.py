@@ -22,7 +22,7 @@ DOMAINS: tuple[str, ...] = (
     "AgencyAndOrganization",
     "PartyAndRelationship",
     "ProductAndValue",
-    "OperationsAndEnablement",
+    "EnablementAndOperations",
     "FinanceAndAccounting",
 )
 
@@ -42,21 +42,29 @@ DOMAIN_DISPLAY: dict[str, str] = {
     "AgencyAndOrganization": "Agency & Organization",
     "PartyAndRelationship": "Party & Relationship",
     "ProductAndValue": "Product & Value",
-    "OperationsAndEnablement": "Operations & Enablement",
+    "EnablementAndOperations": "Enablement & Operations",
     "FinanceAndAccounting": "Finance & Accounting",
 }
 
-# Deprecated domain aliases (CR-ECF-007 §6.2; ADR-ECF-002 §6.3).
+# Deprecated domain aliases (CR-ECF-007 §6.2; ADR-ECF-002 §6.3;
+# CR-ECF-008 §17; ADR-ECF-003 §7).
 # Domain 3 was renamed from "People & Organization" to
-# "Agency & Organization" by CR-ECF-007. Consumers that have not yet
-# migrated to the canonical identifier SHOULD resolve the alias and
-# use the canonical value. Maintained for at least 2 release cycles.
+# "Agency & Organization" by CR-ECF-007. Domain 6 was renamed from
+# "Operations & Enablement" to "Enablement & Operations" by CR-ECF-008.
+# Consumers that have not yet migrated to the canonical identifier SHOULD
+# resolve the alias and use the canonical value. Maintained for at least
+# 2 release cycles.
 DOMAIN_ALIASES: dict[str, str] = {
     "PeopleAndOrganization": "AgencyAndOrganization",
     "peopleAndOrganization": "AgencyAndOrganization",
     "people-organization": "AgencyAndOrganization",
     "People & Organization": "AgencyAndOrganization",
     "people": "AgencyAndOrganization",
+    "OperationsAndEnablement": "EnablementAndOperations",
+    "operationsAndEnablement": "EnablementAndOperations",
+    "operations-enablement": "EnablementAndOperations",
+    "Operations & Enablement": "EnablementAndOperations",
+    "operations_and_enablement": "EnablementAndOperations",
 }
 
 

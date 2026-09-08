@@ -57,6 +57,18 @@ No decomposition is introduced at this stage. Compounds are retained as a
 single Domain identifier; the audit record is the artefact, not a renaming.
 A future CR may revisit any compound if evidence accumulates.
 
+**Note (CR-ECF-008; 2026-09-08)**: the `Operations + Enablement` compound
+was renamed to `Enablement + Operations` by CR-ECF-008 (see §3.6 below
+for the updated grounding record and the Domain/Stage orthogonality
+rationale). The two nouns are unchanged; only their order in the Domain
+name changed. The rationale for the rename is recorded in
+[`ADR-ECF-003`](../docs/adr/ADR-ECF-003.md): the leading noun
+`Operations` shared a lexical root with Stage 5 `Operate`, obscuring
+the Domain/Stage orthogonality that the ECF requires. The renamed
+compound puts `Enablement` first (lexically distinct from any Stage
+name) and retains `Operations` as the trailing noun (the sustained
+day-to-day concern, not the lifecycle Stage).
+
 ## 3. Domain Grounding Records
 
 ### 3.1 Governance & Existence
@@ -74,11 +86,11 @@ A future CR may revisit any compound if evidence accumulates.
   standards; risk frameworks; controls; compliance; assurance; policy
   retirement; mandate and authority; dissolution and succession.
 - **Excluded concerns**: people performing governance work (People &
-  Organization); tooling that enforces controls (Operations & Enablement);
+  Organization); tooling that enforces controls (Enablement & Operations);
   monetary accounting of compliance cost (Finance & Accounting); strategic
   choices about direction (Strategy & Direction).
 - **Adjacent Domains**: Agency & Organization (governance vs management);
-  Operations & Enablement (controls vs run-time enforcement); Finance &
+  Enablement & Operations (controls vs run-time enforcement); Finance &
   Accounting (assurance vs audit); Strategy & Direction (constitutional
   authority vs deliberate choice of trajectory).
 - **Boundary rules**: Governance & Existence owns the rules and the assurance
@@ -118,7 +130,7 @@ A future CR may revisit any compound if evidence accumulates.
   with market participants (Party & Relationship); organizational redesign
   execution (Agency & Organization).
 - **Adjacent Domains**: Governance & Existence (authorized frame vs chosen
-  trajectory); Operations & Enablement (strategy vs execution); Finance &
+  trajectory); Enablement & Operations (strategy vs execution); Finance &
   Accounting (strategic investment choices vs monetary plans); Product &
   Value (portfolio evolution direction vs product design); Party &
   Relationship (target segments vs relationships); Agency & Organization
@@ -134,7 +146,7 @@ A future CR may revisit any compound if evidence accumulates.
   standard frameworks (APQC, TOGAF) treat strategy as a mandatory L0
   process category. The prior Domain "Supply & Resources" was removed
   because "Resources" is a cross-cutting asset class, not a stable
-  subject: physical resources moved to Operations & Enablement (as
+  subject: physical resources moved to Enablement & Operations (as
   enablers); financial resources moved to Finance & Accounting; human
   resources stay in Agency & Organization. The vacated axiom slot
   ("persists" as deliberate steering) maps cleanly to this new Domain.
@@ -176,11 +188,11 @@ A future CR may revisit any compound if evidence accumulates.
 - **Excluded concerns**: external parties (Party & Relationship);
   strategic direction (Strategy & Direction); governance authority and
   policy (Governance & Existence); operational execution they perform
-  (Operations & Enablement); monetary compensation decisions (Finance &
+  (Enablement & Operations); monetary compensation decisions (Finance &
   Accounting); product work they produce (Product & Value).
 - **Adjacent Domains**: Governance & Existence (rules that govern
   organizational behaviour); Strategy & Direction (capability
-  requirements vs direction); Operations & Enablement (agents vs the
+  requirements vs direction); Enablement & Operations (agents vs the
   engine they staff); Party & Relationship (internal agents vs external
   parties); Finance & Accounting (compensation accounting vs
   compensation decisions).
@@ -228,13 +240,13 @@ A future CR may revisit any compound if evidence accumulates.
 - **Excluded concerns**: internal agents (Agency & Organization); the
   product or service exchanged (Product & Value); monetary transactions and
   records (Finance & Accounting); operational fulfillment of exchanges
-  (Operations & Enablement); strategic targeting decisions (Strategy &
+  (Enablement & Operations); strategic targeting decisions (Strategy &
   Direction); legal entity constitution (Governance & Existence).
 - **Adjacent Domains**: Product & Value (demand for the offering vs the
   offering itself); Agency & Organization (internal-agent agents vs
   counterparty parties); Finance & Accounting (relationship accounting vs
   monetary measurement); Strategy & Direction (targeting vs market
-  intelligence); Operations & Enablement (engagement management vs
+  intelligence); Enablement & Operations (engagement management vs
   fulfillment execution).
 - **Boundary rules**: Party & Relationship owns the counterparty
   relationship and the bond. The offering that meets the need lives in
@@ -272,16 +284,16 @@ A future CR may revisit any compound if evidence accumulates.
   evolution.
 - **Excluded concerns**: relationships with buyers (Party & Relationship);
   monetary pricing decisions (Finance & Accounting); operational delivery
-  of the product (Operations & Enablement); strategic portfolio investment
+  of the product (Enablement & Operations); strategic portfolio investment
   decisions (Strategy & Direction); technology platforms that enable
-  products (Operations & Enablement); legal governance of IP (Governance &
+  products (Enablement & Operations); legal governance of IP (Governance &
   Existence).
 - **Adjacent Domains**: Party & Relationship (offering vs demand);
-  Operations & Enablement (offering vs the engine that delivers it);
+  Enablement & Operations (offering vs the engine that delivers it);
   Finance & Accounting (offering vs the financial model around it);
   Strategy & Direction (product direction vs strategic direction).
 - **Boundary rules**: Product & Value owns the value-bearing proposition
-  itself. Delivery of the offering is Operations & Enablement; pricing of
+  itself. Delivery of the offering is Enablement & Operations; pricing of
   the offering is Finance & Accounting. "Value" in this Domain's name
   refers to the value proposition carried by the product, not to
   enterprise-wide value (which is a cross-cutting outcome).
@@ -295,19 +307,31 @@ A future CR may revisit any compound if evidence accumulates.
   compound was vague and overlapped with "Product" without distinguishing
   the value proposition.
 
-### 3.6 Operations & Enablement
+### 3.6 Enablement & Operations
 
 - **Axiom grounding**: "exchanging value": exchange requires a mechanism;
   value must be produced, delivered, and sustained.
-- **Semantic definition**: the domain that manages the enterprise's
-  execution engine and the means that make execution possible. It owns the
-  transformation of offerings into delivered outcomes, and the physical,
-  virtual, and procedural infrastructure that enables that transformation.
-  The domain manages execution as a stable subject: the repeatable,
-  manageable, measurable engine that produces outcomes. Technology, platforms,
-  and physical assets are positioned as enablers of execution, not as ends
-  in themselves.
+- **Semantic definition**: the domain that establishes, sustains, and governs
+  the means and mechanisms through which the enterprise executes, delivers,
+  and maintains its capabilities and value exchanges. It encompasses the
+  operational processes, enabling technology, physical and virtual
+  infrastructure, service mechanisms, and operational controls required to
+  make enterprise execution possible and sustainable. The domain manages
+  execution as a stable subject: the repeatable, manageable, measurable
+  engine that produces outcomes. Technology, platforms, and physical assets
+  are positioned as enablers of execution, not as ends in themselves.
 - **Semantic anchor**: Execution.
+- **Fundamental question**: *How does the enterprise enable and sustain
+  execution?*
+- **Normative Domain/Stage distinction (CR-ECF-008 §6)**:
+  Domain 6, Enablement & Operations, is a persistent semantic domain
+  concerned with enabling and sustaining enterprise execution. Stage 5,
+  Operate, is a lifecycle stage describing the context in which a
+  particular enterprise concept is actively run, delivered, monitored,
+  maintained, or otherwise operated. The term "Operations" in the Domain
+  name denotes sustained enterprise day-to-day and ongoing activities as
+  a persistent capability concern; it does not identify or absorb the
+  ECF Operate lifecycle Stage.
 - **Included concerns**: process design and management; execution and
   fulfillment; technology enablement; physical enablement; operational
   planning; operational assurance.
@@ -322,7 +346,7 @@ A future CR may revisit any compound if evidence accumulates.
   outcome vs financial recognition); Party & Relationship (fulfillment vs
   relationship); Agency & Organization (execution agents vs organizational
   design); Governance & Existence (operational enforcement vs policy).
-- **Boundary rules**: Operations & Enablement owns the execution mechanism
+- **Boundary rules**: Enablement & Operations owns the execution mechanism
   and the means that enable it. Technology, platforms, and physical
   infrastructure are positioned as enablers of execution (not as a separate
   Domain) so that the Domain survives any technological paradigm shift
@@ -334,10 +358,14 @@ A future CR may revisit any compound if evidence accumulates.
   Planning; Operational Assurance.
 - **Evidence / rationale**: REPORT §5.1; the Business Process Catalog's
   L0..L4 topology and the telecom run/assure patterns. The compound
-  (operations + enablement) is justified because execution requires the
+  (enablement + operations) is justified because execution requires the
   means; the prior "Delivery" named only an outcome of execution and
   omitted the enablement concern that the absorption of "Supply & Resources"
-  brings in.
+  brings in. The compound order was swapped from `Operations + Enablement`
+  to `Enablement + Operations` by CR-ECF-008 (2026-09-08) to reduce the
+  lexical collision with Stage 5 `Operate` and to make the Domain/Stage
+  orthogonality explicit (see [`ADR-ECF-003`](../docs/adr/ADR-ECF-003.md)
+  §5 for the analysis).
 
 ### 3.7 Finance & Accounting
 
@@ -362,7 +390,7 @@ A future CR may revisit any compound if evidence accumulates.
 - **Adjacent Domains**: all other Domains; Finance & Accounting
   intersects every Domain because every Domain produces and consumes
   monetary consequence. Product & Value (revenue/cost recognition);
-  Operations & Enablement (capex/opex accounting); Strategy & Direction
+  Enablement & Operations (capex/opex accounting); Strategy & Direction
   (investment appraisal); Party & Relationship (receivables/payables);
   Agency & Organization (payroll/benefits accounting); Governance &
   Existence (audit/compliance accounting).
@@ -396,12 +424,12 @@ The seven Domains collectively cover the grounding axiom (per CR-ECF-006
 axiomatic mapping):
 
 - "bounded entity" -> Governance & Existence
-- "persists" (substrate as enabler) -> Operations & Enablement
+- "persists" (substrate as enabler) -> Enablement & Operations
 - "persists" (agents) -> Agency & Organization
 - "persists" (directed) -> Strategy & Direction
 - "exchanging value" (counterparty) -> Party & Relationship
 - "exchanging value" (bearer of value) -> Product & Value
-- "exchanging value" (mechanism) -> Operations & Enablement
+- "exchanging value" (mechanism) -> Enablement & Operations
 - "with its environment" -> Finance & Accounting
 
 No gap: each word is grounded. No hidden assumption: the derivation is the

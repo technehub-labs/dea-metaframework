@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft-07/schema#",
   "$id": "https://github.com/technehub-labs/dea-metaframework/schemas/ecf-domain.schema.json",
   "title": "ECF Domain",
-  "description": "Canonical ECF Domain enumeration. One of seven axiom-derived concern dimensions (CR-ECF-003, CR-ECF-005; domain set extended by CR-ECF-006). Domain 3 renamed from 'PeopleAndOrganization' to 'AgencyAndOrganization' by CR-ECF-007 (substrate independence; ADR-ECF-002). Deprecated aliases for backward compatibility: ['PeopleAndOrganization', 'peopleAndOrganization', 'people-organization', 'People & Organization']. See CR-ECF-007 §6.2 and ADR-ECF-002 §6.3 for the migration policy.",
+  "description": "Canonical ECF Domain enumeration. One of seven axiom-derived concern dimensions (CR-ECF-003, CR-ECF-005; domain set extended by CR-ECF-006). Domain 3 renamed from 'PeopleAndOrganization' to 'AgencyAndOrganization' by CR-ECF-007 (substrate independence; ADR-ECF-002). Domain 6 renamed from 'OperationsAndEnablement' to 'EnablementAndOperations' by CR-ECF-008 (Domain/Stage orthogonality; ADR-ECF-003). Deprecated aliases for backward compatibility: ['PeopleAndOrganization', 'peopleAndOrganization', 'people-organization', 'People & Organization', 'OperationsAndEnablement', 'operationsAndEnablement', 'operations-enablement', 'Operations & Enablement', 'operations_and_enablement']. See CR-ECF-007 §6.2 and ADR-ECF-002 §6.3 for the Domain 3 migration policy; see CR-ECF-008 §17 and ADR-ECF-003 §7 for the Domain 6 migration policy.",
   "type": "string",
   "enum": [
     "GovernanceAndExistence",
@@ -10,7 +10,7 @@
     "AgencyAndOrganization",
     "PartyAndRelationship",
     "ProductAndValue",
-    "OperationsAndEnablement",
+    "EnablementAndOperations",
     "FinanceAndAccounting"
   ]
 }

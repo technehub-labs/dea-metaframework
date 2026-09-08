@@ -19,7 +19,7 @@ The **domains** answer the question *what does the enterprise do?*
 | 3 | Agency & Organization | The domain that manages the enterprise's internal agentive fabric; the constitution, coordination, development, and lifecycle of all agents (biological, artificial, hybrid) that perform capabilities, and the organizational structures through which their agency is channeled. Substrate-independent: see ADR-ECF-002 §5 and CR-ECF-007. |
 | 4 | Party & Relationship | The domain that manages the enterprise's external social fabric; the identification, establishment, development, and termination of bonds with all external entities. |
 | 5 | Product & Value | The domain that manages the enterprise's value-bearing propositions; the complete lifecycle of whatever the enterprise creates and makes available for exchange. |
-| 6 | Operations & Enablement | The domain that manages the enterprise's execution engine and the means that make execution possible; processes, delivery, technology, and physical infrastructure. |
+| 6 | Enablement & Operations | The domain that manages the enterprise's execution engine and the means that make execution possible; processes, delivery, technology, and physical infrastructure. |
 | 7 | Finance & Accounting | The domain that manages the enterprise's monetary reality; the planning, allocation, movement, recording, and reporting of money in exchange with the environment. |
 
 ### Stages (Columns): Value Stream Stages
@@ -50,7 +50,7 @@ context is determined by the consuming catalog.
 | **Agency & Organization** | Capacity plan | Org design | Acquire / onboard | Mobilize | Perform & develop | Coordination | Offboard / reassign |
 | **Party & Relationship** | Need identification | Journey mapping | Onboarding | Activation | Support & service | Satisfaction & churn | Offboarding |
 | **Product & Value** | Market sensing | Catalog & specs | Configuration | Launch | Catalog mgmt | Performance | Sunset |
-| **Operations & Enablement** | Demand planning | Process design | Provisioning | Cut-over | Run & maintain | Quality & incident | Decommission |
+| **Enablement & Operations** | Demand planning | Process design | Provisioning | Cut-over | Run & maintain | Quality & incident | Decommission |
 | **Finance & Accounting** | Business case | Pricing model | Funding | Billing activation | Revenue & cost | Margin analysis | Write-off |
 
 ## Patterns the Foundation Reveals
@@ -94,7 +94,7 @@ names the handoffs; a layer does not.
 ```
 Finance × Design     → pricing
 Product × Activate   → channel launch
-Operations × Operate  → perform
+Enablement & Operations × Operate → perform
 Finance × Operate     → bill
 Finance × Measure     → margin
 ```
@@ -130,7 +130,7 @@ Governance × Operate  → assure
 | Agency & Organization | Design, Planning, Acquisition, Development, Coordination, Transition |
 | Party & Relationship | Identification, Establishment, Engagement, Development, Governance, Termination |
 | Product & Value | Proposition, Portfolio, Development, Packaging, Readiness, Evolution |
-| Operations & Enablement | Process, Fulfillment, Technology, Physical, Planning, Assurance |
+| Enablement & Operations | Process, Fulfillment, Technology, Physical, Planning, Assurance |
 | Finance & Accounting | Planning, Capital, Transaction, Recording, Reporting, Control |
 
 ### Stage Substages

@@ -20,7 +20,7 @@
     { id: 3, key: 'agency',     name: 'Agency & Organization',   shortName: 'Agency',     color: 'var(--l3)' },
     { id: 4, key: 'party',      name: 'Party & Relationship',    shortName: 'Party',      color: 'var(--l4)' },
     { id: 5, key: 'product',    name: 'Product & Value',         shortName: 'Product',    color: 'var(--l5)' },
-    { id: 6, key: 'operations', name: 'Operations & Enablement', shortName: 'Operations', color: 'var(--l6)' },
+    { id: 6, key: 'operations', name: 'Enablement & Operations', shortName: 'Enablement', color: 'var(--l6)' },
     { id: 7, key: 'finance',    name: 'Finance & Accounting',    shortName: 'Finance',    color: 'var(--l7)' },
   ];
   const FALLBACK_STAGES = [
