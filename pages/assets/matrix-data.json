@@ -46,8 +46,8 @@
     {
       "id": 6,
       "key": "operations",
-      "name": "Operations & Enablement",
-      "shortName": "Operations",
+      "name": "Enablement & Operations",
+      "shortName": "Enablement",
       "color": "var(--l6)"
     },
     {

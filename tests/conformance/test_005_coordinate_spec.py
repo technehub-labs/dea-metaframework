@@ -107,16 +107,16 @@ def test_no_cell_filling_rule() -> None:
 
 
 def test_validator_accepts_canonical_coordinate() -> None:
-    payload = {"domain": "OperationsAndEnablement", "stage": "Operate"}
+    payload = {"domain": "EnablementAndOperations", "stage": "Operate"}
     ok, msg = ecf.validate_coordinate(payload)
     check(ok, f"validator rejected canonical coordinate: {msg}")
 
 
 def test_validator_accepts_coordinate_with_identifier() -> None:
     payload = {
-        "domain": "OperationsAndEnablement",
+        "domain": "EnablementAndOperations",
         "stage": "Operate",
-        "identifier": "ecf:operationsAndEnablement.operate",
+        "identifier": "ecf:enablementAndOperations.operate",
     }
     ok, msg = ecf.validate_coordinate(payload)
     check(ok, f"validator rejected coordinate with identifier: {msg}")
@@ -133,7 +133,7 @@ def test_validator_rejects_unknown_domain() -> None:
 
 
 def test_validator_rejects_unknown_stage() -> None:
-    payload = {"domain": "OperationsAndEnablement", "stage": "Maintain"}
+    payload = {"domain": "EnablementAndOperations", "stage": "Maintain"}
     ok, msg = ecf.validate_coordinate(payload)
     check(not ok, "validator accepted unknown stage")
     check(
@@ -144,9 +144,9 @@ def test_validator_rejects_unknown_stage() -> None:
 
 def test_validator_rejects_identifier_mismatch() -> None:
     payload = {
-        "domain": "OperationsAndEnablement",
+        "domain": "EnablementAndOperations",
         "stage": "Operate",
-        "identifier": "ecf:operationsAndEnablement.build",
+        "identifier": "ecf:enablementAndOperations.build",
     }
     ok, msg = ecf.validate_coordinate(payload)
     check(not ok, "validator accepted mismatched identifier")
@@ -154,7 +154,7 @@ def test_validator_rejects_identifier_mismatch() -> None:
 
 def test_validator_rejects_malformed_identifier() -> None:
     payload = {
-        "domain": "OperationsAndEnablement",
+        "domain": "EnablementAndOperations",
         "stage": "Operate",
         "identifier": "OPERATIONS-ENABLEMENT/operate",
     }

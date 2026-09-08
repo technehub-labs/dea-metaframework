@@ -73,7 +73,7 @@ coordinate.
 | 3 | AgencyAndOrganization | agencyAndOrganization | Agency & Organization |
 | 4 | PartyAndRelationship | partyAndRelationship | Party & Relationship |
 | 5 | ProductAndValue | productAndValue | Product & Value |
-| 6 | OperationsAndEnablement | operationsAndEnablement | Operations & Enablement |
+| 6 | EnablementAndOperations | enablementAndOperations | Enablement & Operations |
 | 7 | FinanceAndAccounting | financeAndAccounting | Finance & Accounting |
 
 The `canonical` value is the value carried in the `domain` field of a
@@ -161,7 +161,7 @@ ecf:
   coordinates:
     - domain: partyAndRelationship
       stage:  activate
-    - domain: operationsAndEnablement
+    - domain: enablementAndOperations
       stage:  operate
 ```
 

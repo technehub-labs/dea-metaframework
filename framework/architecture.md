@@ -24,7 +24,16 @@ ECF Profile   Business     Data       Technology
     |
     v
 ECF Coordinates (Domain x Stage; 7 x 7 = 49)
-    |
+    │
+    │  Note (CR-ECF-008): the Domain and Stage axes are orthogonal
+    │  by construction. The relationship is Domain × Stage, NOT
+    │  Domain → Stage and NOT Domain = Stage. Domain 6, Enablement &
+    │  Operations, is a persistent semantic domain; Stage 5, Operate,
+    │  is a lifecycle position. They are never synonyms, aliases, or
+    │  parent/child representations of one another. The coordinate
+    │  `Enablement & Operations × Operate` is one of 49 cells in the
+    │  matrix — the intersection of Domain 6 with Stage 5.
+    │
     |           +----------- other OpenDEA Profiles
     v           v
 OpenDEA Metamodel

@@ -8,6 +8,36 @@ governed by change requests (`change-requests/`).
 
 No changes.
 
+## [2.5.0] - 2026-09-08
+
+The **Enablement & Operations** rename: ECF Domain 6 is renamed from `OperationsAndEnablement` to `EnablementAndOperations` (kebab-case `operations-enablement` → `enablement-operations`; display form `Operations & Enablement` → `Enablement & Operations`; canonical identifier `operations_and_enablement` → `enablement_and_operations`). The change is driven by the **Domain/Stage Orthogonality Stress Test** (ADR-ECF-003 §5): the word `Operations` in the Domain 6 name shared a lexical root with Stage 5 `Operate`, obscuring the orthogonality that the ECF requires between the Domain axis and the Stage axis. The rename swaps the two nouns — `Enablement` now leads (lexically distinct from any Stage name) and `Operations` trails (the sustained day-to-day concern, not the lifecycle Stage).
+
+**Unchanged**: Domain number (6), matrix position (row 6), semantic anchor (`Execution`), axiomatic grounding ("persists" + "exchanging value"), domain scope, lifecycle applicability, seven-Domain partition, seven lifecycle Stages, Stage 5 name (`Operate`), and the `ECF = Domain × Stage = 49 coordinates` construction.
+
+**What changed**:
+- **Schema** (`schemas/ecf-domain.schema.json`): `EnablementAndOperations` replaces `OperationsAndEnablement` in the enum; description documents the deprecation aliases.
+- **Tool** (`tools/ecf_coordinates.py`): `EnablementAndOperations` added to `DOMAINS` and `DOMAIN_DISPLAY`; new `DOMAIN_ALIASES` entries map 5 deprecated aliases to the canonical value (`OperationsAndEnablement`, `operationsAndEnablement`, `operations-enablement`, `Operations & Enablement`, `operations_and_enablement`).
+- **Framework documentation**: `framework/axiom.md` (Domain 6 derivation table), `framework/domain-grounding.md` (compound audit + §3.6 grounding record + §5 completeness mapping + new normative Domain/Stage distinction paragraph), `framework/matrix.md` (Domain 6 row + subdomains table + Commercialization route shorthand), `framework/architecture.md` (Domain/Stage orthogonality note added to the ECF Coordinates diagram).
+- **Specification** (`specification/ecf-coordinates.md`): Domain enumeration table (row 6) and example coordinates updated.
+- **README.md** (`README.md`): axiomatic narrative updated.
+- **REPORT.md** (`REPORT.md`): Domain 6 row in §5.1 domain table + §5.1 one-line definition + §8.3 monetization spine + Telecom Patterns section + Digital Services Patterns table + Domain × Stage references throughout.
+- **Pages** (`pages/assets/matrix-data.json`, `pages/assets/site.js`, `pages/assets/site.css`): Domain 6 display name updated; `shortName` changed from `Operations` to `Enablement` to avoid the UX collision with Stage 5 `Operate`.
+- **Tests** (`tests/conformance/test_005_coordinate_spec.py`): updated to use the new canonical value.
+- **ADR**: `docs/adr/ADR-ECF-003.md` (the decision record for this rename).
+- **CR**: `change-requests/CR-ECF-008.md` (the change request).
+
+**Backward compatibility** (per CR-ECF-008 §17): the former name is retained as a deprecated alias in the schema and tools; the alias resolution function `resolve_domain_alias()` maps all five deprecated forms to `EnablementAndOperations`. Catalog IDs (`dea:pc-oe-*`, `dea:group-*`, `dea:process-*`) that use the stable abbreviation `oe` are unchanged — the two letters come from the two nouns' first letters, which are the same before and after the rename.
+
+**Downstream impact** (per CR-ECF-008 §16): the following repositories must be audited and updated to use the new canonical value:
+- `dea-metamodel` (ECF Domain 6 profile label and mappings)
+- `dea-concepts-model` (terminology registry and Domain enumeration)
+- `dea-catalog-business-capabilities` (capability records with Domain 6 coordinate references)
+- `dea-catalog-processes` (Process Context and L1/L2 records with Domain 6 coordinate references)
+- `dea-architecture-framework` (ECF Domain references and matrix documentation)
+- `technehub-labs.github.io` (Pages display, if the matrix page is downstream)
+
+The catalog cascade follows the same pattern as CR-ECF-006 (v2.3.0) and CR-ECF-007 (v2.4.0): metaframework first (this release), then metamodel, then catalogs. Each catalog landing is a separate CR (CR-BP-23 in dea-catalog-processes; corresponding CRs in the other catalogs).
+
 ## [2.4.0] - 2026-09-07
 
 The **Agency & Organization** rename: ECF Domain 3 is renamed from `PeopleAndOrganization` to `AgencyAndOrganization` (kebab-case `people-organization` → `agency-organization`; display form `People & Organization` → `Agency & Organization`). The change is driven by the **Substrate Independence Stress Test** (ADR-ECF-002 §5): the domain must remain semantically valid whether the enterprise's internal agents are biological (humans), artificial (AI systems, autonomous software agents), or hybrid. The term `People` is biologically loaded and fails the Technology Independence test; `Agency` is the architecturally precise, substrate-independent term for the capacity to act on behalf of the enterprise. No content redistribution is required (the underlying capability taxonomy is unchanged; only the domain name and its surrounding language shift). The other six Domains are unchanged.
