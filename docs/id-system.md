@@ -72,8 +72,9 @@ Full words, kebab-cased: `conceive`, `design`, `build`, `activate`, `operate`, `
 
 - 6 characters, base32 (`a-z` + `2-7`, no `0`, `1`, `8`, `9` to avoid visual confusion).
 - Content-addressed: computed from the canonical YAML serialization of the record file at migration time.
-- Stable across renames: renaming a record does not change its hash suffix unless the content changes.
-- Verified at gate time: `check_id_system.py` recomputes the hash and compares.
+- Stable across renames AND content edits: the suffix is assigned once, at canonicalization (migration), and never recomputed against live content. Recomputing on every edit would churn ids on every change, violating the rename-stability contract and forcing cascading reference rewrites.
+- Provenance: the migration id map (`reconciliation/migration-id-map.yaml` in each catalog repo) records old id -> new id (including the assigned suffix) and is the auditable evidence that the suffix was content-derived at migration time.
+- Verified at gate time (IDM-004): the gate checks suffix well-formedness (6 base32 chars) plus global id uniqueness; it does NOT recompute the hash from current file content.
 
 ### 2.6 Cell and kind fields
 
@@ -130,6 +131,26 @@ Every cross-repo reference carries the full id (namespace token + structural fie
 - Every existing `dea:*` id is rewritten to the new form by the migration script.
 - Every cross-reference (`belongs_to_*`, `composes[]`, evidence `source:`, `process_scope.*`, change_history `cr:` fields that name record ids) is rewritten to carry the full new id.
 - The migration script emits `reconciliation/migration-id-map.yaml`: every old id -> new id, across all repos. This map is the audit trail for the migration.
+
+## 7a. Gate contract (IDM-001..008)
+
+Each catalog repo enforces the id system with a blocking CI gate (`scripts/check_id_system.py`):
+
+- IDM-001: id matches the org-wide form.
+- IDM-002: namespace token matches the repo's registry binding.
+- IDM-003: every structured cross-reference resolves against the canonical catalog.
+- IDM-004: hash suffix well-formed (see 2.5; provenance lives in the migration id map).
+- IDM-005: filesystem path derivable from id (see 6).
+- IDM-006: no legacy `dea:*` ids in structured reference fields (historical prose in change_history and evidence narratives may cite legacy ids verbatim).
+- IDM-007: every entity directory carries a README.md.
+- IDM-008 (PR-scoped coherence): every record YAML changed in a PR keeps path-id consistency, id form, and reference resolution; every CR/ADR markdown changed in a PR carries no legacy path forms or legacy repo names outside clearly historical framing (a file-level `Layout note (CR-BP-mv1, ...)` banner is the historical-framing declaration). IDM-008 emits a per-PR `id-system-coherence-report.md` as a CI artifact.
+
+## 7b. Historical-artifact contract (cross-check stage)
+
+Every structural-change CR carries a cross-check stage that audits historical artifacts (open and closed CRs, ADRs) for path/id/name coherence:
+
+- Historical artifacts are NOT rewritten. They receive a file-level `Layout note (CR-BP-mv1, <date>)` banner declaring their pre-migration framing; content stays verbatim.
+- The cross-check stage runs `scripts/cross_check_org_wide.py` (or the repo-local equivalent) and attaches `reconciliation/cross-check-org-wide.md` to the carrier CR. Statuses: CLEAN (no legacy forms), HISTORICAL-ONLY (legacy forms present, bannered), NEEDS-FRAMING (legacy forms without framing; blocking), UNRESOLVED-REFS (references that resolve against neither the current catalog nor the migration id map; blocking).
 
 ## 8. Non-goals
 
