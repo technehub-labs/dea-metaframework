@@ -1,5 +1,14 @@
 # ADR-ECF-003: ECF Domain 6 Rename — Operations & Enablement → Enablement & Operations
 
+> **Layout note (CR-BP-mv1, 2026-09-20):** This ADR was authored against the
+> pre-rename repo names (`dea-catalog-processes`,
+> `dea-catalog-digital-business-service-factory`) and may cite the pre-migration
+> entity layout (`entities/v1-alpha/dea:*`, `contexts/v1-alpha/`) and the legacy
+> `dea:*` id family. Names, paths, and ids cited below are historical; see
+> `dea-catalog-business-processes/reconciliation/migration-id-map.yaml` for the
+> old-to-new id mapping and the dea-metaframework `docs/entity-storage-layout.md`
+> for the current containment tree.
+
 | Field | Value |
 | :--- | :--- |
 | **Status** | Accepted |
