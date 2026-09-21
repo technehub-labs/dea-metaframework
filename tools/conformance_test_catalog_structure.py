@@ -38,7 +38,14 @@ except ImportError:  # pragma: no cover
     sys.exit(1)
 
 
-ENTITY_ID_PATTERN = re.compile(r"^dea:[a-z0-9-]+(:[a-z0-9-]+)*$")
+# Containment-tree era (docs/entity-storage-layout.md): admit both the
+# legacy dea:* family (unmigrated sibling
+# catalogs) and the repo-namespaced content-addressed family
+# (processes:<level>-<domain>-<stage>-<hash>).
+ENTITY_ID_PATTERN = re.compile(
+    r"^(dea:[a-z0-9-]+(:[a-z0-9-]+)*"
+    r"|processes:(pc|group|process|activity|task)-[a-z0-9-]+)$"
+)
 
 DEFAULT_TEMPLATE_ROOT = "tools/catalog-repo-template"
 
@@ -61,12 +68,57 @@ def load_yaml(path: Path) -> Any:
         return yaml.safe_load(fh)
 
 
+def _is_state_dir(path: Path, entities_root: Path) -> bool:
+    """True if `path` is, or lives under, a research/candidates/retired dir."""
+    rel = path.relative_to(entities_root)
+    return any(part in ("research", "candidates", "retired") for part in rel.parts)
+
+
 def list_entity_subtrees(catalog_root: Path) -> list[Path]:
-    """All directories under `entities/v1-alpha/`."""
+    """All entity directories under `entities/v1-alpha/`.
+
+    Layout-agnostic (containment tree per docs/entity-storage-layout.md):
+    an entity directory is any directory that directly holds at least one
+    `*.yaml` at its root OR has non-empty research/candidates/retired
+    content (the CST-003 shape rule), excluding the state directories
+    themselves and their subtrees.
+
+    - Legacy flat layout: top-level `<id>/` dirs each holding `<id>.yaml`
+      (candidate-only dirs hold records under `candidates/` instead).
+    - Containment tree: one directory per record at any depth
+      (PC at cell level, then group / process / activity / task).
+    """
     entities_root = catalog_root / "entities" / "v1-alpha"
     if not entities_root.exists():
         return []
-    return sorted([p for p in entities_root.iterdir() if p.is_dir()])
+    out = []
+    for p in sorted(entities_root.rglob("*")):
+        if not p.is_dir() or _is_state_dir(p, entities_root):
+            continue
+        has_root_yaml = any(p.glob("*.yaml"))
+        has_state_content = any(
+            (p / d).is_dir() and any((p / d).glob("*"))
+            for d in ("research", "candidates", "retired")
+        )
+        if has_root_yaml or has_state_content:
+            out.append(p)
+    return out
+
+
+def _record_id(subtree: Path) -> str:
+    """The canonical record id for an entity directory.
+
+    Tree layout: the record's `id:` field (directory names are slug+hash,
+    not ids). Legacy flat layout: `id:` equals the directory name.
+    """
+    for yf in sorted(subtree.glob("*.yaml")):
+        try:
+            data = load_yaml(yf)
+        except (OSError, yaml.YAMLError):
+            continue
+        if isinstance(data, dict) and isinstance(data.get("id"), str):
+            return data["id"]
+    return subtree.name
 
 
 # ---------- CST-001..CST-015 + CST-016 ----------
@@ -119,9 +171,8 @@ def cst_003_subtree_shape(catalog_root: Path) -> None:
     Empty subtrees (only `.gitkeep`/`.DS_Store`) are allowed and emit
     `state: candidate` per the regenerator."""
     for subtree in list_entity_subtrees(catalog_root):
-        entity_id = subtree.name
-        canonical = subtree / f"{entity_id}.yaml"
-        has_root_yaml = canonical.is_file() or bool(list(subtree.glob("*.yaml")))
+        entity_id = _record_id(subtree)
+        has_root_yaml = bool(list(subtree.glob("*.yaml")))
         has_state_file = any(
             (subtree / d).is_dir() and any((subtree / d).glob("*"))
             for d in ("research", "candidates", "retired")
@@ -139,17 +190,23 @@ def cst_003_subtree_shape(catalog_root: Path) -> None:
 
 def cst_004_canonical_yaml_required_fields(catalog_root: Path) -> None:
     for subtree in list_entity_subtrees(catalog_root):
-        entity_id = subtree.name
-        canonical = subtree / f"{entity_id}.yaml"
-        if not canonical.is_file():
+        yamls = sorted(subtree.glob("*.yaml"))
+        if not yamls:
             continue
+        canonical = yamls[0]
         data = load_yaml(canonical)
         if not isinstance(data, dict):
             check(False, f"CST-004: {canonical} is not a mapping")
             continue
-        for required in ("id", "type", "name", "version", "lifecycle_status"):
-            if required not in data:
-                check(False, f"CST-004: {canonical} missing {required!r}")
+        required = ["id", "type", "name", "version", "lifecycle_status"]
+        # Process Context records are non-versioned L0 anchors:
+        # no `type:` (by design), no `version`/`lifecycle_status` (profile
+        # owned by check_process_context.py). Require identity + name only.
+        if canonical.name.startswith("processes-pc-"):
+            required = ["id", "name"]
+        for field in required:
+            if field not in data:
+                check(False, f"CST-004: {canonical} missing {field!r}")
 
 
 def cst_005_entities_match_subtrees(catalog_root: Path) -> None:
@@ -162,13 +219,15 @@ def cst_005_entities_match_subtrees(catalog_root: Path) -> None:
         e.get("id") for e in catalog.get("catalog", {}).get("entities", [])
         if isinstance(e, dict)
     }
-    actual = {subtree.name for subtree in list_entity_subtrees(catalog_root)}
+    # Compare by record id, not directory name (tree directory
+    # names are slug+hash, not ids).
+    actual = {_record_id(subtree) for subtree in list_entity_subtrees(catalog_root)}
     # Every declared entity must have a subtree on disk.
     for eid in declared:
         if not isinstance(eid, str):
             continue
         check(
-            (catalog_root / "entities" / "v1-alpha" / eid).is_dir(),
+            eid in actual,
             f"CST-005: CATALOG.yaml declares {eid!r} but subtree is missing",
         )
 
@@ -184,9 +243,10 @@ def cst_006_no_orphan_subtrees(catalog_root: Path) -> None:
         if isinstance(e, dict)
     }
     for subtree in list_entity_subtrees(catalog_root):
+        rid = _record_id(subtree)
         check(
-            subtree.name in declared,
-            f"CST-006: subtree {subtree.name!r} exists on disk but not declared in CATALOG.yaml",
+            rid in declared,
+            f"CST-006: subtree {rid!r} exists on disk but not declared in CATALOG.yaml",
         )
 
 
