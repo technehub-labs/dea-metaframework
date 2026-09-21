@@ -70,7 +70,7 @@ Full words, kebab-cased: `conceive`, `design`, `build`, `activate`, `operate`, `
 
 ### 2.5 Hash suffix
 
-- 6 characters, base32 (`a-z` + `2-7`, no `0`, `1`, `8`, `9` to avoid visual confusion).
+- 6 characters over a 31-symbol visually-unambiguous alphabet: `a-z` minus `i`, `l`, `o`, plus digits `2-9` (no `0`, `1`). Derivation (as landed, Wave 1): the first 4 bytes of the record file's SHA-256, interpreted as a big-endian integer, rendered as 6 base-31 digits over that alphabet.
 - Content-addressed: computed from the canonical YAML serialization of the record file at migration time.
 - Stable across renames AND content edits: the suffix is assigned once, at canonicalization (migration), and never recomputed against live content. Recomputing on every edit would churn ids on every change, violating the rename-stability contract and forcing cascading reference rewrites.
 - Provenance: the migration id map (`reconciliation/migration-id-map.yaml` in each catalog repo) records old id -> new id (including the assigned suffix) and is the auditable evidence that the suffix was content-derived at migration time.
