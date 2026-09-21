@@ -18,7 +18,7 @@ Every canonical record in every DEA catalog repo carries an `id:` field that is 
 <repo-namespace>:<level>-<domain>-<stage>[-<cell>] [-<kind>] [<hash-suffix>]
 ```
 
-Every field is optional except `<repo-namespace>` and `<level>`. The `<domain>` and `<stage>` fields are required only in ECF-coordinated repos (business-processes, business-capabilities). The `<hash-suffix>` is required on all records.
+Every field is optional except `<repo-namespace>` and `<level>`. The `<domain>` and `<stage>` fields are required only where the repo's records each occupy exactly one ECF coordinate (business-processes). business-capabilities is ECF-coordinated at the record-field level (`ecf.primary` / `ecf.secondary`) but its ids do not carry domain/stage, since a capability maps to multiple coordinates. The `<hash-suffix>` is required on all records.
 
 ### 2.1 Repo namespace tokens
 
