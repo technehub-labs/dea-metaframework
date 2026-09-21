@@ -48,7 +48,14 @@ Draft7Validator = _Draft7Validator
 
 DEFAULT_SCHEMA_PATH = "tools/catalog-index-schema.json"
 
-ENTITY_ID_PATTERN = re.compile(r"^dea:[a-z0-9-]+(:[a-z0-9-]+)*$")
+# Entity id pattern: admits the legacy dea:<family>-<name>(:<sub>)* family
+# (unmigrated catalogs) and the org-wide namespaced family
+# <namespace>:<level>-...-<hash6> (post-migration; docs/id-system.md).
+ENTITY_ID_PATTERN = re.compile(
+    r"^(dea:[a-z0-9-]+(:[a-z0-9-]+)*"
+    r"|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor"
+    r"|orgunit|object|service|stakeholder)-[a-z0-9-]+-[a-z2-9]{6})$"
+)
 
 
 def load_schema(schema_path: Path) -> dict[str, Any]:
@@ -110,6 +117,22 @@ def schema_validate(payload: dict[str, Any], schema: dict[str, Any]) -> list[str
     return errors
 
 
+def _subtree_record_id(subtree: Path) -> str:
+    """Record id for a subtree: the record yaml's own id field (root, then
+    candidates/), falling back to the directory name (legacy flat layout
+    where dir name == id)."""
+    probes = sorted(subtree.glob("*.yaml")) + sorted(
+        (subtree / "candidates").glob("*.yaml"))
+    for probe in probes:
+        try:
+            data = load_yaml(probe)
+        except Exception:
+            continue
+        if isinstance(data, dict) and isinstance(data.get("id"), str):
+            return data["id"]
+    return subtree.name
+
+
 def structural_sanity(
     payload: dict[str, Any], catalog_root: Path
 ) -> tuple[list[str], list[str]]:
@@ -136,10 +159,17 @@ def structural_sanity(
             declared_ids.add(eid)
             if not ENTITY_ID_PATTERN.match(eid):
                 errors.append(f"entities[{idx}].id {eid!r}: does not match entity id pattern")
-            # Subtree must exist.
-            subtree = catalog_root / "entities" / "v1-alpha" / eid
-            if not subtree.is_dir():
-                errors.append(f"entities[{idx}].id {eid!r}: subtree missing at {subtree}")
+            # Subtree must exist. Resolve via the declared path field
+            # (post-migration layout: dir names are slug+hash, not ids).
+            if isinstance(path, str):
+                p = catalog_root / path
+                subtree = p if path.endswith("/") else p.parent
+                if not subtree.is_dir():
+                    errors.append(f"entities[{idx}].id {eid!r}: subtree missing at {subtree}")
+            else:
+                subtree = catalog_root / "entities" / "v1-alpha" / eid
+                if not subtree.is_dir():
+                    errors.append(f"entities[{idx}].id {eid!r}: subtree missing at {subtree}")
         if isinstance(path, str):
             resolved = catalog_root / path
             # Allow trailing-slash subtree roots (no file resolution).
@@ -151,14 +181,16 @@ def structural_sanity(
                     errors.append(f"entities[{idx}].path {path!r}: file missing at {resolved}")
 
     # CST-006 (forwarded to STRUCT-06b): every subtree on disk is enumerated.
+    # Post-migration: compare by record id, not directory name.
     for subtree in list_subtrees(catalog_root):
-        if subtree.name not in declared_ids:
-            if not ENTITY_ID_PATTERN.match(subtree.name):
+        rid = _subtree_record_id(subtree)
+        if rid not in declared_ids:
+            if not ENTITY_ID_PATTERN.match(rid):
                 warnings.append(
-                    f"subtree {subtree.name!r}: name does not match entity id pattern (orphan)"
+                    f"subtree {subtree.name!r}: record id {rid!r} does not match entity id pattern (orphan)"
                 )
             else:
-                errors.append(f"subtree {subtree.name!r}: exists on disk but not declared in CATALOG.yaml (orphan)")
+                errors.append(f"subtree {subtree.name!r} (record {rid!r}): exists on disk but not declared in CATALOG.yaml (orphan)")
 
     # research/ subdirectories SHOULD have README.md if non-empty (CST-009).
     for subtree in list_subtrees(catalog_root):
