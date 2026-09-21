@@ -44,7 +44,8 @@ except ImportError:  # pragma: no cover
 # (processes:<level>-<domain>-<stage>-<hash>).
 ENTITY_ID_PATTERN = re.compile(
     r"^(dea:[a-z0-9-]+(:[a-z0-9-]+)*"
-    r"|processes:(pc|group|process|activity|task)-[a-z0-9-]+)$"
+    r"|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor"
+    r"|orgunit|object|service|stakeholder)-[a-z0-9-]+-[a-z2-9]{6})$"
 )
 
 DEFAULT_TEMPLATE_ROOT = "tools/catalog-repo-template"
@@ -110,8 +111,11 @@ def _record_id(subtree: Path) -> str:
 
     Tree layout: the record's `id:` field (directory names are slug+hash,
     not ids). Legacy flat layout: `id:` equals the directory name.
+    Candidate-only subtrees hold their record under `candidates/`.
     """
-    for yf in sorted(subtree.glob("*.yaml")):
+    for yf in sorted(subtree.glob("*.yaml")) + sorted(
+        (subtree / "candidates").glob("*.yaml")
+    ):
         try:
             data = load_yaml(yf)
         except (OSError, yaml.YAMLError):

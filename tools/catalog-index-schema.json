@@ -140,8 +140,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^dea:[a-z0-9-]+(:[a-z0-9-]+)*$",
-        "description": "Canonical entity id; colons preserved as part of the directory name. Accepts single-segment (dea:process-foo) and multi-segment (dea:pc-cd-op) ids."
+          "pattern": "^(dea:[a-z0-9-]+(:[a-z0-9-]+)*|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor|orgunit|object|service|stakeholder)-[a-z0-9-]+-[a-z2-9]{6})$",
+        "description": "Canonical entity id. Accepts the legacy dea:* family and the org-wide namespaced family <namespace>:<level>-...-<hash6> (docs/id-system.md)."
         },
         "type": {
           "type": "string",
@@ -186,7 +186,7 @@
       "properties": {
         "entity_id": {
           "type": "string",
-          "pattern": "^dea:[a-z0-9-]+(:[a-z0-9-]+)*$"
+          "pattern": "^(dea:[a-z0-9-]+(:[a-z0-9-]+)*|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor|orgunit|object|service|stakeholder)-[a-z0-9-]+-[a-z2-9]{6})$"
         },
         "path": {
           "type": "string",
