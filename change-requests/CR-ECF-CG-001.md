@@ -8,7 +8,7 @@
 | **Type** | Governance / Conformance |
 | **Scope** | OpenDEA repositories consuming the Enterprise Concept Framework |
 | **Depends On** | CR-ECF-001, CR-ECF-002, CR-ECF-003, CR-ECF-004, CR-ECF-005 |
-**Author**: Coder (for eaojnr)
+**Author**: Emmanuel A. Otchere
 | **Date** | 2026-09-01 |
 
 ## 1. Purpose

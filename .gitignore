@@ -1,3 +1,20 @@
+# Build artifacts
+out/
+node_modules/
+.npm/
+.cache/
+
+# Test artifacts
+coverage/
+*.log
 __pycache__/
 *.pyc
-.pytest_cache/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.bak
+# Planning / staging notes (per CR-programme convention: never committed)
+01_plan/

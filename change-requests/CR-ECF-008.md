@@ -2,12 +2,12 @@
 
 **Status**: Accepted
 **Layer**: ECF (Enterprise Concept Framework) — dea-metaframework
-**Owner**: Coder (for eaojnr)
+**Owner**: Emmanuel A. Otchere
 **Date**: 2026-09-08
 **Depends on**: CR-ECF-006 (Domain enum v2.3.0); CR-ECF-007 (Domain 3 rename to Agency & Organization)
 **Related**: ADR-ECF-001 (domain restructure policy); ADR-ECF-002 (Domain 3 rename); ADR-ECF-003 (this CR's decision record)
 
-## Editorial note (Coder, 2026-09-08)
+## Editorial note (Emmanuel A. Otchere, 2026-09-08)
 
 Two typos in the original CR text are corrected for the implementation:
 1. §3 Proposed Definition uses "Enablement & Operate" — this is a slip; the correct name is "Enablement & Operations" (`Operate` is reserved for Stage 5 and never used in the Domain name).

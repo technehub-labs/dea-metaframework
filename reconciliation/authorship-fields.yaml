@@ -1,0 +1,39 @@
+# Cardinal authorship-field registry (CR-BP-118b; this repo's slice).
+# Adding a new field here is a CR-level change; do not edit casually.
+# The dea-metaframework repo uses **Owner** / **Author** in TWO
+# locations: change-requests/CR-*.md (the standard CR-doc metadata)
+# and docs/*.md (status-doc metadata at the top of ratified
+# documents, e.g. docs/id-system.md, docs/entity-storage-layout.md).
+# Both globs are bounded so vendored content is invisible.
+
+fields:
+  # CR doc metadata (markdown bold-key form). Same as 118a.
+  - path: "**Owner**"                # CR doc metadata
+    file_glob: "change-requests/CR-*.md"
+    kind: "metadata"
+  - path: "**Author**"               # CR doc metadata
+    file_glob: "change-requests/CR-*.md"
+    kind: "metadata"
+
+  # Status-doc metadata (markdown bold-key form). MF-specific:
+  # ratified docs carry **Owner** at the top of the file.
+  - path: "**Owner**"                # status-doc metadata
+    file_glob: "docs/*.md"
+    kind: "metadata"
+
+allowlist:
+  - "Emmanuel A. Otchere"
+  - "TechNeHub Labs"
+
+# Agent / tool names that may never appear in an authorship-bearing field.
+# `eaojnr` is allowed as a historical record (user handle alone, no agent prefix).
+denylist:
+  - "Coder"
+  - "Agent"
+  - "Hermes"
+  - "Claude"
+  - "GPT"
+  - "Cline"
+  - "OpenAI"
+  - "MiniMax"
+  - "MiniMax-M3"
