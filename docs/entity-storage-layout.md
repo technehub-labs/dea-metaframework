@@ -3,7 +3,7 @@
 **Version**: 1.0.0
 **Date**: 2026-09-20
 **Status**: Ratified
-**Owner**: Coder (for eaojnr)
+**Owner**: Emmanuel A. Otchere
 **Scope**: Org-wide. All `dea-catalog-*` repos.
 
 ---

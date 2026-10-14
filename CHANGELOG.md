@@ -6,7 +6,25 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
-No changes.
+### CR-ECF-009: Authorship Cardinal Rule (R1, R2) - Org-Wide Propagation Slice
+
+User directive 2026-10-13: "no `Coder` / `Agent` / agent or tool names in any
+authorship field of any published artifact". The CR-BP-118 cardinal rules (R1
+and R2) are propagated to this repo. New blocking gate
+`scripts/check_authorship.py` (CR-BP-118 / AUT-001..003), data-driven from
+`reconciliation/authorship-fields.yaml` (allowlist
+`{Emmanuel A. Otchere, TechNeHub Labs}`; denylist
+`{Coder, Agent, Hermes, Claude, GPT, Cline, OpenAI, MiniMax, MiniMax-M3}`).
+A retroactive sweep rewrites every authorship-metadata hit in the repo: 4
+files, 5 textual replacements. 0 entity content changes; 0 id changes; 0
+cross-reference changes. The MF repo's field set extends to
+`docs/*.md` (status-doc metadata) in addition to the standard
+`change-requests/CR-*.md`; the registry enumerates both globs. One prose
+byline (`Editorial note (Coder, 2026-09-08)`) is also rewritten -- a
+first-instance prose sweep under the 118b rule. CI wiring: new workflow
+`.github/workflows/validate-authorship.yml` runs the gate in `--strict` mode
+on every push and PR. 21/21 `test_check_authorship` pass. Carrier:
+`change-requests/CR-ECF-009-authorship-cardinal-rule.md`.
 
 ## [2.5.0] - 2026-09-08
 
