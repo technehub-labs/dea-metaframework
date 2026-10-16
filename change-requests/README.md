@@ -73,3 +73,10 @@ when those decisions are implemented.
   section.
 - Docs style: no en/em dashes in authored text (colons/semicolons instead);
   Design Specification tone.
+
+
+## Recent entries
+
+| CR | Title | Status | Notes |
+|---|---|---|
+| [CR-ECF-010](CR-ECF-010-entity-system-cross-reference.md) | Entity System Cross-Reference (Metaframework) | **Proposed (this PR)** | Metaframework cross-reference slice of the General Entity System institutionalisation (cross-repo cascade T7). The Metaframework repo is a metaframework (ECF + ADRs) repo; it does not contain entity records and does NOT adopt the entity-system gate. This PR records the cross-reference to `dea-governance` (DEA-ID-000 + CR-012) and enumerates the Metaframework repo's commitments to the General Entity System standard. D-004 clean. 118a/b/c authorship gates remain CONFORMANT. Follow-on: T8 legacy ID reconciliation. |

@@ -6,6 +6,10 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
+### CR-ECF-010: Entity System Cross-Reference (Metaframework Slice)
+
+Metaframework cross-reference slice of the General Entity System institutionalisation (cross-repo cascade T7 of the umbrella programme). The Metaframework repo is a metaframework (ECF + ADRs) repo; it does not contain entity records and does NOT adopt the entity-system gate. This PR records the cross-reference to `dea-governance` (DEA-ID-000 + CR-012) and enumerates the Metaframework repo's commitments to the General Entity System standard. D-004 clean. 118a/b/c authorship gates remain CONFORMANT.
+
 ### CR-ECF-009: Authorship Cardinal Rule (R1, R2) - Org-Wide Propagation Slice
 
 User directive 2026-10-13: "no `Coder` / `Agent` / agent or tool names in any
