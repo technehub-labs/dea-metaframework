@@ -1,8 +1,18 @@
 # ADR-ECF-002: ECF Domain Semantic Integrity & Substrate Independence
 
+> **Layout note (CR-BP-mv1, 2026-09-20):** This ADR was authored before the
+> Domain 2, 3, and 6 renames (CR-ECF-006 v2.3.0 / CR-ECF-007 v2.4.0 /
+> CR-ECF-008 v2.5.0). It cites the pre-rename domain names `Supply & Resources`,
+> `People & Organization`, and `Operations & Enablement`; the canonical names
+> are `Strategy & Direction`, `Agency & Organization`, and `Enablement &
+> Operations` (per ADR-ECF-001, ADR-ECF-002, ADR-ECF-003 respectively). Names
+> cited below are historical; the ADR's decision and contract remain in force
+> for the canonical set. Status flipped to `Accepted` to reflect that the
+> decision landed via PR #28.
+
 | Field | Value |
 | :--- | :--- |
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-09-07 |
 | **Deciders** | TechNeHub Labs Architecture Board |
 | **Technical Story** | CR: ECF Domain Restructuring for Semantic Integrity, MECE Compliance, and Substrate Independence |
