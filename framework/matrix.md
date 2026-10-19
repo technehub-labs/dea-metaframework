@@ -156,3 +156,25 @@ Business Process Architecture defines its own process topology
 (Process Context -> L0 Process Scope -> L1 Process Group -> L2 Business
 Process -> L3 Activity -> L4 Task); the ECF provides the coordinate
 context, not the process hierarchy.
+
+## Reference Mirrors
+
+The ECF 7 x 7 coordinate enumeration defined in this document is also mirrored as a public, deterministic JSON artifact and as static HTML pages per cell. The mirror is the read-only lookup surface at `lists.technehub.com`; this `dea-metaframework` repo remains the canonical authority for matrix changes (any matrix change here triggers a mirror regeneration via the build script in the mirror repo).
+
+- **Mirror landing**: <https://lists.technehub.com/ecf/>
+- **Mirror JSON**: <https://lists.technehub.com/data/ecf-coordinates/coordinates.json> (49 coordinates; SHA256-audited via `data/SHA256SUMS`)
+- **Mirror repo**: <https://github.com/technehub-labs/dea-catalog-references>
+
+### Per-cell URLs
+
+Each of the 49 cells has a stable URL of the shape:
+
+```
+https://lists.technehub.com/ecf/<domain-token>/<stage-token>.html
+```
+
+For example, the (Governance & Existence, Conceive) cell is <https://lists.technehub.com/ecf/governance-existence/conceive.html>. The domain tokens are the kebab-case form of the domain name; the stage tokens are the lowercase stage name.
+
+### Provenance precedence
+
+If the mirror and this matrix disagree, this matrix wins. The mirror is regenerated from this source on every `dea-catalog-references` build; manual edits to the mirror are forbidden (the build script regenerates all artifacts deterministically from the upstream XMLs).
