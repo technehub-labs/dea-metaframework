@@ -15,7 +15,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Install pytest
-        run: pip install pytest
-      - name: Run conformance suite
-        run: pytest -q tests/conformance/test_005_coordinate_spec.py
+      - name: Install pytest + deps
+        run: pip install pytest pyyaml jsonschema
+      - name: Run full test suite
+        run: pytest -q tests/ tools/cross_repo_consumer/tests/
