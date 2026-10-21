@@ -83,7 +83,8 @@ import re
 ENTITY_ID_PATTERN = re.compile(
     r"^(dea:[a-z0-9-]+(:[a-z0-9-]+)*"
     r"|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor"
-    r"|orgunit|object|service|stakeholder)-[a-z0-9-]+-[a-z2-9]{6})$"
+    r"|orgunit|object|service|stakeholder)-[a-z0-9-]+"
+    r"-[abcdefghjkmnpqrstuvwxyz23456789]{6})$"
 )
 
 

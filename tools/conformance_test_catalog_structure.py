@@ -45,7 +45,8 @@ except ImportError:  # pragma: no cover
 ENTITY_ID_PATTERN = re.compile(
     r"^(dea:[a-z0-9-]+(:[a-z0-9-]+)*"
     r"|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor"
-    r"|orgunit|object|service|stakeholder)-[a-z0-9-]+-[a-z2-9]{6})$"
+    r"|orgunit|object|service|stakeholder)-[a-z0-9-]+"
+    r"-[abcdefghjkmnpqrstuvwxyz23456789]{6})$"
 )
 
 DEFAULT_TEMPLATE_ROOT = "tools/catalog-repo-template"
