@@ -37,6 +37,15 @@ PRESERVE_GLOBS = (
     "change-requests/README.md",
 )
 
+# Directory trees the glob walker must never enter, whatever the glob
+# shape. `.git` is VCS internal; `.metaframework` is the upstream copy
+# that CI checks out at step 5 of the catalog-gate workflow, whose own
+# CR docs carry `Coder` authorship and would fire AUT-001 as false
+# positives. The path prefix in a directory-scoped glob keeps those out
+# already, but a bare-filename glob (`README.md`) has no prefix, so the
+# exclusion is enforced here for every glob shape.
+_EXCLUDED_DIRS = frozenset({".git", ".metaframework"})
+
 
 def _is_preserved(relpath: str) -> bool:
     return any(fnmatch.fnmatch(relpath, g) for g in PRESERVE_GLOBS)
@@ -126,7 +135,7 @@ def _iter_files(glob: str):
     """Yield absolute paths matching a registered glob.
 
     The glob shape comes from the registry and is a relative path
-    under the repo (e.g. ``change-requests/CR-*.md`` or
+    under the repo (e.g. ``README.md``, ``change-requests/CR-*.md`` or
     ``entities/v1-alpha/**/processes-*.yaml``). The function
     normalizes the glob into a search pattern and walks the tree,
     bounding itself to the path prefix in the glob to prevent
@@ -141,8 +150,18 @@ def _iter_files(glob: str):
     for ``entities/v1-alpha/**/processes-*.yaml`` the prefix is
     ``entities/v1-alpha/``. The walk starts at that prefix and never
     crosses it.
+
+    A glob with no directory component (``README.md``) has no
+    directory prefix to bound to, so the walk starts at REPO_ROOT and
+    the filename pattern is matched at any depth below it, following
+    ``Path.rglob`` semantics. That is the conservative direction for a
+    compliance gate: a superset of the files a reader would expect,
+    never a subset. Vendored subtrees are excluded explicitly by
+    :data:`_EXCLUDED_DIRS` below, because a bare-filename glob cannot
+    rely on the path prefix to keep it out of ``.metaframework/``.
     """
-    # Compute the literal prefix: everything before the first `*` or `?`.
+    # Compute the literal prefix: everything before the first `*` or `?`,
+    # truncated to a whole number of directory components.
     wildcard = re.search(r"[?*]", glob)
     if wildcard:
         prefix = glob[: wildcard.start()]
@@ -150,17 +169,30 @@ def _iter_files(glob: str):
         prefix = glob
     if not prefix.endswith("/") and prefix != "":
         # If the prefix stops mid-component, drop the partial component.
-        prefix = prefix.rsplit("/", 1)[0] + "/"
+        # Note that "README.md".rsplit("/", 1) is ["README.md"] (not
+        # ["", "README.md"]), so a glob with no directory component needs
+        # the explicit no-slash branch: the previous unconditional form
+        # produced "README.md/", making `base` a file and silently
+        # matching nothing for every bare-filename glob.
+        head, sep, _tail = prefix.rpartition("/")
+        prefix = (head + "/") if sep else ""
     base = REPO_ROOT / prefix.rstrip("/") if prefix.rstrip("/") else REPO_ROOT
-    if not base.exists():
+    if not base.is_dir():
         return
     # Strip the prefix from the glob to get a relative pattern for rglob.
     rel_glob = glob[len(prefix):] if prefix and glob.startswith(prefix) else glob
     if not rel_glob:
         rel_glob = Path(glob).name
     for p in base.rglob(rel_glob):
-        if p.is_file() and ".git" not in p.parts:
-            yield p
+        if not p.is_file():
+            continue
+        # Never descend into vendored or internal trees. The path prefix
+        # already excludes them for directory-scoped globs; a bare
+        # filename has no such prefix, so the exclusion is applied here
+        # for every glob shape.
+        if any(part in _EXCLUDED_DIRS for part in p.parts):
+            continue
+        yield p
 
 
 def _extract_value(line: str, field_path: str) -> str | None:
