@@ -28,8 +28,22 @@ FAILURES: list[str] = []
 
 
 def check(condition: bool, message: str) -> None:
+    """Record a failure AND fail the calling test immediately.
+
+    This used to only append to the module-level FAILURES list, which
+    made the module unfailable under pytest: `run_all()` (the only
+    reporter) runs solely under `if __name__ == "__main__":`, so every
+    test passed no matter what the machinery found.
+
+    Raising keeps both runners honest -- pytest fails the test, and
+    `run_all()` catches the exception and records it -- while the append
+    is retained so the standalone reporter still prints every message.
+    No test depends on accumulating: each check() is an independent
+    assertion.
+    """
     if not condition:
         FAILURES.append(message)
+        raise AssertionError(message)
 
 
 def run_subprocess(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess:
@@ -100,7 +114,16 @@ def build_fixture(
         subtree = root / "entities" / "v1-alpha" / entity_id
         subtree.mkdir(parents=True, exist_ok=True)
         (subtree / "candidates").mkdir(exist_ok=True)
-        write_yaml(subtree / "candidates" / f"{entity_id}.yaml", "id: placeholder\n")
+        # The record must carry the REAL entity id. Writing a literal
+        # placeholder here (e.g. `id: placeholder`) makes the regenerator
+        # read that value via entity_id_from_subtree, fail the canonical id
+        # pattern check, and skip the whole subtree -- emitting an empty
+        # CATALOG.yaml while exiting 0. That is a silent skip, not a
+        # candidate-state record.
+        write_yaml(
+            subtree / "candidates" / f"{entity_id}.yaml",
+            f"id: {entity_id}\ntype: Process\nversion: 0.1.0\nlifecycle_status: candidate\n",
+        )
 
     for entity_id, lifecycle in retired_entities:
         subtree = root / "entities" / "v1-alpha" / entity_id
