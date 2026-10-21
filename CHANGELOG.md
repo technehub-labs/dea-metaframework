@@ -6,6 +6,69 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-10-20
+
+Staleness audit remediation, spec reconciliation, and the authorship-gate
+false-green fix. This release exists so the catalog-repo template can pin its
+CI toolchain to a tag that actually contains the fixes below.
+
+### Authorship gate: bare-filename glob false green (PR #42)
+
+`scripts/check_authorship.py:_iter_files()` resolved a registered glob with no
+directory component (e.g. `README.md`) to `base = REPO_ROOT / "README.md"` --
+a file, not a directory -- because `"README.md".rsplit("/", 1)` is
+`["README.md"]`, not `["", "README.md"]`. `Path.rglob()` on a file yields
+nothing, so the gate inspected zero files and reported `CONFORMANT`. A false
+green is worse than an uncovered field: it is indistinguishable from a passing
+gate. Fixed via an explicit no-directory-component branch using `rpartition`,
+`base.exists()` -> `base.is_dir()`, and a new `_EXCLUDED_DIRS`
+(`.git`, `.metaframework`) applied to every yielded path so a bare-filename
+glob cannot descend into the CI-vendored upstream tree. 7 regression tests
+added; 3 of them fail against the previous gate. This was a prerequisite for
+wiring the authorship gate into the catalog-repo template.
+
+### CI: full test suite (PR #39)
+
+The CI workflow ran only `tests/conformance/test_005_coordinate_spec.py`.
+Unrun at the time: `tests/test_catalog_index_machinery.py`,
+`tests/test_conformance_catalog_structure.py`, and both
+`tools/cross_repo_consumer/tests/` modules -- including the unit tests for the
+very gate the workflow invokes. CI now installs `pyyaml` and `jsonschema` (both
+already imported by the suites) and runs `pytest -q tests/
+tools/cross_repo_consumer/tests/`.
+
+### Spec reconciliation (PR #41)
+
+- **`docs/id-system.md` and `docs/entity-storage-layout.md`**: four See-also
+  entries cited paths that live in `dea-catalog-business-processes`, not this
+  repo (`scripts/check_id_system.py`, `scripts/migrate_to_v3_layout.py`,
+  `docs/decomposition-semantic-contract.md`). Each is now qualified with its
+  owning repo; local entries are marked, and both files name
+  `tools/catalog-index-schema.json` as the vendored canonical schema.
+- **Folder-naming examples** in `docs/entity-storage-layout.md` §2.2 described
+  the slug-plus-hash layout as current. CR-BP-117c (PR #159, merged 2026-10-13)
+  had already renamed the directories: PC folders are `<domain>-<stage>/` with
+  no hash, deeper folders are human-readable record names, and record files are
+  named for the full normalized id. §2.2 now describes the v3 form; a new §2.4
+  preserves the superseded Wave-1 form verbatim for readers reconciling
+  pre-migration artefacts.
+- **Hash-suffix alphabet**: the spec declared a 31-symbol alphabet but the
+  canonical schema shipped `[a-z2-9]{6}` (34 symbols, admitting `i`, `l`, `o`).
+  That schema is what every catalog repo vendors, so the defect propagated. All
+  5 sites tightened to the 31-symbol set (2 schema patterns, 3 tool
+  `ENTITY_ID_PATTERN`s), and the spec now names the alphabet as a set so spec,
+  schema, and gate agree. Live data was already clean (0 of 3,723 suffixes).
+
+### CR-index reconciliation and ADR status (PRs #38, #40)
+
+`change-requests/README.md`: CR-ECF-009 was absent from the index, CR-ECF-010 sat
+in a malformed `## Recent entries` block whose 4-column header did not match its
+3-column separator, and 9 already-merged artefacts still read
+`Proposed (this PR)`. All corrected; the malformed block was removed.
+`docs/adr/ADR-ECF-002.md` gains the `Layout note (CR-BP-mv1)` banner its
+sibling ADR-ECF-003 already had, and its Status is corrected from `Proposed` to
+`Accepted` (the decision landed via PR #28). The ADR body is preserved verbatim.
+
 ### CR-ECF-010: Entity System Cross-Reference (Metaframework Slice)
 
 Metaframework cross-reference slice of the General Entity System institutionalisation (cross-repo cascade T7 of the umbrella programme). The Metaframework repo is a metaframework (ECF + ADRs) repo; it does not contain entity records and does NOT adopt the entity-system gate. This PR records the cross-reference to `dea-governance` (DEA-ID-000 + CR-012) and enumerates the Metaframework repo's commitments to the General Entity System standard. D-004 clean. 118a/b/c authorship gates remain CONFORMANT.
@@ -467,7 +530,11 @@ Initial public release of the Enterprise Concept Framework as the
 axiom-derived 7x7 organizing matrix for the TechNeHub Labs DEA ecosystem.
 See `CITATION.cff` for the canonical citation metadata.
 
-[Unreleased]: https://github.com/technehub-labs/dea-metaframework/compare/v2.2.0...HEAD
+[Unreleased]: https://github.com/technehub-labs/dea-metaframework/compare/v2.6.0...HEAD
+[2.6.0]: https://github.com/technehub-labs/dea-metaframework/compare/v2.5.0...v2.6.0
+[2.5.0]: https://github.com/technehub-labs/dea-metaframework/compare/v2.4.0...v2.5.0
+[2.4.0]: https://github.com/technehub-labs/dea-metaframework/compare/v2.3.0...v2.4.0
+[2.3.0]: https://github.com/technehub-labs/dea-metaframework/compare/v2.2.0...v2.3.0
 [2.2.0]: https://github.com/technehub-labs/dea-metaframework/compare/v2.1.0...v2.2.0
 [2.1.0]: https://github.com/technehub-labs/dea-metaframework/compare/v2.0.0...v2.1.0
 [2.0.0]: https://github.com/technehub-labs/dea-metaframework/releases/tag/v2.0.0
