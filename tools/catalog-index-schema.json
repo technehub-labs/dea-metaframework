@@ -140,8 +140,8 @@
       "properties": {
         "id": {
           "type": "string",
-          "pattern": "^(dea:[a-z0-9-]+(:[a-z0-9-]+)*|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor|orgunit|object|service|stakeholder)-[a-z0-9-]+-[a-z2-9]{6})$",
-        "description": "Canonical entity id. Accepts the legacy dea:* family and the org-wide namespaced family <namespace>:<level>-...-<hash6> (docs/id-system.md)."
+          "pattern": "^(dea:[a-z0-9-]+(:[a-z0-9-]+)*|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor|orgunit|object|service|stakeholder)-[a-z0-9-]+-[abcdefghjkmnpqrstuvwxyz23456789]{6})$",
+        "description": "Canonical entity id. Accepts the legacy dea:* family and the org-wide namespaced family <namespace>:<level>-...-<hash6> (docs/id-system.md). The hash6 suffix uses the 31-symbol visually-unambiguous alphabet (a-z minus i, l, o; plus 2-9; docs/id-system.md s2.5)."
         },
         "type": {
           "type": "string",
@@ -186,7 +186,7 @@
       "properties": {
         "entity_id": {
           "type": "string",
-          "pattern": "^(dea:[a-z0-9-]+(:[a-z0-9-]+)*|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor|orgunit|object|service|stakeholder)-[a-z0-9-]+-[a-z2-9]{6})$"
+          "pattern": "^(dea:[a-z0-9-]+(:[a-z0-9-]+)*|[a-z]+:(pc|group|process|activity|task|capability|candidate|actor|orgunit|object|service|stakeholder)-[a-z0-9-]+-[abcdefghjkmnpqrstuvwxyz23456789]{6})$"
         },
         "path": {
           "type": "string",

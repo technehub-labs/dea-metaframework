@@ -70,11 +70,11 @@ Full words, kebab-cased: `conceive`, `design`, `build`, `activate`, `operate`, `
 
 ### 2.5 Hash suffix
 
-- 6 characters over a 31-symbol visually-unambiguous alphabet: `a-z` minus `i`, `l`, `o`, plus digits `2-9` (no `0`, `1`). Derivation (as landed, Wave 1): the first 4 bytes of the record file's SHA-256, interpreted as a big-endian integer, rendered as 6 base-31 digits over that alphabet.
+- 6 characters over a 31-symbol visually-unambiguous alphabet: `a-z` minus `i`, `l`, `o`, plus digits `2-9` (no `0`, `1`). The alphabet as a set is `abcdefghjkmnpqrstuvwxyz23456789`. Derivation (as landed, Wave 1): the first 4 bytes of the record file's SHA-256, interpreted as a big-endian integer, rendered as 6 base-31 digits over that alphabet.
 - Content-addressed: computed from the canonical YAML serialization of the record file at migration time.
 - Stable across renames AND content edits: the suffix is assigned once, at canonicalization (migration), and never recomputed against live content. Recomputing on every edit would churn ids on every change, violating the rename-stability contract and forcing cascading reference rewrites.
 - Provenance: the migration id map (`reconciliation/migration-id-map.yaml` in each catalog repo) records old id -> new id (including the assigned suffix) and is the auditable evidence that the suffix was content-derived at migration time.
-- Verified at gate time (IDM-004): the gate checks suffix well-formedness (6 base32 chars) plus global id uniqueness; it does NOT recompute the hash from current file content.
+- Verified at gate time (IDM-004): the gate checks suffix well-formedness (6 characters over the 31-symbol alphabet defined in 2.5) plus global id uniqueness; it does NOT recompute the hash from current file content.
 
 ### 2.6 Cell and kind fields
 
@@ -160,6 +160,6 @@ Every structural-change CR carries a cross-check stage that audits historical ar
 
 ## 9. See also
 
-- `docs/entity-storage-layout.md`: the filesystem layout convention (L0-rooted containment tree).
-- `docs/decomposition-semantic-contract.md`: the decomposition chain (L0-L4) and the decomposition-vs-execution split.
-- `scripts/check_id_system.py`: the CI gate that enforces this spec in every repo.
+- `docs/entity-storage-layout.md` (this repo): the filesystem layout convention (L0-rooted containment tree).
+- `docs/decomposition-semantic-contract.md` (in `dea-catalog-business-processes`): the decomposition chain (L0-L4) and the decomposition-vs-execution split.
+- `scripts/check_id_system.py` (in `dea-catalog-business-processes`): the CI gate that enforces this spec in every catalog repo. The canonical schema this gate uses is vendored from `tools/catalog-index-schema.json` in this repo.
