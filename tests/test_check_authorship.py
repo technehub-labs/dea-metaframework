@@ -209,3 +209,134 @@ def test_iter_files_does_not_escape_into_metaframework():
         assert "CR-AT-ROOT.md" not in walked, (
             f"glob escaped its prefix; walked: {walked}"
         )
+
+
+# --- Regression tests for the bare-filename glob false green ---------
+# The walker's literal-prefix derivation used to produce "<glob>/" for a
+# glob with no directory component, making `base` a file and matching
+# nothing. The gate then reported CONFORMANT while inspecting zero files,
+# which is a false green: indistinguishable from a passing gate. These
+# tests lock in the fixed behaviour.
+
+
+def _walker_against(tmp_root, glob, monkeypatch):
+    """Call the real _iter_files with REPO_ROOT rebound to a temp tree."""
+    spec = importlib.util.spec_from_file_location("check_authorship_probe", SCRIPT)
+    assert spec is not None
+    mod = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(mod)
+    monkeypatch.setattr(mod, "REPO_ROOT", tmp_root)
+    return sorted(
+        p.relative_to(tmp_root).as_posix() for p in mod._iter_files(glob)
+    )
+
+
+def test_bare_filename_glob_finds_root_level_file(monkeypatch):
+    """A glob with no directory component must resolve its base to
+    REPO_ROOT, not to REPO_ROOT/<filename>, and so must match the
+    root-level file."""
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        fake = Path(tmp)
+        (fake / "README.md").write_text("# hi\n")
+        walked = _walker_against(fake, "README.md", monkeypatch)
+        assert "README.md" in walked, (
+            f"bare-filename glob matched nothing; walked: {walked}"
+        )
+
+
+def test_bare_filename_glob_does_not_escape_into_vendored_subtree(monkeypatch):
+    """A bare-filename glob has no path prefix to bound it, so the
+    vendored `.metaframework/` tree must be excluded explicitly or the
+    upstream repo's own Coder-authored docs fire AUT-001."""
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        fake = Path(tmp)
+        (fake / "README.md").write_text("# mine\n")
+        vendored = fake / ".metaframework"
+        vendored.mkdir()
+        (vendored / "README.md").write_text("# upstream\n")
+        walked = _walker_against(fake, "README.md", monkeypatch)
+        assert "README.md" in walked
+        assert ".metaframework/README.md" not in walked, (
+            f"glob escaped into the vendored subtree; walked: {walked}"
+        )
+
+
+def test_bare_filename_glob_does_not_escape_into_git_dir(monkeypatch):
+    """`.git` is internal to every repo and must never be walked."""
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        fake = Path(tmp)
+        git = fake / ".git"
+        git.mkdir()
+        (git / "README.md").write_text("# internal\n")
+        walked = _walker_against(fake, "README.md", monkeypatch)
+        assert walked == [], (
+            f"glob walked into .git; walked: {walked}"
+        )
+
+
+def test_denylisted_value_in_bare_filename_glob_now_fails_the_gate():
+    """End-to-end: a denylisted value in a root-level README must make the
+    gate exit non-zero. Before the fix this combination reported
+    CONFORMANT because the glob matched no files."""
+    import shutil
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        cat = Path(tmp) / "catalog"
+        (cat / "scripts").mkdir(parents=True)
+        (cat / "reconciliation").mkdir(parents=True)
+        shutil.copy(SCRIPT, cat / "scripts" / "check_authorship.py")
+        (cat / "README.md").write_text("# T\n\n**Owner**: Coder\n")
+        (cat / "reconciliation" / "authorship-fields.yaml").write_text(
+            "fields:\n"
+            "  - path: \"**Owner**\"\n"
+            "    file_glob: \"README.md\"\n"
+            "    kind: \"metadata\"\n"
+            "allowlist:\n"
+            "  - \"TechNeHub Labs\"\n"
+            "denylist:\n"
+            "  - \"Coder\"\n"
+        )
+        r = subprocess.run(
+            [sys.executable, str(cat / "scripts" / "check_authorship.py"), "--strict"],
+            capture_output=True, text=True,
+        )
+        assert r.returncode != 0, (
+            "denylisted value passed the gate: the bare-filename glob is "
+            f"not being enforced\n{r.stdout}\n{r.stderr}"
+        )
+        assert "AUT-001" in (r.stdout + r.stderr)
+
+
+def test_registered_globs_still_resolve_to_expected_file_sets(monkeypatch):
+    """The fix must not change behaviour for the directory-scoped globs
+    already in the registry. Each is still bounded to its own prefix."""
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        fake = Path(tmp)
+        (fake / "change-requests").mkdir()
+        (fake / "change-requests" / "CR-a.md").write_text("")
+        (fake / "change-requests" / "CR-b.md").write_text("")
+        (fake / "docs").mkdir()
+        (fake / "docs" / "s.md").write_text("")
+        # Same-named files outside each prefix must not be picked up.
+        (fake / "CR-a.md").write_text("")
+        (fake / "s.md").write_text("")
+        assert _walker_against(fake, "change-requests/CR-*.md", monkeypatch) == [
+            "change-requests/CR-a.md",
+            "change-requests/CR-b.md",
+        ]
+        assert _walker_against(fake, "docs/*.md", monkeypatch) == ["docs/s.md"]
+
+
+def test_missing_prefix_directory_yields_nothing_rather_than_raising(monkeypatch):
+    """A glob whose prefix directory does not exist must yield nothing
+    quietly, matching the pre-existing early-return behaviour."""
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        fake = Path(tmp)
+        (fake / "README.md").write_text("")
+        assert _walker_against(fake, "nowhere/CR-*.md", monkeypatch) == []
