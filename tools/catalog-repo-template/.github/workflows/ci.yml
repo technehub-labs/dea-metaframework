@@ -1,5 +1,16 @@
 name: CI
 
+# Every catalog repo bootstrapped from tools/catalog-repo-template carries
+# this workflow. It fetches the regenerator, the index gate, the canonical
+# schema, and the authorship gate from dea-metaframework and runs them.
+#
+# The fetch is pinned to a RELEASE TAG, not a branch. An unpinned fetch
+# makes every catalog repo silently track an unpinned upstream: any change
+# to the shared tools lands in every catalog repo's CI without review. A
+# tag also makes the toolchain a catalog validated against reproducible.
+# Bump `ref:` deliberately, in its own PR, with the gate changes visible
+# in the diff.
+
 on:
   push:
     branches: [main]
@@ -17,18 +28,23 @@ jobs:
           python-version: "3.12"
       - name: Install dependencies
         run: pip install pyyaml jsonschema pytest
-      - name: Fetch regenerator + gate from metaframework
+      - name: Fetch regenerator + gates from metaframework
         uses: actions/checkout@v4
         with:
           repository: technehub-labs/dea-metaframework
+          ref: v2.6.0
           path: .metaframework
-      - name: Install regenerator + gate
+      - name: Install regenerator + gates
         run: |
-          mkdir -p scripts
+          mkdir -p scripts reconciliation
           cp .metaframework/tools/regenerate_catalog.py scripts/
           cp .metaframework/tools/check_catalog_index.py scripts/
           cp .metaframework/tools/catalog-index-schema.json scripts/
+          cp .metaframework/scripts/check_authorship.py scripts/
+          cp .metaframework/reconciliation/authorship-fields.yaml reconciliation/
       - name: Regenerate CATALOG.yaml (must match committed file)
         run: python scripts/regenerate_catalog.py --check
       - name: Validate CATALOG.yaml
         run: python scripts/check_catalog_index.py --strict
+      - name: Authorship Cardinal Rule gate (CR-BP-118; AUT-001..003)
+        run: python scripts/check_authorship.py --strict

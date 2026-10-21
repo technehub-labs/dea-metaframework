@@ -1,0 +1,61 @@
+# Cardinal authorship-field registry for a bootstrapped catalog repo
+# (CR-BP-118b). This file ships WITH the catalog: it is the catalog's
+# own field set, not a copy of the metaframework's.
+#
+# Adding a new field here is a CR-level change; do not edit casually.
+#
+# A catalog repo carries authorship-bearing fields in three places:
+#
+#   README.md            **Owner** (set at bootstrap from --owner)
+#   CITATION.cff         authors[].name (set at bootstrap from --owner)
+#   change-requests/*.md **Owner** / **Author** (CR doc metadata)
+#
+# CITATION.cff is deliberately NOT registered yet. The gate's citation
+# extractor (_extract_citation_value in scripts/check_authorship.py)
+# matches a bare key form such as `given-names:`, which is what the
+# metaframework's own CITATION.cff uses. The catalog template's
+# CITATION.cff uses the YAML list-item form:
+#
+#   authors:
+#     - name: "{{OWNER}}"
+#
+# for which the extractor's key never matches. Registering it today
+# would add a field that silently matches no files -- the same false
+# green that bare-filename globs produced before v2.6.0, and harder to
+# spot because the registry would look complete. Extending the
+# extractor to the list-item form, then registering the field, is the
+# scope of the registry-completion slice (card #529).
+
+fields:
+  # Catalog identity. Bare-filename glob: this shape is only resolved
+  # correctly by the gate from dea-metaframework v2.6.0 onward, which is
+  # why the template CI pins its fetch to that tag. Before v2.6.0 this
+  # glob matched nothing and the gate reported CONFORMANT vacuously.
+  - path: "**Owner**"                # catalog README identity
+    file_glob: "README.md"
+    kind: "metadata"
+
+  # CR doc metadata (markdown bold-key form), standard across all repos.
+  - path: "**Owner**"                # CR doc metadata
+    file_glob: "change-requests/CR-*.md"
+    kind: "metadata"
+  - path: "**Author**"               # CR doc metadata
+    file_glob: "change-requests/CR-*.md"
+    kind: "metadata"
+
+allowlist:
+  - "Emmanuel A. Otchere"
+  - "TechNeHub Labs"
+
+# Agent / tool names that may never appear in an authorship-bearing field.
+# `eaojnr` is allowed as a historical record (user handle alone, no agent prefix).
+denylist:
+  - "Coder"
+  - "Agent"
+  - "Hermes"
+  - "Claude"
+  - "GPT"
+  - "Cline"
+  - "OpenAI"
+  - "MiniMax"
+  - "MiniMax-M3"
