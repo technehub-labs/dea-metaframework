@@ -19,3 +19,23 @@ jobs:
         run: pip install pytest pyyaml jsonschema
       - name: Run full test suite
         run: pytest -q tests/ tools/cross_repo_consumer/tests/
+
+  # The two self-test modules are dual-runner: pytest discovers their
+  # test_* functions, but they also carry a run_all() reporter that only
+  # executes under __main__. Running them standalone exercises that second
+  # path, which is how these suites are documented to be run outside
+  # pytest. Each exits non-zero on any recorded failure.
+  self-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install deps
+        run: pip install pyyaml jsonschema
+      - name: CST self-test (standalone runner)
+        run: python tests/test_conformance_catalog_structure.py
+      - name: Catalog index machinery self-test (standalone runner)
+        run: python tests/test_catalog_index_machinery.py

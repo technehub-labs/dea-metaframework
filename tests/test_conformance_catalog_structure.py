@@ -35,8 +35,23 @@ FAILURES: list[str] = []
 
 
 def check(condition: bool, message: str) -> None:
+    """Record a failure AND fail the calling test immediately.
+
+    This used to only append to the module-level FAILURES list, which
+    made the module unfailable under pytest: `run_all()` (the only
+    reporter) runs solely under `if __name__ == "__main__":`, so every
+    test passed no matter what the suite found. The same fixture could
+    report "11 passed" under pytest and "FAIL ... rc=1" standalone.
+
+    Raising keeps both runners honest -- pytest fails the test, and
+    `run_all()` catches the exception and records it -- while the append
+    is retained so the standalone reporter still prints every message.
+    No test depends on accumulating: each check() is an independent
+    assertion.
+    """
     if not condition:
         FAILURES.append(message)
+        raise AssertionError(message)
 
 
 def run_subprocess(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess:
@@ -180,8 +195,17 @@ def test_bootstrap_produces_conformant_catalog(tmp_root: Path) -> None:
     check(rc.returncode == 0, f"bootstrap expected exit 0; got {rc.returncode}; stderr={rc.stderr}; stdout={rc.stdout}")
 
     # The bootstrapped catalog must contain the expected files.
+    # CATALOG.yaml is deliberately absent: bootstrap scaffolds the catalog
+    # but does not generate the index. The first `regenerate_catalog.py`
+    # run produces it. Asserting its absence here is what pins that
+    # contract, so a future change to bootstrap cannot silently start
+    # emitting a stale or hand-built index.
+    check(
+        not (target / "CATALOG.yaml").exists(),
+        "bootstrap unexpectedly created CATALOG.yaml; it must be generated "
+        "by regenerate_catalog.py, not scaffolded",
+    )
     for required in (
-        "CATALOG.yaml",  # may be missing until first regen; that's expected
         "TEMPLATE_VERSION",
         "metamodel-pointer.yaml",
         "README.md",
@@ -198,7 +222,19 @@ def test_bootstrap_produces_conformant_catalog(tmp_root: Path) -> None:
     readme = (target / "README.md").read_text(encoding="utf-8")
     check("dea:catalog-test-bootstrapped" in readme, "catalog_id not substituted into README")
     check("Test Bootstrapped" in readme, "catalog_name not substituted into README")
-    check("TB" in readme, "abbreviation not substituted into README")
+    # The abbreviation is NOT a README placeholder: no file under
+    # tools/catalog-repo-template/ contains {{CATALOG_ABBREVIATION}}, so
+    # asserting it appears in README was asserting something the template
+    # never asked for. It is consumed by build_metamodel_pointer, which
+    # writes metamodel-pointer.yaml, so that is where it must be checked.
+    check(
+        "TB" not in readme,
+        "abbreviation leaked into README; it belongs only in "
+        "metamodel-pointer.yaml",
+    )
+
+    pointer_text = (target / "metamodel-pointer.yaml").read_text(encoding="utf-8")
+    check("TB" in pointer_text, "abbreviation not written to metamodel-pointer.yaml")
 
     license_text = (target / "LICENSE").read_text(encoding="utf-8")
     check("TechNeHub Labs" in license_text, "owner not substituted into LICENSE")
