@@ -92,5 +92,10 @@ Every record's filesystem path must be derivable from its id. The CI gate `check
 ## 6. See also
 
 - `docs/id-system.md`: the org-wide id system (namespace tokens, level tokens, hash suffix, registry).
-- `scripts/check_id_system.py`: the CI gate that enforces this spec.
-- `scripts/migrate_to_v3_layout.py`: the migration script that rewrites ids and moves files.
+- `scripts/check_id_system.py` (in `dea-catalog-business-processes`): the CI gate that enforces this spec.
+- `scripts/migrate_to_v3_layout.py` (in `dea-catalog-business-processes`): the migration script that rewrites ids and moves files.
+
+Both paths are repo-relative to `dea-catalog-business-processes`, not to this
+repo, which is why a bare reference reads as a broken local link. The in-repo
+gate is `tools/check_catalog_index.py`; `scripts/check_id_system.py` also exists
+in `dea-catalog-business-capabilities`.

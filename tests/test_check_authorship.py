@@ -340,3 +340,188 @@ def test_missing_prefix_directory_yields_nothing_rather_than_raising(monkeypatch
         fake = Path(tmp)
         (fake / "README.md").write_text("")
         assert _walker_against(fake, "nowhere/CR-*.md", monkeypatch) == []
+
+
+# ── CR-BP-118c: CITATION.cff authorship coverage ─────────────────────────────
+# Two distinct defects, both of which left a REGISTERED field matching zero
+# lines, which is worse than an unregistered one because the registry claims
+# the field is covered.
+
+
+def _cff_repo(tmp, cff_body, registry_extra=""):
+    """Build a throwaway repo carrying a CFF file and a matching registry."""
+    import shutil
+    import tempfile
+    holder = tempfile.TemporaryDirectory()
+    cat = Path(holder.name) / "catalog"
+    (cat / "scripts").mkdir(parents=True)
+    (cat / "reconciliation").mkdir(parents=True)
+    shutil.copy(SCRIPT, cat / "scripts" / "check_authorship.py")
+    (cat / "CITATION.cff").write_text(cff_body)
+    (cat / "reconciliation" / "authorship-fields.yaml").write_text(
+        "fields:\n"
+        '  - path: "given-names"\n'
+        '    file_glob: "CITATION.cff"\n'
+        '    kind: "cff-author"\n'
+        "    name_part: true\n"
+        '  - path: "family-names"\n'
+        '    file_glob: "CITATION.cff"\n'
+        '    kind: "cff-author"\n'
+        "    name_part: true\n"
+        + registry_extra +
+        "allowlist:\n"
+        '  - "Emmanuel A. Otchere"\n'
+        "denylist:\n"
+        '  - "Coder"\n'
+    )
+    return holder, cat
+
+
+def _run_gate(cat):
+    import subprocess
+    return subprocess.run(
+        [sys.executable, str(cat / "scripts" / "check_authorship.py"), "--strict"],
+        capture_output=True, text=True,
+    )
+
+
+CFF_AUTHORS = (
+    "cff-version: 1.2.0\n"
+    "title: T\n"
+    "authors:\n"
+    "  - family-names: Otchere\n"
+    "    given-names: Emmanuel A.\n"
+)
+
+
+def test_list_item_first_key_is_matched():
+    """`- family-names: X` is the FIRST key of a YAML sequence item.
+
+    Before the dash-stripping fix the registry entry matched zero lines, so a
+    denylisted value here passed the gate silently.
+    """
+    holder, cat = _cff_repo(None, CFF_AUTHORS.replace("Otchere", "Coder"))
+    try:
+        r = _run_gate(cat)
+        assert r.returncode != 0, (
+            "denylisted family-names passed: the list-item dash is not stripped\n"
+            f"{r.stdout}\n{r.stderr}"
+        )
+        # Assert on the finding detail, not the rule name: the header and the
+        # "AUT-001 hits: N" summary line contain "AUT-001" on every run, so a
+        # substring check on the rule name passes even when the value was only
+        # rejected as an allowlist mismatch rather than as a denylisted name.
+        assert "deny=Coder" in (r.stdout + r.stderr), (
+            "family-names was rejected, but not as a denylisted name\n"
+            f"{r.stdout}\n{r.stderr}"
+        )
+    finally:
+        holder.cleanup()
+
+
+def test_given_names_denylisted_fails():
+    holder, cat = _cff_repo(None, CFF_AUTHORS.replace("Emmanuel A.", "Coder"))
+    try:
+        r = _run_gate(cat)
+        assert r.returncode != 0, "denylisted given-names passed the gate"
+        assert "deny=Coder" in (r.stdout + r.stderr), (
+            "given-names was rejected, but not as a denylisted name\n"
+            f"{r.stdout}\n{r.stderr}"
+        )
+    finally:
+        holder.cleanup()
+
+
+def test_split_name_parts_are_accepted():
+    """`given-names: Emmanuel A.` and `family-names: Otchere` are legitimate
+    halves of the canonical identity. Neither is a whole name on its own, so
+    exact matching cannot accept them and a strict run would fail CI."""
+    holder, cat = _cff_repo(None, CFF_AUTHORS)
+    try:
+        r = _run_gate(cat)
+        assert r.returncode == 0, (
+            "a correctly split canonical name was rejected\n"
+            f"{r.stdout}\n{r.stderr}"
+        )
+    finally:
+        holder.cleanup()
+
+
+def test_name_part_mode_rejects_an_unrelated_name():
+    """name_part must not become a blanket exemption: a name that is not a
+    prefix or suffix of the allowlist entry is still a finding."""
+    holder, cat = _cff_repo(None, CFF_AUTHORS.replace("Emmanuel A.", "Someone Else"))
+    try:
+        r = _run_gate(cat)
+        assert r.returncode != 0, "an unrelated name passed under name_part"
+        assert "Someone Else" in (r.stdout + r.stderr), (
+            "the unrelated name was not reported\n" + r.stdout + r.stderr
+        )
+    finally:
+        holder.cleanup()
+
+
+def test_allow_placeholders_exempts_template_slot():
+    """A template field holds a substitution slot, not an authorship claim."""
+    import shutil
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        cat = Path(tmp) / "catalog"
+        (cat / "scripts").mkdir(parents=True)
+        (cat / "reconciliation").mkdir(parents=True)
+        shutil.copy(SCRIPT, cat / "scripts" / "check_authorship.py")
+        (cat / "README.md").write_text("# T\n\n**Owner**: {{OWNER}}\n")
+        (cat / "reconciliation" / "authorship-fields.yaml").write_text(
+            "fields:\n"
+            '  - path: "**Owner**"\n'
+            '    file_glob: "README.md"\n'
+            '    kind: "metadata"\n'
+            "    allow_placeholders: true\n"
+            "allowlist:\n"
+            '  - "Emmanuel A. Otchere"\n'
+            "denylist:\n"
+            '  - "Coder"\n'
+        )
+        r = _run_gate(cat)
+        assert r.returncode == 0, (
+            "an unresolved template placeholder failed the gate\n"
+            f"{r.stdout}\n{r.stderr}"
+        )
+
+
+def test_allow_placeholders_does_not_excuse_a_denylisted_substitution():
+    """The exemption covers the SLOT, not whatever is later substituted into
+    it. AUT-001 returns before AUT-003, so this must still be blocking."""
+    import shutil
+    import tempfile
+    with tempfile.TemporaryDirectory() as tmp:
+        cat = Path(tmp) / "catalog"
+        (cat / "scripts").mkdir(parents=True)
+        (cat / "reconciliation").mkdir(parents=True)
+        shutil.copy(SCRIPT, cat / "scripts" / "check_authorship.py")
+        (cat / "README.md").write_text("# T\n\n**Owner**: Coder\n")
+        (cat / "reconciliation" / "authorship-fields.yaml").write_text(
+            "fields:\n"
+            '  - path: "**Owner**"\n'
+            '    file_glob: "README.md"\n'
+            '    kind: "metadata"\n'
+            "    allow_placeholders: true\n"
+            "allowlist:\n"
+            '  - "Emmanuel A. Otchere"\n'
+            "denylist:\n"
+            '  - "Coder"\n'
+        )
+        r = _run_gate(cat)
+        assert r.returncode != 0, "allow_placeholders excused a denylisted value"
+
+
+def test_live_citation_file_is_conformant_under_strict():
+    """The real CITATION.cff must stay clean, or CI goes red on merge."""
+    citation = ROOT / "CITATION.cff"
+    if not citation.exists():
+        pytest.skip("no CITATION.cff at repo root")
+    r = subprocess.run(
+        [sys.executable, str(SCRIPT), "--strict"],
+        capture_output=True, text=True, cwd=ROOT,
+    )
+    assert r.returncode == 0, f"live tree is not conformant\n{r.stdout}\n{r.stderr}"

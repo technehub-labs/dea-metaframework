@@ -21,6 +21,29 @@ fields:
     file_glob: "docs/*.md"
     kind: "metadata"
 
+  # CITATION.cff (CR-BP-118c). The citation metadata carries real authorship:
+  # an `authors:` list whose entries are `given-names` / `family-names`. It was
+  # previously ungated, so injecting a denylisted name into
+  # authors[].given-names left AUT-001..003 reporting CONFORMANT.
+  # Verified: `Coder` injected into given-names, gate still exit 0 before this
+  # registration.
+  - path: "given-names"
+    file_glob: "CITATION.cff"
+    kind: "cff-author"
+    name_part: true
+  - path: "family-names"
+    file_glob: "CITATION.cff"
+    kind: "cff-author"
+    name_part: true
+
+  # The catalog-repo template README carries an **Owner** field that every
+  # bootstrapped catalog repo inherits. It sat outside every registered glob for
+  # the same reason: not covered is not clean.
+  - path: "**Owner**"                # template README owner field
+    file_glob: "tools/catalog-repo-template/README.md"
+    kind: "metadata"
+    allow_placeholders: true
+
 allowlist:
   - "Emmanuel A. Otchere"
   - "TechNeHub Labs"

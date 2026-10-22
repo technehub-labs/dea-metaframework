@@ -134,7 +134,8 @@ Every cross-repo reference carries the full id (namespace token + structural fie
 
 ## 7a. Gate contract (IDM-001..008)
 
-Each catalog repo enforces the id system with a blocking CI gate (`scripts/check_id_system.py`):
+Each catalog repo enforces the id system with a blocking CI gate
+(`scripts/check_id_system.py`, in `dea-catalog-business-processes`):
 
 - IDM-001: id matches the org-wide form.
 - IDM-002: namespace token matches the repo's registry binding.
