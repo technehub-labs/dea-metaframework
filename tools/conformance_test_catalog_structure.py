@@ -369,16 +369,137 @@ def cst_012_metamodel_pointer_paths(catalog_root: Path) -> None:
     _walk(data)
 
 
+# ---------------------------------------------------------------------------
+# Pinned upstream resolution (CST-013 / CST-014)
+#
+# History. These two CSTs used to assert that the catalog repo carried
+# committed copies of the shared tools:
+#
+#     CST-013: scripts/regenerate_catalog.py exists
+#     CST-014: scripts/check_catalog_index.py exists
+#
+# That contradicted the template, which ships only scripts/.gitkeep and
+# has the catalog's CI fetch the tools from a pinned upstream ref at run
+# time. A catalog bootstrapped from the official template therefore FAILED
+# the standard it was bootstrapped from:
+#
+#     $ python3 tools/bootstrap_catalog_repo.py --target /tmp/bt ...
+#     $ python3 tools/conformance_test_catalog_structure.py \
+#           --catalog-root /tmp/bt --cst CST-013
+#     FAIL: CST-013: scripts/regenerate_catalog.py missing
+#
+# Catalogs that worked around this by committing their own copies
+# accumulated drift by construction, because nothing tied the copies to
+# the upstream they claimed to be. The in-tree fixture carried four such
+# copies and every one had diverged from tools/.
+#
+# New semantics: the regenerator and the index gate must be RESOLVABLE
+# FROM A PINNED UPSTREAM REF, declared in the catalog's own CI workflow.
+# A vendored copy is still accepted, but only as a declared fallback, and
+# only when the workflow pins nothing (the historical shape). The pin is
+# the thing that makes a catalog reproducible; a committed copy is not.
+# ---------------------------------------------------------------------------
+
+UPSTREAM_REPOSITORY = "technehub-labs/dea-metaframework"
+
+# A ref is pinned when it is a release tag. Branch names track moving
+# targets, so every catalog repo would silently inherit whatever upstream
+# shipped that day without review.
+_TAG_REF = re.compile(r"^v\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$")
+
+
+def _workflow_texts(catalog_root: Path) -> list[str]:
+    workflows = catalog_root / ".github" / "workflows"
+    if not workflows.is_dir():
+        return []
+    texts = []
+    for wf in sorted(workflows.glob("*.yml")) + sorted(workflows.glob("*.yaml")):
+        try:
+            texts.append(wf.read_text(encoding="utf-8"))
+        except OSError:
+            continue
+    return texts
+
+
+def _upstream_pin(texts: list[str]) -> tuple[str | None, bool]:
+    """Return (pinned_ref, upstream_is_declared) from CI workflow texts.
+
+    Scans for an actions/checkout step naming the metaframework repository
+    and reads its `ref:`. Returns the ref only when it looks like a
+    release tag, so an unpinned `ref: main` reports as declared-but-
+    unpinned rather than being mistaken for a pin.
+    """
+    declared = False
+    for text in texts:
+        if UPSTREAM_REPOSITORY not in text:
+            continue
+        declared = True
+        # Scope the ref search to the step that names the upstream repo, so
+        # a `ref:` belonging to some other action cannot be picked up.
+        for block in re.split(r"(?=\n\s*-?\s*uses:)", text):
+            if UPSTREAM_REPOSITORY not in block:
+                continue
+            m = re.search(r"^\s*ref:\s*[\"']?([^\s\"'#]+)", block, re.MULTILINE)
+            if m and _TAG_REF.match(m.group(1)):
+                return m.group(1), True
+    return None, declared
+
+
+def _sourced_from_upstream(texts: list[str], tool_filename: str) -> bool:
+    """True when the workflow copies the tool out of the upstream checkout."""
+    for text in texts:
+        if tool_filename not in text:
+            continue
+        # Either the cp path runs through the upstream staging directory, or
+        # the tool is invoked directly from it.
+        if re.search(rf"\.metaframework/tools/{re.escape(tool_filename)}", text):
+            return True
+    return False
+
+
+def _tool_resolvable(catalog_root: Path, cst_id: str, tool: str, tool_filename: str) -> None:
+    texts = _workflow_texts(catalog_root)
+    pin, declared = _upstream_pin(texts)
+
+    if pin and _sourced_from_upstream(texts, tool_filename):
+        # The canonical shape: pinned upstream, tools staged at CI time.
+        return
+
+    if not texts:
+        check(False, f"{cst_id}: no CI workflow found under .github/workflows/; "
+                     f"{tool} must be resolved from a pinned upstream ref")
+        return
+
+    if declared and not pin:
+        check(False, f"{cst_id}: {UPSTREAM_REPOSITORY} is checked out but not at a "
+                     f"release tag; pin `ref:` to a vX.Y.Z tag so the toolchain is "
+                     f"reproducible (an unpinned branch tracks a moving target)")
+        return
+
+    if pin and not _sourced_from_upstream(texts, tool_filename):
+        check(False, f"{cst_id}: upstream is pinned at {pin} but the workflow never "
+                     f"sources {tool_filename} from the checkout; add a step copying it "
+                     f"out of .metaframework/tools/")
+        return
+
+    # No upstream declaration: accept a committed copy as the historical
+    # fallback, but warn, because that copy can drift from the upstream it
+    # claims to be and nothing ties the two together.
+    vendored = catalog_root / "scripts" / tool
+    if not vendored.is_file():
+        check(False, f"{cst_id}: {tool} is neither vendored at scripts/{tool_filename} "
+                     f"nor resolved from a pinned {UPSTREAM_REPOSITORY} ref")
+        return
+    warn(f"{cst_id}: {tool} is vendored, not pinned; it can drift from "
+         f"{UPSTREAM_REPOSITORY}. Prefer fetching it from a release tag in CI.")
+
+
 def cst_013_regenerator_present(catalog_root: Path) -> None:
-    regen = catalog_root / "scripts" / "regenerate_catalog.py"
-    if not regen.is_file():
-        check(False, "CST-013: scripts/regenerate_catalog.py missing")
+    _tool_resolvable(catalog_root, "CST-013", "regenerate_catalog.py", "regenerate_catalog.py")
 
 
 def cst_014_gate_present(catalog_root: Path) -> None:
-    gate = catalog_root / "scripts" / "check_catalog_index.py"
-    if not gate.is_file():
-        check(False, "CST-014: scripts/check_catalog_index.py missing")
+    _tool_resolvable(catalog_root, "CST-014", "check_catalog_index.py", "check_catalog_index.py")
 
 
 def cst_015_ci_workflow_references_scripts(catalog_root: Path) -> None:

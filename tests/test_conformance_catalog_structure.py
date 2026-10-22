@@ -16,6 +16,7 @@ exit-0-or-1 runner.
 
 from __future__ import annotations
 
+import re
 import shutil
 import subprocess
 import sys
@@ -166,7 +167,159 @@ def test_conformance_strict_escalates_template_drift(tmp_root: Path) -> None:
     check("STRICT" in rc_strict.stderr, "STRICT escalation not flagged")
 
 
-def test_conformance_cst_filter_runs_only_named(tmp_root: Path) -> None:
+# ---------- CST-013 / CST-014: pinned upstream resolution ----------
+
+def test_cst_013_accepts_freshly_bootstrapped_catalog(tmp_root: Path) -> None:
+    """A catalog bootstrapped from the template must PASS the standard.
+
+    This is the regression CST-013 originally could not survive: the
+    template ships only scripts/.gitkeep and stages the tools from a
+    pinned upstream ref at CI time, so asserting a committed
+    scripts/regenerate_catalog.py failed every correctly-bootstrapped
+    catalog.
+    """
+    target = tmp_root / "bootstrapped-pin"
+    rc = run_subprocess(
+        [
+            str(BOOTSTRAP),
+            "--target", str(target),
+            "--catalog-id", "dea:catalog-pin-test",
+            "--catalog-name", "Pin Test",
+            "--catalog-abbreviation", "PT",
+            "--owner", "TechNeHub Labs",
+        ],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 0, f"bootstrap failed: rc={rc.returncode}; stderr={rc.stderr}")
+    check(
+        not (target / "scripts" / "regenerate_catalog.py").exists(),
+        "fixture precondition broken: template now vendors the regenerator, so this "
+        "test no longer covers the pinned-resolution path",
+    )
+    for cst in ("CST-013", "CST-014"):
+        rc = run_subprocess(
+            [str(CONFORMANCE), "--catalog-root", str(target), "--template-root", str(TEMPLATE), "--cst", cst],
+            cwd=tmp_root,
+        )
+        check(rc.returncode == 0, f"{cst} should pass for a bootstrapped catalog; "
+                                  f"got {rc.returncode}; stderr={rc.stderr}")
+
+
+def test_cst_013_rejects_unpinned_upstream_branch(tmp_root: Path) -> None:
+    """An upstream checkout pinned to a branch is not a pin.
+
+    `ref: main` tracks a moving target, so every catalog repo would
+    silently inherit whatever upstream shipped that day without review.
+    """
+    target = tmp_root / "unpinned"
+    copy_conforming(target)
+    wf = target / ".github" / "workflows" / "ci.yml"
+    wf.write_text(
+        wf.read_text(encoding="utf-8").replace("ref: v2.6.0", "ref: main"),
+        encoding="utf-8",
+    )
+    rc = run_subprocess(
+        [str(CONFORMANCE), "--catalog-root", str(target), "--template-root", str(TEMPLATE), "--cst", "CST-013"],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 2, f"unpinned branch should fail CST-013; got {rc.returncode}")
+    check("release tag" in rc.stderr, f"CST-013 should name the pin requirement; stderr={rc.stderr}")
+
+
+def test_cst_013_rejects_pin_without_sourcing_step(tmp_root: Path) -> None:
+    """Pinning the upstream but never staging the tool from it is not enough.
+
+    Guards against a workflow that declares a pin for appearance while
+    still running something else.
+    """
+    target = tmp_root / "pin-not-sourced"
+    copy_conforming(target)
+    wf = target / ".github" / "workflows" / "ci.yml"
+    text = wf.read_text(encoding="utf-8")
+    # Keep the pinned checkout, drop the staging step that copies out of it.
+    text = text.replace("cp .metaframework/tools/regenerate_catalog.py scripts/\n", "")
+    text = text.replace("cp .metaframework/tools/check_catalog_index.py scripts/\n", "")
+    text = text.replace("cp .metaframework/tools/catalog-index-schema.json scripts/\n", "")
+    wf.write_text(text, encoding="utf-8")
+    rc = run_subprocess(
+        [str(CONFORMANCE), "--catalog-root", str(target), "--template-root", str(TEMPLATE), "--cst", "CST-013"],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 2, f"pin without a sourcing step should fail CST-013; got {rc.returncode}")
+    check("never" in rc.stderr and "sources" in rc.stderr,
+          f"CST-013 should say the tool is never sourced; stderr={rc.stderr}")
+
+
+def test_cst_013_rejects_neither_pinned_nor_vendored(tmp_root: Path) -> None:
+    """No pin and no vendored copy is non-conforming on both counts."""
+    target = tmp_root / "neither"
+    copy_conforming(target)
+    wf = target / ".github" / "workflows" / "ci.yml"
+    text = wf.read_text(encoding="utf-8")
+    # Remove the upstream declaration entirely, and leave no vendored file.
+    text = re.sub(r"      - name: Fetch regenerator.*?\n          path: \.metaframework\n", "", text, flags=re.S)
+    text = text.replace("cp .metaframework/tools/regenerate_catalog.py scripts/\n", "")
+    text = text.replace("cp .metaframework/tools/check_catalog_index.py scripts/\n", "")
+    text = text.replace("cp .metaframework/tools/catalog-index-schema.json scripts/\n", "")
+    wf.write_text(text, encoding="utf-8")
+    rc = run_subprocess(
+        [str(CONFORMANCE), "--catalog-root", str(target), "--template-root", str(TEMPLATE), "--cst", "CST-013"],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 2, f"unresolvable tool should fail CST-013; got {rc.returncode}")
+    check("neither" in rc.stderr, f"CST-013 should say neither; stderr={rc.stderr}")
+
+
+def test_cst_013_warns_when_vendored_without_pin(tmp_root: Path) -> None:
+    """A vendored copy is accepted but warned about, not silently passed.
+
+    This is the drift class F9 existed to hide: a committed copy that
+    nothing ties to the upstream it claims to be. Accepting it silently is
+    how the fixture's four copies diverged unnoticed.
+    """
+    target = tmp_root / "vendored-unpinned"
+    copy_conforming(target)
+    wf = target / ".github" / "workflows" / "ci.yml"
+    wf.write_text(
+        "name: CI\non:\n  pull_request:\n    branches: [main]\n"
+        "jobs:\n  gate:\n    runs-on: ubuntu-latest\n    steps:\n"
+        "      - uses: actions/checkout@v4\n"
+        "      - run: python scripts/regenerate_catalog.py --check\n",
+        encoding="utf-8",
+    )
+    (target / "scripts").mkdir(exist_ok=True)
+    (target / "scripts" / "regenerate_catalog.py").write_text("# stand-in\n", encoding="utf-8")
+
+    rc = run_subprocess(
+        [str(CONFORMANCE), "--catalog-root", str(target), "--template-root", str(TEMPLATE), "--cst", "CST-013"],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 0, f"vendored fallback should pass CST-013; got {rc.returncode}; stderr={rc.stderr}")
+    check("vendored, not pinned" in rc.stderr,
+          f"CST-013 should warn that a vendored tool can drift; stderr={rc.stderr}")
+
+
+def test_fixture_carries_no_vendored_tool_copies() -> None:
+    """The fixture must not carry copies of the shared tools (F9).
+
+    Every one of the four copies it used to hold had drifted from tools/,
+    and nothing tied them to the upstream they claimed to be. The fixture
+    now models a real catalog: tools staged at CI time from a pinned tag.
+    """
+    fixture_scripts = CONFORMING_FIXTURE / "scripts"
+    fixture_tools = CONFORMING_FIXTURE / "tools"
+    for name in ("regenerate_catalog.py", "check_catalog_index.py", "catalog-index-schema.json"):
+        check(
+            not (fixture_scripts / name).exists(),
+            f"fixture still vendors scripts/{name}; it must be resolved from the pinned upstream ref",
+        )
+        check(
+            not (fixture_tools / name).exists(),
+            f"fixture still vendors tools/{name}; the canonical copy is tools/{name} in this repo",
+        )
+
+
+def test_cst_filter_runs_only_named(tmp_root: Path) -> None:
     target = tmp_root / "filter"
     copy_conforming(target)
     (target / "CATALOG.yaml").unlink()  # would fail CST-001
@@ -299,8 +452,24 @@ def test_bootstrap_writes_matching_template_version(tmp_root: Path) -> None:
 # ---------- Runner ----------
 
 def make_tmp_root() -> Path:
+    """Build a tmp root for the standalone runner, mirroring pytest's fixture.
+
+    `tests/conftest.py::tmp_root` seeds `<tmp_root>/tools/` with the
+    canonical schema and the catalog repo template. The standalone runner
+    needs the same layout, or a test relying on the default
+    `--template-root` resolves it under the tmp root and bootstrap fails
+    with "template root ... is not a directory".
+
+    Keeping the two in step matters: they are the same suite run by two
+    runners, and a test that passes under pytest must also pass standalone.
+    """
     import tempfile
-    return Path(tempfile.mkdtemp(prefix="cst-fixture-"))
+    root = Path(tempfile.mkdtemp(prefix="cst-fixture-"))
+    tools_dst = root / "tools"
+    tools_dst.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(SCHEMA, tools_dst / "catalog-index-schema.json")
+    shutil.copytree(TEMPLATE, tools_dst / "catalog-repo-template")
+    return root
 
 
 def cleanup(path: Path) -> None:

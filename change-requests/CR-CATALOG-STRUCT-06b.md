@@ -265,10 +265,33 @@ None at authoring time. Resolved during planning:
 | CST-010 | §5 (retired lifecycle) | `cst_010_retired_lifecycle` |
 | CST-011 | §5 (candidate version) | `cst_011_candidate_version` |
 | CST-012 | §6 (metamodel-pointer paths) | `cst_012_metamodel_pointer_paths` |
-| CST-013 | §8 (regenerator present) | `cst_013_regenerator_present` |
-| CST-014 | §8 (gate present) | `cst_014_gate_present` |
+| CST-013 | §8 (regenerator resolvable from pinned upstream) | `cst_013_regenerator_present` |
+| CST-014 | §8 (gate resolvable from pinned upstream) | `cst_014_gate_present` |
 | CST-015 | §8 (CI workflow references) | `cst_015_ci_workflow_references_scripts` |
 | CST-016 | This CR (template-version diff) | `cst_016_template_version` (warning) |
+
+### Appendix A.1: Amendment to CST-013 and CST-014 (Slice 3b-3, 2026-10-20)
+
+CST-013 and CST-014 originally required the catalog repo to carry committed copies of the shared tools (`scripts/regenerate_catalog.py`, `scripts/check_catalog_index.py`). That contradicted the standard's own template, which ships only `scripts/.gitkeep` and has CI stage the tools from a pinned upstream ref at run time.
+
+The consequence was concrete: a catalog bootstrapped from the official template **failed the standard it was bootstrapped from**.
+
+```
+$ python3 tools/bootstrap_catalog_repo.py --target /tmp/bt ...
+$ python3 tools/conformance_test_catalog_structure.py --catalog-root /tmp/bt --cst CST-013
+FAIL: CST-013: scripts/regenerate_catalog.py missing
+```
+
+Catalogs that worked around this by committing their own copies accumulated drift by construction, since nothing tied a copy to the upstream it claimed to be. The in-tree conforming fixture carried four such copies and every one had diverged from `tools/`.
+
+**Amendment**: CST-013 and CST-014 test **resolution from a pinned upstream ref**, declared in the catalog's own CI workflow, not local file presence. Specifically:
+
+1. A workflow that checks out `technehub-labs/dea-metaframework` with `ref:` pinned to a `vX.Y.Z` release tag, and stages the tool out of the fetched checkout, **passes**.
+2. A declared upstream checkout whose `ref:` is a branch **fails**: an unpinned ref tracks a moving target, so every catalog repo would silently inherit whatever upstream shipped that day, without review.
+3. A pinned upstream from which the workflow never sources the tool **fails**: a pin declared for appearance is not a pin.
+4. A vendored copy with no upstream declaration still **passes**, but emits a warning naming the drift risk. This preserves existing catalogs while making the risk visible instead of silent.
+
+The CST IDs are unchanged, so no renumbering is required.
 
 ## Appendix B: Worked example
 
