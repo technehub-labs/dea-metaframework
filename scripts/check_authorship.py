@@ -46,6 +46,41 @@ PRESERVE_GLOBS = (
 # exclusion is enforced here for every glob shape.
 _EXCLUDED_DIRS = frozenset({".git", ".metaframework"})
 
+# An unresolved template substitution, e.g. `{{OWNER}}` or `{% set x %}`. A
+# field carrying `allow_placeholders: true` may hold one of these without
+# tripping AUT-003, because it is a slot rather than an authorship claim.
+PLACEHOLDER_RE = re.compile(r"\{\{[^}]*\}\}|\{%[^%]*%\}")
+
+# CITATION-style metadata splits a personal name across two fields, so neither
+# the value nor any allowlist entry is ever a whole name on its own:
+#
+#     family-names: Otchere
+#     given-names:  Emmanuel A.
+#
+# A field carrying `name_part: true` is satisfied when its value is a
+# whitespace-delimited PREFIX or SUFFIX of an allowlist entry, aligned to a
+# word boundary. "Emmanuel A." is the two-token prefix of "Emmanuel A. Otchere"
+# and "Otchere" is its single-token suffix, so both pass; "Emmanuel A. Otchere Jr"
+# is neither and still fails. AUT-001 is evaluated first and returns early, so a
+# denylisted token remains blocking in every one of these fields.
+def _name_part_ok(value: str, allowlist: list) -> bool:
+    """True when `value` is a word-aligned prefix or suffix of an allowlist entry.
+
+    "Emmanuel A." and "Otchere" are both legitimate parts of the canonical
+    identity "Emmanuel A. Otchere"; "Emmanuel A. Otchere Jr" is neither.
+    """
+    parts = value.split()
+    if not parts:
+        return False
+    for allowed in allowlist:
+        toks = allowed.split()
+        n = len(parts)
+        if n <= len(toks) and toks[:n] == parts:
+            return True
+        if toks[-n:] == parts:
+            return True
+    return False
+
 
 def _is_preserved(relpath: str) -> bool:
     return any(fnmatch.fnmatch(relpath, g) for g in PRESERVE_GLOBS)
@@ -120,6 +155,20 @@ def _load_registry():
             elif current_field is not None and line.lstrip().startswith("prefix_match:"):
                 v = line.split(":", 1)[1].strip().lower()
                 current_field["prefix_match"] = v in ("true", "yes", "1")
+            elif current_field is not None and line.lstrip().startswith("name_part:"):
+                v = line.split(":", 1)[1].strip().lower()
+                current_field["name_part"] = v in ("true", "yes", "1")
+            elif current_field is not None and line.lstrip().startswith("allow_placeholders:"):
+                # `allow_placeholders: true` exempts unresolved template
+                # substitutions such as `{{OWNER}}` from AUT-003.
+                #
+                # A template is not an authorship violation: its value is
+                # substituted at bootstrap time, and registering the field
+                # without this would make the gate fail on the very file whose
+                # purpose is to hold a placeholder. AUT-001 still applies, so a
+                # denylisted name substituted INTO the template is still caught.
+                v = line.split(":", 1)[1].strip().lower()
+                current_field["allow_placeholders"] = v in ("true", "yes", "1")
         elif section == "allowlist":
             v = line.lstrip("- ").strip().strip('"').strip("'")
             if v:
@@ -213,9 +262,20 @@ def _extract_value(line: str, field_path: str) -> str | None:
         # YAML shape: "audit.author: <value>" (leading whitespace allowed)
         key = field_path
         prefix = f"{key}:"
-        # Strip optional leading whitespace; value starts after the colon
-        if stripped.startswith(prefix):
-            return stripped[len(prefix):].strip()
+        # Strip optional leading whitespace; value starts after the colon.
+        #
+        # A YAML sequence entry renders as "- family-names: Otchere", so the
+        # dash must be removed before the key comparison. Without this the
+        # FIRST key of any list item is invisible to the gate: CITATION.cff
+        # carries `authors:` as a list whose first field is `family-names`,
+        # so registering it silently matched nothing. A registered field that
+        # matches zero lines is worse than an unregistered one, because the
+        # registry claims it is covered.
+        candidate = stripped
+        while candidate.startswith("- "):
+            candidate = candidate[2:].lstrip()
+        if candidate.startswith(prefix):
+            return candidate[len(prefix):].strip()
     return None
 
 
@@ -324,6 +384,15 @@ def _check_value(rel, lineno, path, value, allowlist, denylist, findings, summar
                     if not rest or rest[0] in (",", ";", ":", "(", " ", ")", "/"):
                         allowed = True
                         break
+        # An unresolved template substitution is not an authorship claim, so a
+        # field may exempt it. AUT-001 has already returned above, so a
+        # denylisted name is still blocking regardless of this exemption.
+        if not allowed and fld.get("name_part"):
+            if _name_part_ok(value_clean, allowlist):
+                allowed = True
+        if not allowed and fld.get("allow_placeholders"):
+            if PLACEHOLDER_RE.fullmatch(value_clean):
+                allowed = True
         if not allowed:
             findings.append({
                 "rule": "AUT-003",
