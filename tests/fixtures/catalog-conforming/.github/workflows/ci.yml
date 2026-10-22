@@ -1,4 +1,17 @@
 name: CI
+
+# Conforming-catalog fixture. This workflow is part of the fixture because
+# CST-013 and CST-014 read the pin out of it: the standard requires the
+# regenerator and the index gate to be resolvable from a pinned upstream
+# ref, not committed as vendored copies.
+#
+# The four vendored copies this fixture used to carry
+# (scripts/regenerate_catalog.py, scripts/check_catalog_index.py,
+# scripts/catalog-index-schema.json and a second copy under tools/) had all
+# drifted from tools/. Nothing tied them to the upstream they claimed to be,
+# which is the drift class this shape removes: the tools are staged at CI
+# time from a release tag, so they cannot diverge from what CI actually ran.
+
 on:
   pull_request:
     branches: [main]
@@ -8,5 +21,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: pip install pyyaml jsonschema pytest
+      - name: Fetch regenerator + gate from metaframework
+        uses: actions/checkout@v4
+        with:
+          repository: technehub-labs/dea-metaframework
+          ref: v2.6.0
+          path: .metaframework
+      - name: Stage the pinned toolchain
+        run: |
+          mkdir -p scripts
+          cp .metaframework/tools/regenerate_catalog.py scripts/
+          cp .metaframework/tools/check_catalog_index.py scripts/
+          cp .metaframework/tools/catalog-index-schema.json scripts/
       - run: python scripts/regenerate_catalog.py --check
       - run: python scripts/check_catalog_index.py

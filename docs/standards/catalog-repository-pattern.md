@@ -250,9 +250,11 @@ The consumer MUST NOT scan the catalog's filesystem. The consumer MUST NOT trust
 | CST-010 | Every `retired/<file>.yaml` declares `lifecycle_status: deprecated` or `retired`. |
 | CST-011 | Every `candidates/<file>.yaml` declares `version < 1.0.0` OR `lifecycle_status: candidate`. |
 | CST-012 | `metamodel-pointer.yaml` paths (if present) resolve to real files on disk. |
-| CST-013 | Repo has `scripts/regenerate_catalog.py` (executable). |
-| CST-014 | Repo has `scripts/check_catalog_index.py` (executable). |
+| CST-013 | `regenerate_catalog.py` is resolvable from a pinned `technehub-labs/dea-metaframework` release tag in CI, or vendored with a drift warning. |
+| CST-014 | `check_catalog_index.py` is resolvable from a pinned `technehub-labs/dea-metaframework` release tag in CI, or vendored with a drift warning. |
 | CST-015 | CI workflow file references both scripts in its check job. |
+
+CST-013 and CST-014 test **resolution**, not local file presence. The template stages the tools at CI time from a pinned upstream ref, so a catalog that carries no `scripts/` copy is the canonical shape, and one that commits its own copy can drift from the upstream it claims to be. A declared upstream checkout whose `ref:` is a branch rather than a `vX.Y.Z` tag fails, because an unpinned ref is not reproducible. See §12 for the pinned-fetch workflow. |
 
 A repo fails conformance if any test fails. The test runner exits non-zero and prints the failing test IDs.
 
