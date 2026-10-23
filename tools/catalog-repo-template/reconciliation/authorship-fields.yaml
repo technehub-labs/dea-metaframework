@@ -10,21 +10,23 @@
 #   CITATION.cff         authors[].name (set at bootstrap from --owner)
 #   change-requests/*.md **Owner** / **Author** (CR doc metadata)
 #
-# CITATION.cff is deliberately NOT registered yet. The gate's citation
-# extractor (_extract_citation_value in scripts/check_authorship.py)
-# matches a bare key form such as `given-names:`, which is what the
-# metaframework's own CITATION.cff uses. The catalog template's
-# CITATION.cff uses the YAML list-item form:
+# CITATION.cff (CR-BP-118c).
 #
-#   authors:
-#     - name: "{{OWNER}}"
+# This field was NOT registered between v2.6.0 and v2.7.0. At that point the
+# gate's extractor compared a stripped line against the bare key, so a YAML
+# sequence entry rendered as "- name: \"{{OWNER}}\"" never matched and the
+# registry would have carried a field that silently scanned nothing.
 #
-# for which the extractor's key never matches. Registering it today
-# would add a field that silently matches no files -- the same false
-# green that bare-filename globs produced before v2.6.0, and harder to
-# spot because the registry would look complete. Extending the
-# extractor to the list-item form, then registering the field, is the
-# scope of the registry-completion slice (card #529).
+# PR #48 (d9d94d0) fixed that: _extract_value now strips the leading sequence
+# dash, so the FIRST key of any list item is matched. The blocker named in this
+# comment is therefore closed, and the field is registered below. Keeping the
+# note is deliberate: it records why an apparently-obvious registration was
+# withheld, which is the same discipline the bare-filename globs required.
+#
+# allow_placeholders covers the shipped template, where the value is still the
+# unresolved {{OWNER}} slot. It exempts the SLOT only. AUT-001 is evaluated
+# first and returns early, so a denylisted name substituted into that slot at
+# bootstrap time is still a blocking finding.
 
 fields:
   # Catalog identity. Bare-filename glob: this shape is only resolved
@@ -34,6 +36,12 @@ fields:
   - path: "**Owner**"                # catalog README identity
     file_glob: "README.md"
     kind: "metadata"
+    # The shipped template still holds {{OWNER}}; bootstrap substitutes the
+    # real owner. Without this flag the template fails --strict against its own
+    # registry on an unresolved slot, which is not an authorship claim.
+    # AUT-001 is evaluated first and returns early, so a denylisted name
+    # substituted into the slot is still a blocking finding.
+    allow_placeholders: true
 
   # CR doc metadata (markdown bold-key form), standard across all repos.
   - path: "**Owner**"                # CR doc metadata
@@ -42,6 +50,16 @@ fields:
   - path: "**Author**"               # CR doc metadata
     file_glob: "change-requests/CR-*.md"
     kind: "metadata"
+
+  # CITATION.cff author. The template carries a single `authors:` sequence
+  # entry whose value is the substituted owner name. Unlike the metaframework's
+  # own CITATION.cff, which splits an identity across `given-names` and
+  # `family-names` and therefore needs `name_part`, this field holds a WHOLE
+  # name, so exact matching is correct and name_part would only widen it.
+  - path: "name"                     # CITATION authors[].name
+    file_glob: "CITATION.cff"
+    kind: "citation-author"
+    allow_placeholders: true
 
 allowlist:
   - "Emmanuel A. Otchere"

@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -525,3 +526,94 @@ def test_live_citation_file_is_conformant_under_strict():
         capture_output=True, text=True, cwd=ROOT,
     )
     assert r.returncode == 0, f"live tree is not conformant\n{r.stdout}\n{r.stderr}"
+
+
+# ---------------------------------------------------------------------------
+# Catalog repo template registry (Slice 3b-5)
+#
+# The template ships its OWN registry, not a copy of this repo's. Its CITATION
+# author field was withheld between v2.6.0 and v2.7.0 because the gate could
+# not match the YAML list-item form, and the registry recorded that reason.
+# PR #48 fixed the extractor, so the field is now registered.
+#
+# These tests pin that the field is actually ARMED. A registered field that
+# matches zero lines is worse than an unregistered one, because the registry
+# claims coverage while the gate scans nothing.
+# ---------------------------------------------------------------------------
+
+TEMPLATE_REGISTRY = ROOT / "tools" / "catalog-repo-template" / "reconciliation" / "authorship-fields.yaml"
+
+
+def _template_catalog(tmp_path: Path) -> Path:
+    """Build a catalog repo carrying the gate plus the TEMPLATE registry.
+
+    The gate resolves REPO_ROOT and REGISTRY_PATH from its own location, so
+    running it against a foreign catalog requires the script to sit inside
+    that catalog. Copying it in is what makes the template's registry the one
+    under test.
+    """
+    cat = tmp_path / "template-catalog"
+    shutil.copytree(ROOT / "tools" / "catalog-repo-template", cat)
+    (cat / "scripts").mkdir(exist_ok=True)
+    shutil.copy2(SCRIPT, cat / "scripts" / "check_authorship.py")
+    return cat
+
+
+def test_template_registry_registers_citation_name():
+    """The template registry must carry CITATION authors[].name."""
+    assert TEMPLATE_REGISTRY.exists(), f"missing {TEMPLATE_REGISTRY}"
+    text = TEMPLATE_REGISTRY.read_text(encoding="utf-8")
+    assert 'path: "name"' in text, "template registry does not register CITATION authors[].name"
+    assert "CITATION.cff" in text, "template registry has no CITATION.cff glob"
+    # The stale blocker note must not survive: it would tell a future reader
+    # the field is unreachable when the extractor now matches it.
+    assert "deliberately NOT registered" not in text, (
+        "template registry still claims CITATION cannot be registered; PR #48 "
+        "fixed the list-item extraction that was the stated blocker"
+    )
+
+
+def test_template_citation_field_accepts_legitimate_name(tmp_path: Path):
+    """A bootstrapped catalog passes: the real owner name is allowlisted."""
+    cat = _template_catalog(tmp_path)
+    (cat / "CITATION.cff").write_text(
+        'cff-version: 1.2.0\nauthors:\n  - name: "Emmanuel A. Otchere"\n',
+        encoding="utf-8",
+    )
+    r = _run_gate(cat)
+    assert r.returncode == 0, f"legitimate CITATION author should pass\n{r.stdout}\n{r.stderr}"
+
+
+def test_template_citation_field_catches_denylisted_name(tmp_path: Path):
+    """The armed field must actually fire. This is the negative test.
+
+    Without the dash-stripping fix, `- name: "Coder"` matched no registered
+    key and the gate reported CONFORMANT: the registry looked complete and
+    scanned nothing.
+    """
+    cat = _template_catalog(tmp_path)
+    (cat / "CITATION.cff").write_text(
+        'cff-version: 1.2.0\nauthors:\n  - name: "Coder"\n',
+        encoding="utf-8",
+    )
+    r = _run_gate(cat)
+    assert r.returncode != 0, "denylisted CITATION author passed the gate"
+    # Assert on the discriminating token, not the rule name: "AUT-001" also
+    # appears in the summary header on every run, so asserting on it passes
+    # whether or not the rule fired.
+    assert "deny=Coder" in (r.stdout + r.stderr), (
+        f"gate failed without naming the denied value\n{r.stdout}\n{r.stderr}"
+    )
+
+
+def test_template_citation_placeholder_is_exempt(tmp_path: Path):
+    """The shipped template still holds {{OWNER}}; that slot is not a claim."""
+    cat = _template_catalog(tmp_path)
+    (cat / "CITATION.cff").write_text(
+        'cff-version: 1.2.0\nauthors:\n  - name: "{{OWNER}}"\n',
+        encoding="utf-8",
+    )
+    r = _run_gate(cat)
+    assert r.returncode == 0, (
+        f"unresolved placeholder should be exempt\n{r.stdout}\n{r.stderr}"
+    )
