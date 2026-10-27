@@ -222,6 +222,115 @@ def test_regenerator_dry_run_does_not_write(tmp_root: Path) -> None:
     check(not (tmp_root / "CATALOG.yaml").exists(), "dry-run wrote CATALOG.yaml unexpectedly")
 
 
+# ---------- Open-CR counter tests (CR-ECF-011) ----------
+
+def write_cr(root: Path, name: str, status_line: str) -> None:
+    """Write a CR file with a metadata line under change-requests/."""
+    cr = root / "change-requests" / name
+    cr.parent.mkdir(parents=True, exist_ok=True)
+    cr.write_text(
+        f"# {name[:-3]}: counter fixture\n\n{status_line}\n\nBody.\n",
+        encoding="utf-8",
+    )
+
+
+def _open_count(tmp_root: Path) -> str:
+    """Run the regenerator and return the emitted open_change_requests count."""
+    res = run_subprocess([str(REGEN), "--catalog-root", str(tmp_root)], cwd=tmp_root)
+    check(res.returncode == 0, f"regen exit {res.returncode}; stderr={res.stderr}")
+    out = (tmp_root / "CATALOG.yaml").read_text(encoding="utf-8")
+    for line in out.splitlines():
+        if line.strip().startswith("open_change_requests:"):
+            return line.strip().split(":", 1)[1].strip()
+    check(False, f"open_change_requests missing from CATALOG.yaml:\n{out}")
+    raise AssertionError("unreachable")
+
+
+def test_counter_closes_every_terminal_status_line_format(tmp_root: Path) -> None:
+    """Each terminal status in the CR-ECF-011 closed set closes its CR
+    (line-format metadata). Pre-fix, only a bare `Merged` substring could
+    close anything, and the duplicated condition made even that fragile."""
+    build_fixture(tmp_root)
+    for i, status in enumerate(
+        ["Merged", "Landed", "Applied", "Accepted", "Rejected", "Superseded", "Withdrawn"]
+    ):
+        write_cr(tmp_root, f"CR-FIX-1{i}.md", f"**Status**: {status}")
+    check(_open_count(tmp_root) == "0", "line-format terminal statuses did not all close")
+
+
+def test_counter_closes_table_format_with_trailing_context(tmp_root: Path) -> None:
+    """Table-format metadata with landing context closes (the shape used
+    by capabilities/stakeholders CRs; pre-fix these were invisible and
+    counted conservatively open)."""
+    build_fixture(tmp_root)
+    write_cr(
+        tmp_root,
+        "CR-FIX-TBL.md",
+        "| **Status** | Merged (PR #91) |",
+    )
+    write_cr(
+        tmp_root,
+        "CR-FIX-TBL2.md",
+        "| **Status** | Landed; see PR #42 |",
+    )
+    check(_open_count(tmp_root) == "0", "table-format terminal statuses did not close")
+
+
+def test_counter_counts_proposed_and_draft_open_in_both_formats(tmp_root: Path) -> None:
+    build_fixture(tmp_root)
+    write_cr(tmp_root, "CR-FIX-OPEN1.md", "**Status**: Proposed")
+    write_cr(tmp_root, "CR-FIX-OPEN2.md", "**Status**: Draft (pre-review)")
+    write_cr(tmp_root, "CR-FIX-OPEN3.md", "| **Status** | Proposed (this PR) |")
+    check(_open_count(tmp_root) == "3", "Proposed/Draft CRs must count open in both formats")
+
+
+def test_counter_counts_statusless_cr_open(tmp_root: Path) -> None:
+    """Conservative semantics preserved: no parsable status -> open."""
+    build_fixture(tmp_root)
+    write_cr(tmp_root, "CR-FIX-SILENT.md", "**Layer**: L1")
+    check(_open_count(tmp_root) == "1", "status-less CR must count open")
+
+
+def test_counter_mixed_catalog_exact_count(tmp_root: Path) -> None:
+    build_fixture(tmp_root)
+    write_cr(tmp_root, "CR-FIX-M1.md", "**Status**: Merged (PR #3)")
+    write_cr(tmp_root, "CR-FIX-M2.md", "| **Status** | Superseded (by CR-FIX-M3) |")
+    write_cr(tmp_root, "CR-FIX-M3.md", "**Status**: Proposed")
+    write_cr(tmp_root, "CR-FIX-M4.md", "| **Status** | Accepted (per user directive) |")
+    check(_open_count(tmp_root) == "1", "mixed catalog must count exactly the open CRs")
+
+
+def test_counter_prose_continuation_status_counts_open(tmp_root: Path) -> None:
+    """Documented conservatism (same semantics as the landed downstream
+    fixes): a terminal status word followed by unpunctuated prose --
+    e.g. `Landed on main via PR #9` -- does not close, because the token
+    is the full phrase. Houses that want closure must write the landing
+    evidence inside a separator-delimited context: `Landed (via PR #9)`.
+    """
+    build_fixture(tmp_root)
+    write_cr(tmp_root, "CR-FIX-P1.md", "**Status**: Landed on main via PR #9")
+    write_cr(tmp_root, "CR-FIX-P2.md", "| **Status** | Superseded by CR-FIX-P1 |")
+    check(_open_count(tmp_root) == "2", "prose-continuation statuses must count open (conservative)")
+
+
+def test_counter_first_status_line_wins_over_quoted_body(tmp_root: Path) -> None:
+    """A CR whose body QUOTES a status line (e.g. a carrier documenting
+    this very counter) must be classified by its real metadata line, not
+    by the quotation. Pre-fix substring matching misclassified such
+    files (observed: CR-CATALOG-STRUCT-08 quoting the old condition)."""
+    build_fixture(tmp_root)
+    cr = tmp_root / "change-requests" / "CR-FIX-QUOTE.md"
+    cr.parent.mkdir(parents=True, exist_ok=True)
+    cr.write_text(
+        "# CR-FIX-QUOTE: quotes a status line\n\n"
+        "**Status**: Proposed\n\n"
+        "## Problem\n\nThe old code read:\n\n"
+        '    if "Status**: Merged" in head or "Status**: Merged" in head:\n',
+        encoding="utf-8",
+    )
+    check(_open_count(tmp_root) == "1", "quoted status in body must not close a Proposed CR")
+
+
 # ---------- Gate tests ----------
 
 def test_check_passes_after_regenerate(tmp_root: Path) -> None:
