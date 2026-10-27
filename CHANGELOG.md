@@ -6,6 +6,10 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
+### Regenerator open-CR counter fix (CR-ECF-011)
+
+`tools/regenerate_catalog.py` `count_open_change_requests` computed `counts.open_change_requests` wrongly in four stacked ways: a duplicated `"Status**: Merged"` condition (the copy-paste origin of the family; processes' vendored copy carried the identical line), a `Merged`-only closed set while the org's CR vocabularies are Landed/Applied/Accepted/Superseded/Withdrawn, substring matching that misclassifies a CR quoting a status line in its body, and total blindness to table-format CR metadata (`| **Status** | ... |`). Replaced with a status-token parser: first Status line in the head parsed from either metadata shape, reduced to a bare token (cutting at `(`/`;`/`,`), closed on the org-consistent set `{Merged, Landed, Applied, Accepted, Rejected, Superseded, Withdrawn}` (as landed downstream in capabilities PR #91 / CR-DEA-BC-38); everything else stays conservative-open. Documented conservatism: a terminal status followed by unpunctuated prose (`Landed via PR #9`) counts open; write landing evidence inside separator-delimited context. Seven new machinery tests (20/20 dual-runner; full suite 90/90). No interface change (exit codes, CLI, CATALOG.yaml shape unchanged) — only the count becomes truthful. The same defect was already fixed per-repo in processes (CR-BP-114 design), capabilities (CR-DEA-BC-38), and stakeholders (CR-CATALOG-STRUCT-08); this is the source fix so vendored copies can re-vendor after the next release tag.
+
 ## [2.6.0] - 2026-10-20
 
 Staleness audit remediation, spec reconciliation, and the authorship-gate

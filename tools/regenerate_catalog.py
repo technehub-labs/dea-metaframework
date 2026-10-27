@@ -87,6 +87,36 @@ ENTITY_ID_PATTERN = re.compile(
     r"-[abcdefghjkmnpqrstuvwxyz23456789]{6})$"
 )
 
+# Terminal CR statuses (CR-ECF-011): the org-consistent closed set, as
+# landed downstream in dea-catalog-business-capabilities PR #91 /
+# CR-DEA-BC-38 (superset of the CR-BP-114 set ratified in
+# dea-catalog-processes).
+CLOSED_CR_STATUSES = frozenset(
+    {"Merged", "Landed", "Applied", "Accepted", "Rejected", "Superseded", "Withdrawn"}
+)
+
+# CR metadata shapes (CR-ECF-011): bold-line (``**Status**: X``) and
+# table (``| **Status** | X |``).
+_STATUS_LINE_RE = re.compile(r"^\*\*Status\*\*:\s*(.+)$")
+_STATUS_TABLE_RE = re.compile(r"^\|\s*\*\*Status\*\*\s*\|\s*(.+?)\s*\|$")
+
+
+def _cr_status_token(head: str) -> str | None:
+    """First Status value in a CR head as a bare token, or None.
+
+    Accepts both house metadata shapes, stripping trailing context such
+    as ``(PR #6)``. First status line wins: a carrier CR that *quotes* a
+    status line in its body must not be misparsed by it (observed on the
+    stakeholders carrier CR-CATALOG-STRUCT-08, whose body quotes the old
+    buggy condition).
+    """
+    for line in head.splitlines():
+        s = line.strip()
+        m = _STATUS_LINE_RE.match(s) or _STATUS_TABLE_RE.match(s)
+        if m:
+            return re.split(r"[;(,]", m.group(1))[0].strip()
+    return None
+
 
 def load_schema(schema_path: Path) -> dict[str, Any]:
     with schema_path.open("r", encoding="utf-8") as fh:
@@ -498,11 +528,11 @@ def build_research_registers(entities: list[dict[str, Any]], catalog_root: Path)
 
 
 def count_open_change_requests(catalog_root: Path) -> int:
-    """Count CR-*.md files in change-requests/ whose status is not 'Merged'.
+    """Count CR-*.md files in change-requests/ whose status is not terminal.
 
-    Heuristic: look for the word 'Merged' on the line immediately following
-    the '# CR-...' heading. Files without a status line are conservatively
-    counted as open.
+    Parses the first Status line in the file head (first 30 lines); both
+    house metadata shapes parse (CR-ECF-011). Files without a parsable
+    status are conservatively counted as open.
     """
     cr_dir = catalog_root / "change-requests"
     if not cr_dir.is_dir():
@@ -514,18 +544,11 @@ def count_open_change_requests(catalog_root: Path) -> int:
         except OSError:
             open_count += 1
             continue
-        # Take the first 30 lines; look for a status line.
         head = "\n".join(text.splitlines()[:30])
-        if "Status**: Merged" in head or "Status**: Merged" in head:
+        token = _cr_status_token(head)
+        if token is not None and token in CLOSED_CR_STATUSES:
             continue
-        if "Status**: Proposed" in head or "Status**: Draft" in head:
-            open_count += 1
-            continue
-        if "Status**:" in head:
-            # Some other status (Accepted, Superseded, etc.): conservative: open.
-            open_count += 1
-            continue
-        # No status line found: conservative open.
+        # Proposed, Draft, unknown token, or no status line: conservative open.
         open_count += 1
     return open_count
 
