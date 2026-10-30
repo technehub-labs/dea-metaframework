@@ -6,6 +6,10 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
+### CR-CATALOG-STRUCT-10B: Kit Generator Hardening (waves 2-4 findings)
+
+Five fixes from the wave 2-4 kit runs: (1) multi-entity pointers emit a proper `entities:` LIST with per-entry discriminators (ADR-0002 D6; the map form crashed validate_consumer); (2) metamodel-relative $refs are normalized (entity.json#/properties/*, ../relationships/...; unknown non-local refs flagged, local .schema.json refs exempted); (3) valid fixtures synthesize values for metamodel-required extras (enum-first, typed placeholders); (4) over-escaped regex patterns in metamodel schemas (tenet.json version) are normalized in the projection and flagged for a metamodel schema-fix CR; (5) root-repo state probing guidance. Shared-repo fixture pair + list-form test added. 104/104.
+
 ### CR-CATALOG-STRUCT-10A: Kit Generator Type-Const Fix
 
 The schema projection's `type` const and the gate expectations now use the unspaced class name from the entity id (dea:DataEntity -> DataEntity), matching the metamodel's own schema convention (business-capability.json uses BusinessCapability, not the spaced display name). Discovered on the data-entities kit dry run; fixture given a spaced display name (Fancy Widget) so the test pins the convention. 103/103.

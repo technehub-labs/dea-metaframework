@@ -177,6 +177,23 @@ class TestGeneratedGatesPass:
         assert "exists (kept" in result.stdout
 
 
+class TestSharedRepoForm:
+    def test_entities_list_and_discriminators(self, tmp_path):
+        kit = _run_generator(tmp_path, "dea:SharedOne,dea:SharedTwo")
+        doc = yaml.safe_load((kit / "metamodel-pointer.yaml").read_text())
+        mm = doc["metamodel"]
+        assert mm["entity_id"] == "dea:entity-shared-one"
+        assert mm.get("discriminator") == "shared_kind"
+        assert isinstance(doc.get("entities"), list), "entities must be a LIST (ADR-0002 D6)"
+        entry = doc["entities"][0]
+        assert entry["entity_id"] == "dea:entity-shared-two"
+        assert entry["class_alias"] == "SH2"
+        assert entry.get("discriminator") == "shared_kind"
+        lines = (kit / "metamodel-pointer.yaml").read_text().splitlines()
+        i = lines.index("entities:")
+        assert lines[i + 1].startswith("  - "), f"entities must be a list; got {lines[i + 1]!r}"
+
+
 class TestSharedRepo:
     def test_shared_repo_entities_list(self, tmp_path):
         # two fixture entities share no repo; use --entity with a repeated
