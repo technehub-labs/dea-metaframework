@@ -300,12 +300,22 @@ def infer_state(subtree: Path, canonical: dict[str, Any] | None) -> tuple[str, s
     that should be recorded in the entities[] entry (None if no canonical file).
     """
     entity_id = entity_id_from_subtree(subtree)
-    canonical_file = subtree / f"{entity_id}.yaml"
-    canonical_path = (
-        f"entities/v1-alpha/{entity_id}/{entity_id}.yaml"
-        if canonical_file.exists()
-        else None
-    )
+    # The canonical file may use either filename form: the colon-form id
+    # (legacy flat layout) or the normalized hyphen-form that
+    # read_canonical_yaml prefers (post-mv1 and kit-generated layouts).
+    # Checking both keeps infer_state in agreement with read_canonical_yaml;
+    # checking only the colon form misclassified every hyphen-named
+    # canonical record as a candidate (observed on
+    # dea-catalog-business-capabilities: 29 canonical records counted as
+    # candidates since the mv1 id migration).
+    hyphen_file = subtree / (entity_id.replace(":", "-").lower() + ".yaml")
+    colon_file = subtree / f"{entity_id}.yaml"
+    if hyphen_file.exists():
+        canonical_path = f"entities/v1-alpha/{entity_id}/{hyphen_file.name}"
+    elif colon_file.exists():
+        canonical_path = f"entities/v1-alpha/{entity_id}/{entity_id}.yaml"
+    else:
+        canonical_path = None
 
     has_research = state_research_present(subtree)
     has_candidates = state_candidates_present(subtree)

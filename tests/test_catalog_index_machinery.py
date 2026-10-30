@@ -157,6 +157,37 @@ def test_regenerator_emits_canonical_entity(tmp_root: Path) -> None:
     check("canonical_count: 1" in out, "canonical_count not 1")
 
 
+def test_regenerator_hyphen_filename_counts_canonical(tmp_root: Path) -> None:
+    """Regression (CR-CATALOG-STRUCT-06a amendment): a canonical record
+    stored under the normalized hyphen-form filename (post-mv1 and
+    kit-generated layouts) must classify canonical. The colon-form-only
+    lookup misclassified every hyphen-named record as a candidate
+    (observed on dea-catalog-business-capabilities: 29 canonical records
+    counted as candidates since the mv1 id migration, while the records
+    themselves sat at their subtree roots with lifecycle_status: active)."""
+    entity_id = "capabilities:capability-asset-management-judtwr"
+    subtree = tmp_root / "entities" / "v1-alpha" / "asset-management-judtwr"
+    for sub in ("research", "candidates", "retired"):
+        (subtree / sub).mkdir(parents=True, exist_ok=True)
+    (subtree / "candidates" / ".gitkeep").write_text("", encoding="utf-8")
+    body = (
+        f"id: {entity_id}\ntype: BusinessCapability\nversion: 1.2.1\n"
+        "lifecycle_status: active\n"
+    )
+    write_yaml(subtree / "capabilities-capability-asset-management-judtwr.yaml", body)
+    build_fixture(tmp_root)  # pointer + scaffolding only
+
+    res = run_subprocess([str(REGEN), "--catalog-root", str(tmp_root)], cwd=tmp_root)
+    check(res.returncode == 0, f"regenerator exit code {res.returncode}; stderr={res.stderr}")
+    out = (tmp_root / "CATALOG.yaml").read_text(encoding="utf-8")
+    check("state: canonical" in out, "hyphen-named canonical record not classified canonical")
+    check("canonical_count: 1" in out, "canonical_count not 1")
+    check(
+        "capabilities-capability-asset-management-judtwr.yaml" in out,
+        "index path does not point at the real canonical file",
+    )
+
+
 def test_regenerator_emits_research_only_state(tmp_root: Path) -> None:
     build_fixture(tmp_root, research_entities=["dea:research-bar"])
     res = run_subprocess([str(REGEN), "--catalog-root", str(tmp_root)], cwd=tmp_root)
