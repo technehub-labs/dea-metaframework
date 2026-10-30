@@ -1,0 +1,77 @@
+# Fixture metamodel for the catalog-kit generator self-test
+# (CR-CATALOG-STRUCT-10). Three entities exercise every projection shape:
+#   - dea:Widget        layer-allocated, metamodel schema present (copied-and-narrowed)
+#   - dea:Gadget        layer-allocated, no schema (derived-from-entity-definition)
+#   - dea:Notion        dimension-allocated (no layer)
+version: 1.0.0
+entities:
+  - id: dea:Widget
+    name: Widget
+    legacy_ids: [dea:entity-widget]
+    definition: A fixture widget for kit-generator self-testing.
+    layer: L4
+    dimension: null
+    building_block: L4-data-foundation
+    abstract: false
+    status: normative
+    lifecycle: proposed
+    class_alias: WDG
+    catalog_repo: dea-catalog-widgets
+    artifacts:
+      json_schema: schemas/entities/widget.json
+      sqlite_table: widgets
+      pydantic_model: pydantic/widget.py
+      ts_interface: typescript/src/interfaces.ts
+    membership: {kind: profile, profile: dea:data}
+  - id: dea:Gadget
+    name: Gadget
+    legacy_ids: [dea:entity-gadget]
+    definition: A fixture gadget with no metamodel schema, exercising the derived projection.
+    layer: L4
+    dimension: null
+    building_block: L4-data-foundation
+    abstract: false
+    status: normative
+    lifecycle: planned
+    class_alias: GDG
+    catalog_repo: dea-catalog-gadgets
+    artifacts:
+      json_schema: null
+      sqlite_table: null
+      pydantic_model: null
+      ts_interface: null
+    membership: {kind: profile, profile: dea:data}
+  - id: dea:Notion
+    name: Notion
+    legacy_ids: [dea:entity-notion]
+    definition: A fixture dimension entity with no home layer.
+    layer: null
+    dimension: semantic-dimension
+    building_block: null
+    abstract: false
+    status: normative
+    lifecycle: proposed
+    class_alias: NOT
+    catalog_repo: dea-catalog-notions
+    artifacts:
+      json_schema: schemas/entities/notion.json
+      sqlite_table: null
+      pydantic_model: null
+      ts_interface: null
+    membership: {kind: core, profile: null}
+relationships:
+  - id: dea:represents
+    name: Represents
+    definition: Fixture relationship.
+    category: information
+    direction: source-to-target
+    source: {types: [dea:Widget]}
+    target: {types: [dea:Notion]}
+    cardinality: {source: 0..*, target: 0..*}
+    inverse: dea:represented-by
+    transitive: false
+    symmetric: false
+    temporal: false
+    provenance: optional
+    status: normative
+    lifecycle: active
