@@ -217,6 +217,7 @@ class Kit:
         m = re.match(r"dea:entity-(.+)", legacy[0]) if legacy else None
         self.slug = m.group(1) if m else kebab(self.primary["name"])
         self.entity_name = self.primary["name"]
+        self.class_name = self.primary['id'].removeprefix('dea:')
         self.catalog_id = "dea:catalog-" + self.repo.removeprefix("dea-catalog-")
         self.cr = f"CR-{self.alias}-CAT"
         self.target = Path(args.target)
@@ -376,7 +377,7 @@ metaframework_pin: v2.6.0
             "pattern": f"^dea:{self.slug}-[a-z0-9-]+$",
             "description": "OpenDEAM-local identifier, narrowed to this entity's namespace (information-classes id precedent).",
         }
-        props["type"] = {"type": "string", "const": self.entity_name}
+        props["type"] = {"type": "string", "const": self.class_name}
         props["lifecycle_status"] = {"type": "string", "enum": LIFECYCLE_ENUM, "description": "CR-3R: lifecycle state from metamodel/vocabularies/lifecycle.yaml."}
         rel = props.get("relationships")
         if not isinstance(rel, dict) or "$ref" not in (rel.get("items") or {}):
@@ -397,7 +398,7 @@ metaframework_pin: v2.6.0
         valid = f"""# Valid fixture: exercises the normative field set, the catalogue-instance
 # layer, and one typed relationship instance. Illustrative ids only.
 id: dea:{self.slug}-example-record
-type: {self.entity_name}
+type: {self.class_name}
 name: Example {self.entity_name}
 description: 'Fixture: an illustrative {self.entity_name.lower()} record demonstrating the canonical shape; not admitted.'
 version: 1.0.0
@@ -603,8 +604,8 @@ def main() -> int:
         if not CANONICAL_ID.fullmatch(rid):
             findings.append(f"{{Path(f).relative_to(REPO)}}: id {{rid!r}} is not a canonical {self.entity_name} id")
         rtype = doc.get("type") or ""
-        if rtype != "{self.entity_name}":
-            findings.append(f"{{Path(f).relative_to(REPO)}}: type {{rtype!r}} is not {self.entity_name!r}")
+        if rtype != "{self.class_name}":
+            findings.append(f"{{Path(f).relative_to(REPO)}}: type {{rtype!r}} is not {self.class_name!r}")
 
     if findings:
         print("Posture findings:")
@@ -663,7 +664,7 @@ FIXTURE_VALID = REPO / "schemas" / "fixtures" / "example-valid.yaml"
 FIXTURE_INVALID = REPO / "schemas" / "fixtures" / "example-invalid.yaml"
 RECORD_GLOB = "entities/v1-alpha/**/*.yaml"
 
-EXPECTED_TYPE_CONST = "{self.entity_name}"
+EXPECTED_TYPE_CONST = "{self.class_name}"
 EXPECTED_LIFECYCLE_ENUM = {json.dumps(LIFECYCLE_ENUM)}
 EXPECTED_REQUIRED = {json.dumps(proj.get("required"))}
 EXPECTED_ID_PATTERN = "^dea:{self.slug}-[a-z0-9-]+$"

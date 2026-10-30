@@ -125,7 +125,9 @@ class TestProjection:
         assert schema["additionalProperties"] is False
         props = schema["properties"]
         assert props["id"]["pattern"] == "^dea:widget-[a-z0-9-]+$"
+        # spaced display name, unspaced class-name const (metamodel convention)
         assert props["type"]["const"] == "Widget"
+        assert props["type"]["const"] != "Fancy Widget"
         assert props["material"]["enum"] == ["wood", "metal", "plastic"]
         for key in ("evidence", "provenance", "governance"):
             assert key in props, f"instance layer field {key} missing"
