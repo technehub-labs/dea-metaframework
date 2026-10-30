@@ -6,6 +6,10 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
+### CR-CATALOG-STRUCT-10A: Kit Generator Type-Const Fix
+
+The schema projection's `type` const and the gate expectations now use the unspaced class name from the entity id (dea:DataEntity -> DataEntity), matching the metamodel's own schema convention (business-capability.json uses BusinessCapability, not the spaced display name). Discovered on the data-entities kit dry run; fixture given a spaced display name (Fancy Widget) so the test pins the convention. 103/103.
+
 ### CR-CATALOG-STRUCT-10: Catalog Kit Generator
 
 `tools/generate_catalog_kit.py` machine-generates the full S1-S3 catalog standup kit from the canonical metamodel: hybrid pointer (identity + allocation blocks; layer, dimension, and shared-repo shapes), `dependencies.yaml`, schema projection with the catalogue-instance layer (copied-and-narrowed where a metamodel schema exists, derived-from-definition with flagging where not), vendored relationship-instance contract, fixtures, gates 1-6, three CI workflows, FOUNDATIONS + RECORD-STANDARD + README + CONTRIBUTING, CR register, and a drafted foundation CR. Population is evidence-gated and never generated. 13-test self-suite (fixture metamodel, three projection shapes); full suite 103 passed.

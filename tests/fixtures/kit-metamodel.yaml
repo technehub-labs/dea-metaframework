@@ -6,7 +6,7 @@
 version: 1.0.0
 entities:
   - id: dea:Widget
-    name: Widget
+    name: Fancy Widget
     legacy_ids: [dea:entity-widget]
     definition: A fixture widget for kit-generator self-testing.
     layer: L4
