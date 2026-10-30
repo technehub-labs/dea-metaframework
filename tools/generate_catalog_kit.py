@@ -379,11 +379,12 @@ metaframework_pin: v2.6.0
         }
         props["type"] = {"type": "string", "const": self.class_name}
         props["lifecycle_status"] = {"type": "string", "enum": LIFECYCLE_ENUM, "description": "CR-3R: lifecycle state from metamodel/vocabularies/lifecycle.yaml."}
+        self.normalize_refs(props)
         rel = props.get("relationships")
         if not isinstance(rel, dict) or "$ref" not in (rel.get("items") or {}):
             props["relationships"] = {
                 "type": "array",
-                "description": "Typed relationship instances asserted by this record (metamodel relationship-instance contract).",
+                "description": "Typed relationship instances asserted by this record (metamodel relationship-instance contract; vendored locally).",
                 "items": {"$ref": "relationship-instance.schema.json"},
             }
         for key, block in {**BASE_PROPS, **INSTANCE_LAYER}.items():
@@ -393,6 +394,43 @@ metaframework_pin: v2.6.0
         schema["required"] = std5 + extras
         self.write("schemas/entity.schema.json", json.dumps(schema, indent=2, ensure_ascii=False) + "\n")
         self.projection_source = schema_source
+
+
+    def normalize_refs(self, props: dict[str, Any]) -> None:
+        """Rewrite metamodel-relative $refs to their local equivalents.
+
+        Metamodel entity schemas reference siblings (entity.json#/properties/X,
+        ../relationships/relationship-instance.json) that do not resolve inside
+        a catalog repo. Known targets map to the kit's local contracts; unknown
+        non-local refs are flagged for curation rather than silently weakened.
+        """
+
+        def rewrite(node: Any, key: str) -> tuple[Any, bool]:
+            if isinstance(node, dict) and set(node.keys()) == {"$ref"}:
+                ref = node["$ref"]
+                if ref.endswith("relationship-instance.json"):
+                    return {"type": "array", "items": {"$ref": "relationship-instance.schema.json"}}, True
+                if ref == "entity.json#/properties/metadata":
+                    return BASE_PROPS["metadata"], True
+                if ref == "entity.json#/properties/external_references":
+                    return BASE_PROPS["external_references"], True
+                if ref == "entity.json#/properties/tags":
+                    return BASE_PROPS["tags"], True
+                if not ref.startswith(("http", "#")):
+                    self.flagged.append(f"unhandled non-local $ref {ref!r} in property {key!r} (curate manually)")
+                return node, False
+            if isinstance(node, dict) and "items" in node and isinstance(node["items"], dict):
+                new_items, changed = rewrite(node["items"], key)
+                if changed:
+                    out = dict(node)
+                    out["items"] = new_items
+                    return out, True
+            return node, False
+
+        for key in list(props.keys()):
+            new, changed = rewrite(props[key], key)
+            if changed:
+                props[key] = new
 
     def fixtures(self) -> None:
         valid = f"""# Valid fixture: exercises the normative field set, the catalogue-instance
