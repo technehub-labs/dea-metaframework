@@ -59,6 +59,46 @@ entities:
       pydantic_model: null
       ts_interface: null
     membership: {kind: core, profile: null}
+  - id: dea:SharedOne
+    name: Shared One
+    legacy_ids: [dea:entity-shared-one]
+    definition: Fixture entity sharing a catalog repo with SharedTwo.
+    layer: L4
+    dimension: null
+    building_block: L4-data-foundation
+    abstract: false
+    status: normative
+    lifecycle: proposed
+    class_alias: SH1
+    catalog_repo: dea-catalog-shared
+    artifacts:
+      json_schema: null
+      sqlite_table: null
+      pydantic_model: null
+      ts_interface: null
+    membership: {kind: profile, profile: dea:data}
+    discriminator: shared_kind
+  - id: dea:SharedTwo
+    name: Shared Two
+    legacy_ids: [dea:entity-shared-two]
+    definition: The other fixture entity in the shared repo.
+    layer: L4
+    dimension: null
+    building_block: L4-data-foundation
+    abstract: false
+    status: normative
+    lifecycle: proposed
+    class_alias: SH2
+    catalog_repo: dea-catalog-shared
+    artifacts:
+      json_schema: null
+      sqlite_table: null
+      pydantic_model: null
+      ts_interface: null
+    membership: {kind: profile, profile: dea:data}
+    discriminator: shared_kind
+
+
 relationships:
   - id: dea:represents
     name: Represents

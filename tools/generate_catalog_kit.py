@@ -261,17 +261,29 @@ class Kit:
             mm["layer"] = p["layer"]
             if p.get("building_block"):
                 mm["building_block"] = p["building_block"]
+        if p.get("discriminator"):
+            mm["discriminator"] = p["discriminator"]
         extra = ""
         if len(self.records) > 1:
-            entries = []
+            # Multi-entity pointer (shared catalog_repo per ADR-0002 D6):
+            # a LIST under `entities:`, one entry per non-primary entity.
+            lines2 = ["entities:"]
             for r in self.records[1:]:
-                e = {"entity_id": (r.get("legacy_ids") or [None])[0], "class_alias": r["class_alias"]}
+                e = {
+                    "entity_id": (r.get("legacy_ids") or [""])[0],
+                    "class_alias": r["class_alias"],
+                }
                 if r.get("layer"):
                     e["layer"] = r["layer"]
                     if r.get("building_block"):
                         e["building_block"] = r["building_block"]
-                entries.append(yaml.safe_dump(e, sort_keys=True, default_flow_style=False).strip())
-            extra = "\nentities:\n" + "\n".join(f"  {yaml.safe_dump({'entity_id': (r.get('legacy_ids') or [''])[0], 'class_alias': r['class_alias'], **({'layer': r['layer']} if r.get('layer') else {}), **({'building_block': r['building_block']} if r.get('building_block') else {})}, sort_keys=True, default_flow_style=False).replace('\n', '\n  ')}" for r in self.records[1:])
+                if r.get("discriminator"):
+                    e["discriminator"] = r["discriminator"]
+                dumped = yaml.safe_dump(e, sort_keys=True, default_flow_style=False).rstrip("\n")
+                dl = dumped.splitlines()
+                lines2.append("  - " + dl[0])
+                lines2.extend("    " + ln for ln in dl[1:])
+            extra = "\n" + "\n".join(lines2) + "\n"
         defn = " ".join((p.get("definition") or "").split())
         lines = [
             f"# Metamodel Pointer — {self.entity_name}",
@@ -370,6 +382,19 @@ metaframework_pin: v2.6.0
             "metamodel does not define: fix the record instead. A catalogue that diverges from the metamodel is a "
             "second source of truth."
         )
+        # Metamodel schema bug guard: some schemas carry over-escaped regex
+        # patterns (e.g. tenet.json's version pattern ^\\d+ matching a
+        # literal backslash-d, which rejects every real semver). Normalize
+        # the known-broken form to the intended one and flag it for a
+        # metamodel schema-fix CR.
+        for pname, pblock in (schema.get("properties") or {}).items():
+            pat = pblock.get("pattern") if isinstance(pblock, dict) else None
+            if isinstance(pat, str) and "\\\\" in pat:
+                pblock["pattern"] = pat.replace("\\\\", "\\")
+                self.flagged.append(
+                    f"metamodel schema pattern for {pname!r} was over-escaped; normalized in the projection "
+                    f"(metamodel schema-fix CR candidate: {self.slug})"
+                )
         schema["additionalProperties"] = False
         props = schema.setdefault("properties", {})
         props["id"] = {
@@ -416,7 +441,7 @@ metaframework_pin: v2.6.0
                     return BASE_PROPS["external_references"], True
                 if ref == "entity.json#/properties/tags":
                     return BASE_PROPS["tags"], True
-                if not ref.startswith(("http", "#")):
+                if not ref.startswith(("http", "#")) and not ref.endswith(".schema.json"):
                     self.flagged.append(f"unhandled non-local $ref {ref!r} in property {key!r} (curate manually)")
                 return node, False
             if isinstance(node, dict) and "items" in node and isinstance(node["items"], dict):
@@ -432,6 +457,32 @@ metaframework_pin: v2.6.0
             if changed:
                 props[key] = new
 
+    def fixture_extra_fields(self) -> str:
+        """YAML lines for metamodel-required properties beyond the standard
+        five, synthesized from the projection (enum -> first value; scalars
+        -> typed placeholder; containers -> empty)."""
+        proj = json.loads((self.target / "schemas/entity.schema.json").read_text(encoding="utf-8"))
+        std5 = {"id", "type", "name", "version", "lifecycle_status"}
+        props = proj.get("properties") or {}
+        lines: list[str] = []
+        for req in proj.get("required", []):
+            if req in std5 or req in BASE_PROPS or req in INSTANCE_LAYER or req == "relationships":
+                continue
+            p = props.get(req) or {}
+            if "enum" in p and p["enum"]:
+                lines.append(f"{req}: {p['enum'][0]!r}")
+            elif p.get("type") == "array":
+                lines.append(f"{req}: []")
+            elif p.get("type") == "object":
+                lines.append(f"{req}: {{}}")
+            elif p.get("type") == "boolean":
+                lines.append(f"{req}: false")
+            elif p.get("type") in ("integer", "number"):
+                lines.append(f"{req}: 1")
+            else:
+                lines.append(f"{req}: 'fixture {req}'")
+        return "\n".join(lines)
+
     def fixtures(self) -> None:
         valid = f"""# Valid fixture: exercises the normative field set, the catalogue-instance
 # layer, and one typed relationship instance. Illustrative ids only.
@@ -441,6 +492,7 @@ name: Example {self.entity_name}
 description: 'Fixture: an illustrative {self.entity_name.lower()} record demonstrating the canonical shape; not admitted.'
 version: 1.0.0
 lifecycle_status: active
+{self.fixture_extra_fields()}
 tags:
   - fixture
 evidence:
