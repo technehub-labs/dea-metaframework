@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://example.com/relationship-instance.json",
+  "title": "RelationshipInstance (fixture)",
+  "type": "object",
+  "required": ["source_id", "target_id", "relationship_type"],
+  "properties": {
+    "source_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*:[a-z0-9-]+$"},
+    "target_id": {"type": "string", "pattern": "^[a-z][a-z0-9-]*:[a-z0-9-]+$"},
+    "relationship_type": {"type": "string", "enum": ["references", "maps-to"]},
+    "rationale": {"type": "string"}
+  }
+}
