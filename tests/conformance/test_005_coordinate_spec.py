@@ -89,6 +89,29 @@ def test_coordinate_identifier_matches_domain_and_stage() -> None:
         )
 
 
+def test_domain_identifier_convention_table() -> None:
+    """CR-ECF-012: the identifier convention is the And-stripped
+    lowerCamel table (DOMAIN_ID), with EnablementAndOperations the one
+    connective-keeping form. Pinned literally against the metamodel's
+    detect_drift.py DOMAIN_ID so a regression to generic camelization
+    fails here, not in a downstream catalog's CI."""
+    expected_domains = {
+        "GovernanceAndExistence": "governanceExistence",
+        "StrategyAndDirection": "strategyDirection",
+        "AgencyAndOrganization": "agencyOrganization",
+        "PartyAndRelationship": "partyRelationship",
+        "ProductAndValue": "productValue",
+        "EnablementAndOperations": "enablementAndOperations",
+        "FinanceAndAccounting": "financeAccounting",
+    }
+    check(ecf.DOMAIN_ID == expected_domains, "DOMAIN_ID drifted from the CR-ECF-012 convention table")
+    for domain, ident in expected_domains.items():
+        for stage in ecf.STAGES:
+            got = ecf.coordinate_identifier(domain, stage)
+            want = f"ecf:{ident}.{stage.lower()}"
+            check(got == want, f"{domain}/{stage}: {got!r} != {want!r}")
+
+
 def test_no_cell_filling_rule() -> None:
     """The specification must NOT impose a population requirement.
 
