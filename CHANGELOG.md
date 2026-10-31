@@ -6,6 +6,10 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
+### CR-ECF-012: ECF Coordinate Identifier Finalization
+
+The And-stripped lowerCamel identifier convention (the metamodel detect_drift DOMAIN_ID map that every catalog, gate, and script implements) is adopted as normative: tools/ecf_coordinates.py gains the explicit DOMAIN_ID table and coordinate_identifier() builds from it; specification/ecf-coordinates.md section 4 is restated, executing the CR-ECF-005 finalization deferral; the conformance suite pins all 49 identifiers literally. Zero downstream consumers of the retired generic-camelization form existed (census). The metamodel's CR-MET-018 mirror test asserts all-49 map equality, closing the dual-source-of-truth defect.
+
 ### CR-CATALOG-STRUCT-10B: Kit Generator Hardening (waves 2-4 findings)
 
 Five fixes from the wave 2-4 kit runs: (1) multi-entity pointers emit a proper `entities:` LIST with per-entry discriminators (ADR-0002 D6; the map form crashed validate_consumer); (2) metamodel-relative $refs are normalized (entity.json#/properties/*, ../relationships/...; unknown non-local refs flagged, local .schema.json refs exempted); (3) valid fixtures synthesize values for metamodel-required extras (enum-first, typed placeholders); (4) over-escaped regex patterns in metamodel schemas (tenet.json version) are normalized in the projection and flagged for a metamodel schema-fix CR; (5) root-repo state probing guidance. Shared-repo fixture pair + list-form test added. 104/104.

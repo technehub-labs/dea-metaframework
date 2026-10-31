@@ -66,15 +66,28 @@ coordinate.
 
 ## 4. Domain Enumeration
 
-| # | Domain (canonical) | Identifier (camelCase) | Display label |
-|---|--------------------|-------------------------|---------------|
-| 1 | GovernanceAndExistence | governanceAndExistence | Governance & Existence |
-| 2 | StrategyAndDirection | strategyAndDirection | Strategy & Direction |
-| 3 | AgencyAndOrganization | agencyAndOrganization | Agency & Organization |
-| 4 | PartyAndRelationship | partyAndRelationship | Party & Relationship |
-| 5 | ProductAndValue | productAndValue | Product & Value |
+| # | Domain (canonical) | Identifier (CR-ECF-012) | Display label |
+|---|--------------------|--------------------------|---------------|
+| 1 | GovernanceAndExistence | governanceExistence | Governance & Existence |
+| 2 | StrategyAndDirection | strategyDirection | Strategy & Direction |
+| 3 | AgencyAndOrganization | agencyOrganization | Agency & Organization |
+| 4 | PartyAndRelationship | partyRelationship | Party & Relationship |
+| 5 | ProductAndValue | productValue | Product & Value |
 | 6 | EnablementAndOperations | enablementAndOperations | Enablement & Operations |
-| 7 | FinanceAndAccounting | financeAndAccounting | Finance & Accounting |
+| 7 | FinanceAndAccounting | financeAccounting | Finance & Accounting |
+
+**CR-ECF-012 finalization:** the identifier convention is the
+And-stripped lowerCamel form carried in the `DOMAIN_ID` table of
+`tools/ecf_coordinates.py`, with `enablementAndOperations` the one
+connective-keeping form (the "enablement operations" reading would be
+lost otherwise). This executes the finalization check deferred in
+section 2: the metamodel's `detect_drift.py` `DOMAIN_ID` map — the
+convention every catalog, gate, and script actually implements — is
+adopted as the normative table, and the metamodel's mirror test
+(`test_035_ecf_identifier_mirror`) asserts all-49 equality so the two
+repos cannot drift apart silently. The previous generic-camelization
+forms in this table (`governanceAndExistence` etc.) were never used by
+any catalog artifact and are superseded.
 
 The `canonical` value is the value carried in the `domain` field of a
 Coordinate. The `identifier` is the camelCase form used in the

@@ -98,16 +98,47 @@ def camel_case(value: str) -> str:
     return value[0].lower() + value[1:]
 
 
+# Canonical coordinate-identifier map (CR-ECF-012): the And-stripped
+# lowerCamel serialization, with EnablementAndOperations the one domain
+# whose identifier keeps its connective (the historical reading
+# "enablement operations" would be lost otherwise). This table IS the
+# identifier convention; the generic camel_case() lowercasing it replaces
+# produced And-kept forms (e.g. financeAndAccounting) that no catalog,
+# gate, or metamodel script uses and that the metamodel's drift detector
+# rejects. The dea-metamodel mirror test (test_035_ecf_identifier_mirror)
+# asserts map equality for all 49 coordinates, so the two repos cannot
+# drift apart silently again.
+DOMAIN_ID: dict[str, str] = {
+    "GovernanceAndExistence": "governanceExistence",
+    "StrategyAndDirection": "strategyDirection",
+    "AgencyAndOrganization": "agencyOrganization",
+    "PartyAndRelationship": "partyRelationship",
+    "ProductAndValue": "productValue",
+    "EnablementAndOperations": "enablementAndOperations",
+    "FinanceAndAccounting": "financeAccounting",
+}
+
+# Deprecated identifier forms resolve through resolve_domain_alias first;
+# the deprecated PascalCase domains' identifier forms are carried here so
+# an identifier built from a resolved-alias path still lands canonically.
+DEPRECATED_DOMAIN_ID_ALIASES: dict[str, str] = {
+    "operationsEnablement": "enablementAndOperations",
+    "peopleAndOrganization": "agencyOrganization",
+}
+
 def coordinate_identifier(domain: str, stage: str) -> str:
     """Build the canonical coordinate identifier `ecf:<domain>.<stage>`.
 
-    Both `domain` and `stage` must be canonical PascalCase values.
+    Both `domain` and `stage` must be canonical PascalCase values; the
+    identifier comes from the DOMAIN_ID convention table (CR-ECF-012),
+    not from generic camelization.
     """
     if domain not in DOMAINS:
         raise ValueError(f"unknown domain: {domain!r}")
     if stage not in STAGES:
         raise ValueError(f"unknown stage: {stage!r}")
-    return f"ecf:{camel_case(domain)}.{camel_case(stage)}"
+    # Stages are single-word: the identifier form is the lowercased stage.
+    return f"ecf:{DOMAIN_ID[domain]}.{stage.lower()}"
 
 
 def coordinate_label(domain: str, stage: str) -> str:
