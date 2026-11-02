@@ -181,6 +181,10 @@ consume ECF coordinates as context. See
 
 ---
 
+## Catalog Kit Generator
+
+`tools/generate_catalog_kit.py` machine-generates the full standup kit for a new catalog from the canonical metamodel (CR-CATALOG-STRUCT-10). See `docs/standards/catalog-repository-pattern.md`.
+
 ## Contributing
 
 Open an issue or pull request. The framework is versioned; semantic-version
