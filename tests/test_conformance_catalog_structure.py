@@ -330,6 +330,99 @@ def test_cst_filter_runs_only_named(tmp_root: Path) -> None:
     check(rc.returncode == 0, f"CST-013-only run expected exit 0; got {rc.returncode}; stderr={rc.stderr}")
 
 
+# ---------- CST-017: directory-entry cap ----------
+
+def _git(target: Path, *args: str) -> subprocess.CompletedProcess:
+    """Run git in the fixture with a throwaway identity (CI has one; a
+    bare `git commit` would otherwise fail on a missing user config)."""
+    return subprocess.run(
+        ["git", "-C", str(target), *args],
+        capture_output=True,
+        text=True,
+        timeout=30,
+        env={
+            "GIT_AUTHOR_NAME": "fixture",
+            "GIT_AUTHOR_EMAIL": "fixture@example.invalid",
+            "GIT_COMMITTER_NAME": "fixture",
+            "GIT_COMMITTER_EMAIL": "fixture@example.invalid",
+            "HOME": str(target),  # isolate from any global git config
+            "PATH": "/usr/bin:/bin:/usr/local/bin:/opt/homebrew/bin",
+        },
+    )
+
+
+def test_cst_017_passes_on_conforming_fixture(tmp_root: Path) -> None:
+    target = tmp_root / "cap-clean"
+    copy_conforming(target)
+    rc = run_subprocess(
+        [str(CONFORMANCE), "--catalog-root", str(target), "--template-root", str(TEMPLATE), "--cst", "CST-017"],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 0, f"CST-017 on conforming fixture expected exit 0; got {rc.returncode}; stderr={rc.stderr}")
+
+
+def test_cst_017_flags_hot_directory_via_fallback_walk(tmp_root: Path) -> None:
+    """The fixture copy is not a git repo, so the filesystem fallback walk
+    runs: exactly the shape a bare checkout presents."""
+    target = tmp_root / "cap-hot"
+    copy_conforming(target)
+    hot = target / "contributions" / "queue"
+    hot.mkdir(parents=True)
+    for i in range(800):  # exactly at the trigger; >= must fail
+        (hot / f"item-{i:04d}.yaml").write_text("id: dea:x\n", encoding="utf-8")
+    rc = run_subprocess(
+        [str(CONFORMANCE), "--catalog-root", str(target), "--template-root", str(TEMPLATE), "--cst", "CST-017"],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 2, f"800-entry directory expected exit 2; got {rc.returncode}; stderr={rc.stderr}")
+    check("CST-017" in rc.stderr, f"CST-017 not flagged; stderr={rc.stderr}")
+    check("contributions/queue" in rc.stderr, f"offending directory not named; stderr={rc.stderr}")
+    check("shard level" in rc.stderr, f"remedy not named; stderr={rc.stderr}")
+
+
+def test_cst_017_ignores_untracked_noise_in_git_work_tree(tmp_root: Path) -> None:
+    """Untracked local noise must never fail the gate: GitHub listings
+    show tracked content only (the business-capabilities clone carries a
+    2,000-file untracked `.venv`)."""
+    target = tmp_root / "cap-git-noise"
+    copy_conforming(target)
+    for args in (("init", "-q"), ("add", "-A"), ("commit", "-qm", "fixture")):
+        proc = _git(target, *args)
+        check(proc.returncode == 0, f"git {args[0]} failed: {proc.stderr}")
+    noise = target / "scratch-untracked"
+    noise.mkdir()
+    for i in range(850):
+        (noise / f"noise-{i:04d}.txt").write_text("x\n", encoding="utf-8")
+    rc = run_subprocess(
+        [str(CONFORMANCE), "--catalog-root", str(target), "--template-root", str(TEMPLATE), "--cst", "CST-017"],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 0, f"untracked noise must not fail CST-017; got {rc.returncode}; stderr={rc.stderr}")
+
+
+def test_cst_017_flags_tracked_directory_over_trigger(tmp_root: Path) -> None:
+    """800+ TRACKED entries in one directory is the real violation: the
+    staged (index) state counts, because that is what the pushed tree
+    will show."""
+    target = tmp_root / "cap-git-hot"
+    copy_conforming(target)
+    for args in (("init", "-q"), ("add", "-A"), ("commit", "-qm", "fixture")):
+        proc = _git(target, *args)
+        check(proc.returncode == 0, f"git {args[0]} failed: {proc.stderr}")
+    hot = target / "entities" / "v1-alpha" / "hot"
+    hot.mkdir(parents=True)
+    for i in range(805):
+        (hot / f"record-{i:04d}.yaml").write_text("id: dea:x\n", encoding="utf-8")
+    proc = _git(target, "add", "-A")
+    check(proc.returncode == 0, f"git add failed: {proc.stderr}")
+    rc = run_subprocess(
+        [str(CONFORMANCE), "--catalog-root", str(target), "--template-root", str(TEMPLATE), "--cst", "CST-017"],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 2, f"805 tracked entries expected exit 2; got {rc.returncode}; stderr={rc.stderr}")
+    check("entities/v1-alpha/hot" in rc.stderr, f"offending directory not named; stderr={rc.stderr}")
+
+
 # ---------- Bootstrap script tests ----------
 
 def test_bootstrap_produces_conformant_catalog(tmp_root: Path) -> None:

@@ -86,7 +86,11 @@ def test_live_fetch_against_real_catalog(tmp_path: Path) -> None:
     Asserts:
       - The fetch returns 200-class bytes.
       - The bytes parse as a Catalog.
-      - counts.entities == 0 (stakeholders is a scaffold).
+      - counts.entities >= 1 (stakeholders was populated 2026-11-08,
+        register v9: 11 canonical). The scaffold-era pin on exact counts
+        went stale when the catalogue grew; count truth belongs to the
+        governance reconciler (R3 state truth), not this fetch-machinery
+        test, so the assertion stays growth-tolerant.
     """
     import urllib.error
 
@@ -102,4 +106,4 @@ def test_live_fetch_against_real_catalog(tmp_path: Path) -> None:
         pytest.skip(f"network unreachable in this environment: {exc}")
     cat = cli_mod.parse_catalog_yaml(res.bytes)
     assert cat.metadata.abbreviation == "SH"
-    assert cat.counts.entities == 0
+    assert cat.counts.entities >= 1

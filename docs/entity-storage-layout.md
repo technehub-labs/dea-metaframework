@@ -1,7 +1,7 @@
 # DEA Entity Storage Layout
 
-**Version**: 1.0.0
-**Date**: 2026-09-20
+**Version**: 1.1.0
+**Date**: 2026-11-10
 **Status**: Ratified
 **Owner**: Emmanuel A. Otchere
 **Scope**: Org-wide. All `dea-catalog-*` repos.
@@ -82,8 +82,14 @@ entities/v1-alpha/
 
 ## 4. GitHub 1,000-entry limit
 
-- ECF-coordinated repos: worst-case directory is ~15 entries (BP with the most Activities). Permanently under the limit.
-- Non-ECF repos: worst-case directory is the number of records (currently 32 for capabilities, 18 for services). If any repo approaches 800 records, a shard level is introduced (e.g. by first letter of slug) without changing the id system.
+GitHub truncates a directory listing at 1,000 entries (files and subdirectories alike; the contents API truncates the same way). Since 1.1.0 the rule is enforced, not prose:
+
+- **Shard trigger: 800 entries.** Before any directory approaches 800 entries, a shard level is introduced (e.g. by first letter of slug) without changing the id system, so the §5 contract keeps holding. 800 leaves 200 entries of headroom to the truncation, so the remediation PR lands while the directory is still fully listable.
+- **PR-time enforcement**: CST-017 of the cross-repo conformance suite (`tools/conformance_test_catalog_structure.py`, added by CR-CATALOG-STRUCT-11) fails any directory at or over 800 **tracked** entries, census over the whole repo (untracked local noise such as a `.venv` never counts).
+- **Org-wide weekly enforcement**: rule R5 of the portfolio reconciler (`dea-governance/registers/reconcile_portfolio.py`) audits every registered repo from the git-trees API: WARN (watch, non-failing) at 500+ entries, FAIL at 800+.
+- **Remedy**: the CR-MET-024 recipe: shard `entities/v1-alpha/<letter>/…` on the first character of the record slug (`0-9` fallback), record ids byte-identical, all tooling moved to recursive walking in the same change. Reference implementation: `dea-catalog-metrics` (`scripts/migrate_to_shard_layout.py`, `scripts/_catalog.py::shard_for_id`, `tests/test_layout.py`).
+
+ECF-coordinated repos (containment tree) keep their worst case at ~15 entries per directory: permanently under the trigger. The live failure mode is an unsharded *flat concern* elsewhere in a repo (e.g. `change-requests/` or a contribution intake queue), which is why CST-017 and R5 census every directory, not just `entities/`.
 
 ## 5. Path-integrity contract
 

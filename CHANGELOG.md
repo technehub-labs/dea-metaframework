@@ -6,6 +6,14 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
+### CR-CATALOG-STRUCT-11: Directory-Entry Cap (CST-017)
+
+The cross-repo conformance suite gains CST-017: no directory in a catalog repo may hold 800 or more tracked entries (entity-storage-layout §4 shard trigger; GitHub truncates listings at 1,000). Counting is GitHub-listing semantics (files plus subdirectories, per immediate parent) over git-tracked content only, with a filesystem fallback for non-git roots that skips untracked noise; the census is repo-wide because the live failure mode is a flat concern (change-requests/, contribution queues), not the containment tree. The failure message names the CR-MET-024 sharding recipe as the remedy. entity-storage-layout.md is codified to v1.1.0 (trigger 800; CST-017 PR-time; governance R5 weekly) and the adoption tracker's `conforming` definition now reads CST-001..CST-017. Four self-tests added (conforming fixture; 800-file non-git fallback; untracked-noise immunity in a git work tree; 805 tracked entries); full suite 141 passed. Gate lands green everywhere: worst tracked directories today are metrics `entities/v1-alpha/c` (604), business-services `entities/v1-alpha` (536), business-services `contributions/queue` (518).
+
+### Consumer live-fetch test: stakeholders count staleness
+
+`tools/cross_repo_consumer/tests/test_cli.py::test_live_fetch_against_real_catalog` pinned `dea-catalog-stakeholders` at `counts.entities == 0`, true only while stakeholders was a scaffold; the 2026-11-08 population (register v9: 11 canonical) turned main's suite red independently of any content change. Replaced with a growth-tolerant `>= 1` assertion and an updated docstring: count truth belongs to the governance reconciler (R3 state truth), not this fetch-machinery test.
+
 ### CR-ECF-012: ECF Coordinate Identifier Finalization
 
 The And-stripped lowerCamel identifier convention (the metamodel detect_drift DOMAIN_ID map that every catalog, gate, and script implements) is adopted as normative: tools/ecf_coordinates.py gains the explicit DOMAIN_ID table and coordinate_identifier() builds from it; specification/ecf-coordinates.md section 4 is restated, executing the CR-ECF-005 finalization deferral; the conformance suite pins all 49 identifiers literally. Zero downstream consumers of the retired generic-camelization form existed (census). The metamodel's CR-MET-018 mirror test asserts all-49 map equality, closing the dual-source-of-truth defect.
