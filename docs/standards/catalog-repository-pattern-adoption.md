@@ -2,7 +2,7 @@
 
 **Standard**: [catalog-repository-pattern.md](./catalog-repository-pattern.md)
 **Owner**: TechNeHub Labs
-**Last updated**: 2026-09-05
+**Last updated**: 2026-11-10
 
 This document tracks adoption of the catalog repository standard (CR-CATALOG-STRUCT-01) across every TechNeHub Labs catalog repo.
 
@@ -13,7 +13,7 @@ This document tracks adoption of the catalog repository standard (CR-CATALOG-STR
 | `not-started` | No adoption PR opened. |
 | `in-progress` | PR opened but not merged. |
 | `partial` | Layout adopted (step 1); research distribution (step 2) or contribution flow (step 3) pending. |
-| `conforming` | All three migration steps complete; conformance tests CST-001..CST-015 pass; CI gate green. |
+| `conforming` | All three migration steps complete; conformance tests CST-001..CST-017 pass; CI gate green. (CST-017, the directory-entry cap, applies from CR-CATALOG-STRUCT-11; repos on pre-v2.7.0 pins pick it up at their next pin bump.) |
 | `exempted` | Explicit waiver granted by the metaframework; rationale and sunset date recorded. |
 
 ## Adoption register

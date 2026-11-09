@@ -1,7 +1,8 @@
 """Cross-repo conformance suite for the catalog repository standard.
 
 Authority: CR-CATALOG-STRUCT-01 §11 (CST-001..CST-015) + CR-CATALOG-STRUCT-06b
-(adds CST-016, the template-version diff).
+(adds CST-016, the template-version diff) + CR-CATALOG-STRUCT-11 (adds CST-017,
+the directory-entry cap of docs/entity-storage-layout.md §4).
 
 This script is the **enforcement layer** for the standard. It takes a
 catalog repo (as a filesystem path or a git URL) and verifies every
@@ -27,6 +28,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any, Callable
@@ -551,6 +553,132 @@ def cst_016_template_version(catalog_root: Path, template_root: Path | None) -> 
         )
 
 
+# ---------- CST-017: directory-entry cap ----------
+
+# docs/entity-storage-layout.md §4: GitHub truncates a directory listing
+# at 1,000 entries, and the ratified contract requires a shard level
+# before any directory approaches 800 entries: the trigger CR-MET-024
+# R4 pins for the metrics corpus (its tests/test_layout.py carries the
+# same constant). 800 leaves 200 entries of headroom to the truncation,
+# so a fast-growing intake lands its remediation PR while the directory
+# is still fully listable.
+GITHUB_LISTING_CAP = 1000
+MAX_DIRECTORY_ENTRIES = 800
+
+# Local-only build/venv noise that no repo tracks and no GitHub listing
+# ever shows. Consulted only by the non-git fallback walk; when the
+# catalog root is a git work tree, untracked paths are invisible to the
+# census by construction.
+_UNTRACKED_NOISE_DIRS = {
+    ".git", ".venv", "venv", "node_modules", "__pycache__",
+    ".pytest_cache", ".mypy_cache", ".ruff_cache", ".idea", ".vscode",
+    ".metaframework",
+}
+
+
+def _tracked_relpaths(catalog_root: Path) -> list[str] | None:
+    """Tracked file paths relative to `catalog_root`, or None when the
+    root is not a git work tree (the caller then falls back to a
+    filesystem walk).
+
+    The census must count what a GitHub listing would show: tracked
+    content. A fat untracked `.venv` or build directory must never fail
+    the gate (the business-capabilities clone carries a 2,000-file
+    `.venv` that is not even gitignored).
+    """
+    try:
+        proc = subprocess.run(
+            ["git", "-C", str(catalog_root), "ls-files", "-z"],
+            capture_output=True,
+            timeout=60,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return None
+    if proc.returncode != 0:
+        return None
+    return [
+        p.decode("utf-8", "surrogateescape")
+        for p in proc.stdout.split(b"\0")
+        if p
+    ]
+
+
+def _entry_counts_from_paths(relpaths: list[str]) -> dict[str, int]:
+    """Immediate-entry count per directory, GitHub-listing semantics: a
+    listing shows files AND subdirectories. Derived from tracked paths:
+    every file adds one to its parent; every directory that holds tracked
+    content is itself one entry in its own parent. The repo root is keyed
+    as ""."""
+    counts: dict[str, int] = {}
+    tracked_dirs: set[str] = set()
+    for rel in relpaths:
+        parts = rel.split("/")
+        for i in range(1, len(parts)):
+            tracked_dirs.add("/".join(parts[:i]))
+        parent = "/".join(parts[:-1])
+        counts[parent] = counts.get(parent, 0) + 1
+    for d in tracked_dirs:
+        parent = d.rsplit("/", 1)[0] if "/" in d else ""
+        counts[parent] = counts.get(parent, 0) + 1
+    return counts
+
+
+def _entry_counts_from_walk(catalog_root: Path) -> dict[str, int]:
+    """Non-git fallback (a bare checkout, a tmp fixture): same counting
+    over the filesystem, skipping the untracked-noise directories."""
+    counts: dict[str, int] = {}
+
+    def walk(dir_path: Path, rel: str) -> int:
+        try:
+            children = sorted(dir_path.iterdir())
+        except OSError:
+            return 0
+        n = 0
+        for child in children:
+            if child.is_dir():
+                if child.name in _UNTRACKED_NOISE_DIRS:
+                    continue
+                n += 1
+                child_rel = f"{rel}/{child.name}" if rel else child.name
+                walk(child, child_rel)
+            else:
+                n += 1
+        if rel:
+            counts[rel] = n
+        return n
+
+    walk(catalog_root, "")
+    return counts
+
+
+def cst_017_directory_entry_cap(catalog_root: Path) -> None:
+    """No directory may approach GitHub's 1,000-entry listing truncation.
+
+    docs/entity-storage-layout.md §4; the remedy when the gate trips is
+    the CR-MET-024 recipe: introduce a shard level (first letter of the
+    slug) without changing the id system, so every record's path stays
+    derivable from its id (§5).
+    """
+    relpaths = _tracked_relpaths(catalog_root)
+    if relpaths is not None:
+        counts = _entry_counts_from_paths(relpaths)
+    else:
+        counts = _entry_counts_from_walk(catalog_root)
+    offenders = sorted(
+        ((d, n) for d, n in counts.items() if n >= MAX_DIRECTORY_ENTRIES),
+        key=lambda item: item[1],
+        reverse=True,
+    )
+    for d, n in offenders:
+        check(
+            False,
+            f"CST-017: {d if d else '<repo root>'} holds {n} entries "
+            f"(shard trigger {MAX_DIRECTORY_ENTRIES}; GitHub truncates listings "
+            f"at {GITHUB_LISTING_CAP}); introduce a shard level "
+            f"(entity-storage-layout.md §4; CR-MET-024 recipe)",
+        )
+
+
 CST_TESTS: list[tuple[str, Callable[..., None]]] = [
     ("CST-001", cst_001_has_catalog_yaml),
     ("CST-002", cst_002_catalog_yaml_validates_against_schema),
@@ -567,12 +695,16 @@ CST_TESTS: list[tuple[str, Callable[..., None]]] = [
     ("CST-013", cst_013_regenerator_present),
     ("CST-014", cst_014_gate_present),
     ("CST-015", cst_015_ci_workflow_references_scripts),
+    # CST-016 (template-version diff) runs separately in run(): it needs
+    # the template root alongside the catalog root.
+    ("CST-017", cst_017_directory_entry_cap),
 ]
 
 
 def run(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
-        description="Cross-repo conformance suite for the catalog repository standard (CR-CATALOG-STRUCT-06b)."
+        description="Cross-repo conformance suite for the catalog repository standard "
+                    "(CR-CATALOG-STRUCT-06b; CST-017 by CR-CATALOG-STRUCT-11)."
     )
     parser.add_argument(
         "--catalog-root",
