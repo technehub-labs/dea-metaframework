@@ -334,7 +334,7 @@ root_model_pin: {self.args.root_ref}
 # Shared toolchain pin: regenerate_catalog.py, check_catalog_index.py,
 # check_authorship.py and the index schema are vendored from this
 # dea-metaframework release tag.
-metaframework_pin: v2.6.0
+metaframework_pin: v2.7.0
 """
         self.write("dependencies.yaml", content)
 
@@ -1047,7 +1047,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: technehub-labs/dea-metaframework
-          ref: v2.6.0
+          ref: v2.7.0
           path: .metaframework
       - name: Prefer vendored gate copies
         run: |
@@ -1191,7 +1191,7 @@ standard). Population is evidence-gated; see `docs/FOUNDATIONS.md` §7.
 | Item | State |
 |---|---|
 | Metamodel pointer | hybrid (identity + allocation blocks), pinned to OpenDEAM {self.args.root_ref} |
-| Dependency manifest | `dependencies.yaml`: metamodel 1.0.0, root model {self.args.root_ref}, metaframework v2.6.0 |
+| Dependency manifest | `dependencies.yaml`: metamodel 1.0.0, root model {self.args.root_ref}, metaframework v2.7.0 |
 | Schema projection | metamodel v1.0.0 projection + catalogue-instance layer |
 | Record documentation standard | `docs/RECORD-STANDARD.md`, Gate 6 |
 | Population | gated on the population CR |
