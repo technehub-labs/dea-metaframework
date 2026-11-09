@@ -6,6 +6,10 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
+### Toolchain pins to v2.7.0
+
+The catalog-repo template CI fetch and the kit generator's emitted pins (`dependencies.yaml` manifest note, the emitted workflow's upstream checkout, the README dependency table) move v2.6.0 -> v2.7.0 so new kits and re-bootstraps resolve a toolchain that carries CST-017 (CR-CATALOG-STRUCT-11). Existing repos keep their own pins and pick the new suite up at their next deliberate pin bump, in their own PR. Suite: 141 passed.
+
 ### CR-CATALOG-STRUCT-11: Directory-Entry Cap (CST-017)
 
 The cross-repo conformance suite gains CST-017: no directory in a catalog repo may hold 800 or more tracked entries (entity-storage-layout §4 shard trigger; GitHub truncates listings at 1,000). Counting is GitHub-listing semantics (files plus subdirectories, per immediate parent) over git-tracked content only, with a filesystem fallback for non-git roots that skips untracked noise; the census is repo-wide because the live failure mode is a flat concern (change-requests/, contribution queues), not the containment tree. The failure message names the CR-MET-024 sharding recipe as the remedy. entity-storage-layout.md is codified to v1.1.0 (trigger 800; CST-017 PR-time; governance R5 weekly) and the adoption tracker's `conforming` definition now reads CST-001..CST-017. Four self-tests added (conforming fixture; 800-file non-git fallback; untracked-noise immunity in a git work tree; 805 tracked entries); full suite 141 passed. Gate lands green everywhere: worst tracked directories today are metrics `entities/v1-alpha/c` (604), business-services `entities/v1-alpha` (536), business-services `contributions/queue` (518).
