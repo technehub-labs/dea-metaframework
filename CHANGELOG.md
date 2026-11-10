@@ -6,6 +6,10 @@ governed by change requests (`change-requests/`).
 
 ## [Unreleased]
 
+### CR-CATALOG-STRUCT-12: State-Grouped Subtrees (top-level retired/, candidates/, research/)
+
+Flat-layout catalogs gain the visual-separation shape: a state directory sitting directly under `entities/v1-alpha/` (`retired/`, `candidates/`, `research/`) groups whole entity subtrees by state, and its direct children enumerate as ordinary entity subtrees. The regenerator, the index gate, and the conformance suite all learn the grouping: `list_subtrees`/`list_entity_subtrees` enumerate grouped children; every emitted `CATALOG.yaml` path is derived from the subtree's actual position (`entities/v1-alpha/retired/<dir>/<record>.yaml`), replacing the hardcoded flat prefix; CST-010 gains the grouped mirror of its rule (a record under the top-level `retired/` grouping must carry a retired/deprecated lifecycle). Deeper state dirs keep per-subtree semantics, so the existing per-subtree `retired/` shape is unaffected, and flat catalogs regenerate byte-identically (verified against `dea-catalog-stakeholders` main before/after). `docs/entity-storage-layout.md` codifies §3.2 and the two-location §5 path probe (v1.1.0 -> v1.2.0). Six self-tests added (grouped emission, strict gate pass, orphan detection under the grouping, full-suite conformance with a grouping, CST-010 contradiction flag); machinery 24/24 dual-runner, full suite 144 passed locally (two CST-017 git-work-tree tests require a git checkout and pass in CI). Motivating consumer: `dea-catalog-stakeholders` CR-CATALOG-STRUCT-16's retired party records move from retired-in-place to the grouped shape in their own repo CR.
+
 ### Toolchain pins to v2.7.0
 
 The catalog-repo template CI fetch and the kit generator's emitted pins (`dependencies.yaml` manifest note, the emitted workflow's upstream checkout, the README dependency table) move v2.6.0 -> v2.7.0 so new kits and re-bootstraps resolve a toolchain that carries CST-017 (CR-CATALOG-STRUCT-11). Existing repos keep their own pins and pick the new suite up at their next deliberate pin bump, in their own PR. Suite: 141 passed.

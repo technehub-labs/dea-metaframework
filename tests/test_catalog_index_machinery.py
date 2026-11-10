@@ -214,6 +214,88 @@ def test_regenerator_emits_retired_via_lifecycle_status(tmp_root: Path) -> None:
     check("state: retired" in out, "retired state not emitted")
 
 
+def _build_grouped_retired_subtree(root: Path, entity_id: str = "dea:process-gone-abc123") -> Path:
+    """CR-CATALOG-STRUCT-12 grouped shape: a fully-retired entity subtree
+    under the top-level entities/v1-alpha/retired/ grouping, hyphen-form
+    record file, research/ dossier retained as history."""
+    subtree = root / "entities" / "v1-alpha" / "retired" / "process-gone-abc123"
+    (subtree / "research").mkdir(parents=True, exist_ok=True)
+    write_yaml(subtree / "research" / "README.md", "# Research\n")
+    write_yaml(subtree / "research" / "evidence.yaml", "claim: engaged-instance history\n")
+    write_yaml(
+        subtree / f"{entity_id.replace(':', '-')}.yaml",
+        f"id: {entity_id}\ntype: Process\nversion: 1.1.0\nlifecycle_status: retired\n",
+    )
+    return subtree
+
+
+def test_regenerator_emits_grouped_retired_entity_with_grouped_path(tmp_root: Path) -> None:
+    """A subtree under the top-level retired/ grouping enumerates like a
+    flat one, and every emitted path carries the grouping segment (the
+    path is derived from the subtree's position on disk, not hardcoded)."""
+    build_fixture(
+        tmp_root,
+        canonical_entities=[
+            ("dea:process-live", {"id": "dea:process-live", "type": "Process", "version": "1.0.0", "lifecycle_status": "active"}),
+        ],
+    )
+    _build_grouped_retired_subtree(tmp_root)
+    res = run_subprocess([str(REGEN), "--catalog-root", str(tmp_root)], cwd=tmp_root)
+    check(res.returncode == 0, f"regen exit {res.returncode}; stderr={res.stderr}")
+    out = (tmp_root / "CATALOG.yaml").read_text(encoding="utf-8")
+    check("dea:process-gone-abc123" in out, "grouped retired entity missing from CATALOG.yaml")
+    check("state: retired" in out, "grouped retired state not emitted")
+    check(
+        "entities/v1-alpha/retired/process-gone-abc123/dea-process-gone-abc123.yaml" in out,
+        "grouped entity path must carry the retired/ grouping segment",
+    )
+    check(
+        "entities/v1-alpha/retired/process-gone-abc123/research/" in out,
+        "research register path must carry the retired/ grouping segment",
+    )
+    check("dea:process-live" in out, "flat canonical entity lost from CATALOG.yaml")
+
+
+def test_gate_passes_strict_on_catalog_with_grouped_retired(tmp_root: Path) -> None:
+    """The index gate resolves grouped entities via their declared paths and
+    enumerates the grouped subtree on disk, so a regenerated catalog with
+    a retired grouping passes --strict."""
+    build_fixture(
+        tmp_root,
+        canonical_entities=[
+            ("dea:process-live", {"id": "dea:process-live", "type": "Process", "version": "1.0.0", "lifecycle_status": "active"}),
+        ],
+    )
+    _build_grouped_retired_subtree(tmp_root)
+    r1 = run_subprocess([str(REGEN), "--catalog-root", str(tmp_root)], cwd=tmp_root)
+    check(r1.returncode == 0, f"regen exit {r1.returncode}")
+    r2 = run_subprocess([str(GATE), "--catalog-root", str(tmp_root), "--strict"], cwd=tmp_root)
+    check(r2.returncode == 0, f"gate --strict exit {r2.returncode}; stderr={r2.stderr}; stdout={r2.stdout}")
+
+
+def test_gate_flags_grouped_subtree_missing_from_catalog(tmp_root: Path) -> None:
+    """Pins the gate's disk-side enumeration of the grouping: a grouped
+    subtree that exists on disk but is not declared in CATALOG.yaml is an
+    orphan error (before CR-CATALOG-STRUCT-12 the grouping was invisible
+    to the gate and the orphan passed silently)."""
+    build_fixture(
+        tmp_root,
+        canonical_entities=[
+            ("dea:process-live", {"id": "dea:process-live", "type": "Process", "version": "1.0.0", "lifecycle_status": "active"}),
+        ],
+    )
+    r1 = run_subprocess([str(REGEN), "--catalog-root", str(tmp_root)], cwd=tmp_root)
+    check(r1.returncode == 0, f"regen exit {r1.returncode}")
+    # Stale: the grouped subtree lands after CATALOG.yaml was regenerated.
+    _build_grouped_retired_subtree(tmp_root)
+    r2 = run_subprocess([str(GATE), "--catalog-root", str(tmp_root), "--strict"], cwd=tmp_root)
+    check(r2.returncode != 0, "gate must fail on an undeclared grouped subtree (orphan)")
+    check(
+        "dea:process-gone-abc123" in (r2.stderr + r2.stdout),
+        "orphan error must name the grouped record id",
+    )
+
+
 def test_regenerator_is_deterministic(tmp_root: Path) -> None:
     build_fixture(
         tmp_root,

@@ -218,12 +218,65 @@ def build_catalog_metadata(
     return metadata, warnings
 
 
+# Top-level state groupings (CR-CATALOG-STRUCT-12). The state directory
+# names double as per-subtree content dir names (the subtree's own
+# research/, candidates/, retired/ dirs); a grouping is recognized only
+# when the state dir sits DIRECTLY under entities/v1-alpha/.
+STATE_DIRS = ("research", "candidates", "retired")
+
+
+def _is_top_state_grouping(path: Path, entities_root: Path) -> bool:
+    """True if `path` is a state dir directly under the entities root."""
+    return path.parent == entities_root and path.name in STATE_DIRS
+
+
+def _grouped_subtree_dirs(entities_root: Path) -> list[Path]:
+    """Direct children of every top-level state grouping."""
+    out: list[Path] = []
+    for name in STATE_DIRS:
+        grouping = entities_root / name
+        if grouping.is_dir():
+            out.extend(p for p in grouping.iterdir() if p.is_dir())
+    return out
+
+
+def _subtree_rel_dir(subtree: Path) -> str:
+    """Repo-relative entity dir for `subtree`'s actual position on disk.
+
+    Flat layout: `entities/v1-alpha/<dir>`. Grouped layout
+    (CR-CATALOG-STRUCT-12): `entities/v1-alpha/<state>/<dir>` when the
+    subtree sits directly under a top-level state grouping. Derived from
+    the subtree's real position so the emitted path always matches disk
+    truth; falls back to the flat form for subtrees outside an entities
+    tree (unit-test fixtures).
+    """
+    parent = subtree.parent
+    if parent.name in STATE_DIRS and parent.parent.name == "v1-alpha":
+        return f"entities/v1-alpha/{parent.name}/{subtree.name}"
+    return f"entities/v1-alpha/{subtree.name}"
+
+
 def list_subtrees(catalog_root: Path) -> list[Path]:
-    """List every directory under `entities/v1-alpha/`; sorted lexicographically."""
+    """List every entity subtree under `entities/v1-alpha/`; sorted.
+
+    Flat layout: one directory per record directly under the entities
+    root. Grouped layout (CR-CATALOG-STRUCT-12): a state directory that
+    sits *directly* under the entities root (`research/`, `candidates/`,
+    `retired/`) groups whole entity subtrees by state, and its direct
+    children enumerate here. State directories at deeper levels keep their
+    per-subtree semantics (the subtree's own content dirs) and do not
+    enumerate.
+    """
     entities_root = catalog_root / "entities" / "v1-alpha"
     if not entities_root.exists():
         return []
-    return sorted([p for p in entities_root.iterdir() if p.is_dir()])
+    out = [
+        p
+        for p in entities_root.iterdir()
+        if p.is_dir() and not _is_top_state_grouping(p, entities_root)
+    ]
+    out.extend(_grouped_subtree_dirs(entities_root))
+    return sorted(out)
 
 
 def entity_id_from_subtree(subtree: Path) -> str:
@@ -310,10 +363,11 @@ def infer_state(subtree: Path, canonical: dict[str, Any] | None) -> tuple[str, s
     # candidates since the mv1 id migration).
     hyphen_file = subtree / (entity_id.replace(":", "-").lower() + ".yaml")
     colon_file = subtree / f"{entity_id}.yaml"
+    rel_dir = _subtree_rel_dir(subtree)
     if hyphen_file.exists():
-        canonical_path = f"entities/v1-alpha/{entity_id}/{hyphen_file.name}"
+        canonical_path = f"{rel_dir}/{hyphen_file.name}"
     elif colon_file.exists():
-        canonical_path = f"entities/v1-alpha/{entity_id}/{entity_id}.yaml"
+        canonical_path = f"{rel_dir}/{entity_id}.yaml"
     else:
         canonical_path = None
 
@@ -338,7 +392,7 @@ def infer_state(subtree: Path, canonical: dict[str, Any] | None) -> tuple[str, s
                 return "retired", canonical_path
             retired_files = sorted((subtree / "retired").glob("*.yaml")) if (subtree / "retired").is_dir() else []
             if retired_files:
-                return "retired", f"entities/v1-alpha/{entity_id}/retired/{retired_files[-1].name}"
+                return "retired", f"{_subtree_rel_dir(subtree)}/retired/{retired_files[-1].name}"
             return "retired", canonical_path
 
     # Precedence 2: candidates/ has files but no canonical.
@@ -443,20 +497,21 @@ def entity_path_for(subtree: Path, state: str) -> str | None:
     the id with colons normalized to hyphens.
     """
     entity_id = entity_id_from_subtree(subtree)
+    rel_dir = _subtree_rel_dir(subtree)
     canonical = subtree / (entity_id.replace(":", "-").lower() + ".yaml")
     if canonical.exists():
-        return f"entities/v1-alpha/{subtree.name}/{canonical.name}"
+        return f"{rel_dir}/{canonical.name}"
     legacy = subtree / f"{entity_id}.yaml"
     if legacy.exists():
-        return f"entities/v1-alpha/{subtree.name}/{entity_id}.yaml"
+        return f"{rel_dir}/{entity_id}.yaml"
     # First candidate file
     candidates_dir = subtree / "candidates"
     if candidates_dir.is_dir():
         candidates = sorted(p for p in candidates_dir.iterdir() if p.is_file() and p.suffix in (".yaml", ".yml"))
         if candidates:
-            return f"entities/v1-alpha/{subtree.name}/candidates/{candidates[0].name}"
+            return f"{rel_dir}/candidates/{candidates[0].name}"
     # Subtree root with trailing slash
-    return f"entities/v1-alpha/{subtree.name}/"
+    return f"{rel_dir}/"
 
 
 def build_entity_entry(
@@ -476,7 +531,7 @@ def build_entity_entry(
 
     if path is None:
         # Empty subtree; use the subtree root path with trailing slash.
-        path = f"entities/v1-alpha/{entity_id}/"
+        path = f"{_subtree_rel_dir(subtree)}/"
         warnings.append(f"entity {entity_id!r} has no files; emitting empty placeholder")
 
     if canonical is None:
