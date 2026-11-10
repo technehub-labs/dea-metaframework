@@ -39,3 +39,21 @@ jobs:
         run: python tests/test_conformance_catalog_structure.py
       - name: Catalog index machinery self-test (standalone runner)
         run: python tests/test_catalog_index_machinery.py
+
+  # CR-CATALOG-STRUCT-13: every metaframework release-tag pin this repo
+  # advertises (template CI fetch, kit generator's emitted pins) must
+  # resolve to a tag that exists on origin. A pin merged ahead of its
+  # release 404s at every consumer's checkout. Ordering rule:
+  # land the change -> cut the release -> bump the pins (own PR).
+  pins-resolve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Release pins resolve to existing tags (CR-CATALOG-STRUCT-13)
+        run: python tools/check_release_pins.py
+      - name: Release-pin self-tests
+        run: python tests/test_check_release_pins.py
