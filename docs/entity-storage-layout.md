@@ -1,6 +1,6 @@
 # DEA Entity Storage Layout
 
-**Version**: 1.1.0
+**Version**: 1.2.0
 **Date**: 2026-11-10
 **Status**: Ratified
 **Owner**: Emmanuel A. Otchere
@@ -80,6 +80,27 @@ entities/v1-alpha/
 - README.md per dir, same rule as ECF repos.
 - Example: `capabilities:capability-asset-management-7a4kqz` -> `entities/v1-alpha/asset-management-7a4kqz/capabilities-capability-asset-management-7a4kqz.yaml`
 
+### 3.2 State-grouped subtrees (CR-CATALOG-STRUCT-12)
+
+A flat-layout repo may group whole entity subtrees by state under a top-level state directory, so that canonical records and non-canonical history are visually separated in the tree:
+
+```
+entities/v1-alpha/
+  retired/                                the top-level state grouping
+    <entity-slug>-<hash>/                 one per fully-retired record
+      README.md                           same §2.3 rule (states retirement)
+      <record>.yaml                       lifecycle_status: retired
+      research/                           the dossier, retained as history
+```
+
+Rules:
+
+- A grouping is a state directory (`research/`, `candidates/`, `retired/`) sitting **directly** under `entities/v1-alpha/`; the names are reserved at that level. State directories at deeper levels keep their per-subtree semantics (a subtree's own content dirs) and never group.
+- Direct children of a grouping are ordinary entity subtrees: same shape rule as §3.1 (§2.3 README rule included), same record contract; the directory name and record file keep the id-derived form, so ids are never recomputed by a move.
+- A record under the top-level `retired/` grouping must carry `lifecycle_status: retired` (or `deprecated`); CST-010 flags the contradiction otherwise.
+- The regenerator, the index gate, and the conformance suite enumerate grouped subtrees exactly as flat ones; the entity's `CATALOG.yaml` `path` carries the grouping segment (`entities/v1-alpha/retired/<dir>/<record>.yaml`).
+- Deeper state dirs inside a grouped subtree keep per-subtree semantics (`research/` counts toward `research_count`; `candidates/`/`retired/` inside a grouped subtree behave as usual).
+
 ## 4. GitHub 1,000-entry limit
 
 GitHub truncates a directory listing at 1,000 entries (files and subdirectories alike; the contents API truncates the same way). Since 1.1.0 the rule is enforced, not prose:
@@ -94,6 +115,8 @@ ECF-coordinated repos (containment tree) keep their worst case at ~15 entries pe
 ## 5. Path-integrity contract
 
 Every record's filesystem path must be derivable from its id. The CI gate `check_id_system.py` enforces this: given a record's id, the gate computes the expected path and asserts the record file exists at that path. No orphan files, no orphan records.
+
+Under §3.2 state grouping, a record resolves at one of two id-derived locations: the flat one (`entities/v1-alpha/<dir>/<record>.yaml`) or the grouped one (`entities/v1-alpha/<state>/<dir>/<record>.yaml`). The gate probes both; a record at neither location is an orphan. Ids never change across a move into or out of a grouping.
 
 ## 6. See also
 

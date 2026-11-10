@@ -78,6 +78,21 @@ def _is_state_dir(path: Path, entities_root: Path) -> bool:
     return any(part in ("research", "candidates", "retired") for part in rel.parts)
 
 
+def _is_top_state_grouping(path: Path, entities_root: Path) -> bool:
+    """True if `path` is a state dir DIRECTLY under the entities root
+    (CR-CATALOG-STRUCT-12). Such a directory groups whole entity subtrees
+    by state; its direct children enumerate as entity subtrees."""
+    return path.parent == entities_root and path.name in ("research", "candidates", "retired")
+
+
+def _is_grouped_subtree(path: Path, entities_root: Path) -> bool:
+    """True if `path` is a direct child of a top-level state grouping."""
+    return (
+        path.parent.parent == entities_root
+        and path.parent.name in ("research", "candidates", "retired")
+    )
+
+
 def list_entity_subtrees(catalog_root: Path) -> list[Path]:
     """All entity directories under `entities/v1-alpha/`.
 
@@ -91,13 +106,29 @@ def list_entity_subtrees(catalog_root: Path) -> list[Path]:
       (candidate-only dirs hold records under `candidates/` instead).
     - Containment tree: one directory per record at any depth
       (PC at cell level, then group / process / activity / task).
+    - State grouping (CR-CATALOG-STRUCT-12): a state dir directly under
+      the entities root groups whole subtrees by state; its direct
+      children enumerate as entity subtrees by the same shape rule.
+      Deeper content under the grouping keeps the per-subtree state-dir
+      semantics and does not enumerate.
     """
     entities_root = catalog_root / "entities" / "v1-alpha"
     if not entities_root.exists():
         return []
     out = []
     for p in sorted(entities_root.rglob("*")):
-        if not p.is_dir() or _is_state_dir(p, entities_root):
+        if not p.is_dir():
+            continue
+        if _is_grouped_subtree(p, entities_root):
+            has_root_yaml = any(p.glob("*.yaml"))
+            has_state_content = any(
+                (p / d).is_dir() and any((p / d).glob("*"))
+                for d in ("research", "candidates", "retired")
+            )
+            if has_root_yaml or has_state_content:
+                out.append(p)
+            continue
+        if _is_state_dir(p, entities_root):
             continue
         has_root_yaml = any(p.glob("*.yaml"))
         has_state_content = any(
@@ -318,6 +349,24 @@ def cst_010_retired_lifecycle(catalog_root: Path) -> None:
                     False,
                     f"CST-010: {path} has lifecycle_status={ls!r} but lives under retired/",
                 )
+
+    # CR-CATALOG-STRUCT-12: the top-level retired grouping. Every record
+    # at a grouped subtree root is location-retired; its lifecycle must
+    # agree, mirroring the per-subtree rule above.
+    entities_root = catalog_root / "entities" / "v1-alpha"
+    grouping = entities_root / "retired"
+    if grouping.is_dir():
+        for subtree in sorted(p for p in grouping.iterdir() if p.is_dir()):
+            for path in subtree.glob("*.yaml"):
+                data = load_yaml(path)
+                if not isinstance(data, dict):
+                    continue
+                ls = data.get("lifecycle_status")
+                if ls not in {"deprecated", "retired"}:
+                    check(
+                        False,
+                        f"CST-010: {path} has lifecycle_status={ls!r} but lives under the top-level retired/ grouping",
+                    )
 
 
 def cst_011_candidate_version(catalog_root: Path) -> None:

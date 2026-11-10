@@ -425,6 +425,84 @@ def test_cst_017_flags_tracked_directory_over_trigger(tmp_root: Path) -> None:
 
 # ---------- Bootstrap script tests ----------
 
+def test_cst_suite_passes_on_retired_grouping(tmp_root: Path) -> None:
+    """CR-CATALOG-STRUCT-12: a fully-retired entity subtree under the
+    top-level entities/v1-alpha/retired/ grouping enumerates as an entity
+    subtree, and a catalog carrying one passes the full suite in strict
+    mode after regeneration."""
+    target = tmp_root / "grouped"
+    copy_conforming(target)
+    subtree = target / "entities" / "v1-alpha" / "retired" / "process-archived-q1w2e3"
+    (subtree / "research").mkdir(parents=True)
+    (subtree / "README.md").write_text("# Retired: process archived\n", encoding="utf-8")
+    (subtree / "research" / "README.md").write_text("# Research\n", encoding="utf-8")
+    (subtree / "research" / "evidence.yaml").write_text(
+        "claim: engaged-instance history\n", encoding="utf-8"
+    )
+    (subtree / "dea-process-archived-q1w2e3.yaml").write_text(
+        "id: dea:process-archived-q1w2e3\n"
+        "type: Process\n"
+        "name: Archived Process\n"
+        "version: 1.1.0\n"
+        "lifecycle_status: retired\n",
+        encoding="utf-8",
+    )
+    rc = run_subprocess(
+        [str(REGEN), "--catalog-root", str(target), "--schema", str(SCHEMA)],
+        cwd=tmp_root,
+    )
+    check(rc.returncode == 0, f"regen on grouping fixture exit {rc.returncode}; stderr={rc.stderr}; stdout={rc.stdout}")
+    catalog = (target / "CATALOG.yaml").read_text(encoding="utf-8")
+    check(
+        "entities/v1-alpha/retired/process-archived-q1w2e3/dea-process-archived-q1w2e3.yaml" in catalog,
+        "regenerated CATALOG.yaml must carry the grouped path",
+    )
+    rc = run_subprocess(
+        [
+            str(CONFORMANCE),
+            "--catalog-root", str(target),
+            "--template-root", str(TEMPLATE),
+        ],
+        cwd=tmp_root,
+    )
+    check(
+        rc.returncode == 0,
+        f"full CST suite must pass on a catalog with a retired grouping; "
+        f"got {rc.returncode}; stderr={rc.stderr}; stdout={rc.stdout}",
+    )
+
+
+def test_cst_010_flags_active_record_under_retired_grouping(tmp_root: Path) -> None:
+    """Every record under the top-level retired/ grouping is
+    location-retired; an active lifecycle there is a contradiction the
+    suite must flag (the grouped mirror of the per-subtree CST-010 rule)."""
+    target = tmp_root / "grouped-bad"
+    copy_conforming(target)
+    subtree = target / "entities" / "v1-alpha" / "retired" / "process-zombie-z9y8x7"
+    subtree.mkdir(parents=True)
+    (subtree / "dea-process-zombie-z9y8x7.yaml").write_text(
+        "id: dea:process-zombie-z9y8x7\n"
+        "type: Process\n"
+        "version: 2.0.0\n"
+        "lifecycle_status: active\n",
+        encoding="utf-8",
+    )
+    rc = run_subprocess(
+        [
+            str(CONFORMANCE),
+            "--catalog-root", str(target),
+            "--template-root", str(TEMPLATE),
+            "--cst", "CST-010",
+        ],
+        cwd=tmp_root,
+    )
+    check(rc.returncode != 0, "CST-010 must flag an active record under the retired/ grouping")
+    check(
+        "CST-010" in (rc.stderr + rc.stdout),
+        "failure output must name CST-010",
+    )
+
+
 def test_bootstrap_produces_conformant_catalog(tmp_root: Path) -> None:
     target = tmp_root / "bootstrapped"
     rc = run_subprocess(
